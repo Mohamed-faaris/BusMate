@@ -3,16 +3,21 @@ import { index, pgTableCreator, primaryKey, pgEnum } from "drizzle-orm/pg-core";
 
 export const createTable = pgTableCreator((name) => `BusMate_${name}`);
 
-export const genderEnum = pgEnum("genderEnum", ["male", "female"]);
+// ENUMS
+export const genderEnum = pgEnum("gender", ["male", "female"]);
+export const seatStatusEnum = pgEnum("seatStatus", [
+  "available",
+  "booked",
+  "reserved",
+]);
 
-//user table
+// USERS
 export const users = createTable("user", (d) => ({
   id: d
-    .varchar({ length: 255 })
-    .notNull()
+    .uuid()
     .primaryKey()
+    .notNull()
     .$defaultFn(() => crypto.randomUUID()),
-
   rollNo: d.varchar({ length: 10 }).notNull().unique(),
   name: d.varchar({ length: 255 }).notNull(),
   gender: genderEnum("gender").notNull(),
@@ -23,16 +28,15 @@ export const users = createTable("user", (d) => ({
 
   busId: d
     .varchar({ length: 255 })
-    .references(() => buses.id)
-    .notNull(),
-  seatId: d.varchar({ length: 255 }).notNull(),
+    .notNull()
+    .references(() => buses.id),
   boardingPointId: d
     .varchar({ length: 255 })
     .notNull()
     .references(() => boardingPoints.id),
   receiptId: d.varchar({ length: 255 }).notNull(),
-  isVerified: d.boolean().notNull().default(false),
 
+  isVerified: d.boolean().notNull().default(false),
   isAdmin: d.boolean().notNull().default(false),
 
   createdAt: d
@@ -53,13 +57,13 @@ export const usersRollEmailBusIdx = index("users_roll_email_bus_idx").on(
 
 export const usersRelations = relations(users, ({ one }) => ({
   bus: one(buses, { fields: [users.busId], references: [buses.id] }),
-  seat: one(seats, { fields: [users.seatId], references: [seats.id] }),
   boardingPoint: one(boardingPoints, {
     fields: [users.boardingPointId],
     references: [boardingPoints.id],
   }),
 }));
 
+// ACCOUNTS
 export const accounts = createTable("account", (d) => ({
   userId: d
     .varchar({ length: 255 })
@@ -77,6 +81,7 @@ export const accountsRelations = relations(accounts, ({ one }) => ({
   user: one(users, { fields: [accounts.userId], references: [users.id] }),
 }));
 
+// ACCEPTED ROLLS
 export const acceptedRolls = createTable("acceptedRolls", (d) => ({
   rollNo: d.varchar({ length: 10 }).notNull().unique(),
   boardingPointId: d
@@ -94,15 +99,14 @@ export const acceptedRollsRelations = relations(acceptedRolls, ({ one }) => ({
   }),
 }));
 
+// BUSES
 export const buses = createTable("bus", (d) => ({
   id: d
-    .varchar({ length: 255 })
-    .notNull()
+    .uuid()
     .primaryKey()
+    .notNull()
     .$defaultFn(() => crypto.randomUUID()),
-
   model: d.varchar({ length: 255 }).notNull(),
-
   busNumber: d.varchar({ length: 10 }).notNull().unique(),
   routeName: d.varchar({ length: 255 }),
   driverName: d.varchar({ length: 255 }).notNull(),
@@ -124,19 +128,18 @@ export const busesBusNumberRouteIdx = index("buses_bus_number_idx").on(
 );
 
 export const busesRelations = relations(buses, ({ many }) => ({
+  users: many(users),
   seats: many(seats),
   boardingPoints: many(busBoardingPoints),
-  users: many(users),
 }));
 
-export const seatStatusEnum = pgEnum("seatStatus", [
-  "available",
-  "booked",
-  "reserved",
-]);
-
+// SEATS
 export const seats = createTable("seat", (d) => ({
-  id: d.varchar({ length: 255 }).notNull().primaryKey(),
+  id: d
+    .uuid()
+    .primaryKey()
+    .notNull()
+    .$defaultFn(() => crypto.randomUUID()),
   userId: d
     .varchar({ length: 255 })
     .notNull()
@@ -146,6 +149,15 @@ export const seats = createTable("seat", (d) => ({
     .notNull()
     .references(() => buses.id),
   status: seatStatusEnum("status").default("available"),
+
+  createdAt: d
+    .timestamp({ mode: "date", withTimezone: true })
+    .notNull()
+    .$defaultFn(() => sql`now()`),
+  updatedAt: d
+    .timestamp({ mode: "date", withTimezone: true })
+    .notNull()
+    .$defaultFn(() => sql`now()`),
 }));
 
 export const seatsRelations = relations(seats, ({ one }) => ({
@@ -155,11 +167,12 @@ export const seatsRelations = relations(seats, ({ one }) => ({
 
 export const userBusIdx = index("user_bus_idx").on(users.busId, users.id);
 
+// BOARDING POINTS
 export const boardingPoints = createTable("boardingPoint", (d) => ({
   id: d
-    .varchar({ length: 255 })
-    .notNull()
+    .uuid()
     .primaryKey()
+    .notNull()
     .$defaultFn(() => crypto.randomUUID()),
   name: d.varchar({ length: 255 }).notNull(),
   latitude: d.doublePrecision(),
@@ -173,14 +186,15 @@ export const boardingPointsNameIdx = index("boarding_points_name_idx").on(
 export const boardingPointsRelations = relations(
   boardingPoints,
   ({ many }) => ({
-    buses: many(busBoardingPoints),
-    acceptedRolls: many(acceptedRolls),
     users: many(users),
+    acceptedRolls: many(acceptedRolls),
+    buses: many(busBoardingPoints),
   }),
 );
 
+// BUS BOARDING POINTS
 export const busBoardingPoints = createTable("busBoardingPoint", (d) => ({
-  id: d.serial().notNull().primaryKey(),
+  id: d.serial().primaryKey().notNull(),
   busId: d
     .varchar({ length: 255 })
     .notNull()
