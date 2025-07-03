@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { z } from "zod";
+import { motion, AnimatePresence } from "motion/react";
+import { Loader2, Check, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -30,6 +32,9 @@ export function SignInForm({
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
+  const [buttonState, setButtonState] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -49,6 +54,7 @@ export function SignInForm({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
+    setButtonState("loading");
     setErrors({});
 
     try {
@@ -62,8 +68,16 @@ export function SignInForm({
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       // Handle successful submission here
-      alert("Sign in successful!");
+      setButtonState("success");
+
+      // Reset to idle after showing success
+      setTimeout(() => {
+        setButtonState("idle");
+        alert("Sign in successful!");
+      }, 1500);
     } catch (error) {
+      setButtonState("error");
+
       if (error instanceof z.ZodError) {
         // Handle validation errors
         const fieldErrors: Record<string, string> = {};
@@ -74,12 +88,55 @@ export function SignInForm({
         });
         setErrors(fieldErrors);
       } else {
-        // Handle other errors (API errors, etc.)
         console.error("Sign in error:", error);
         setErrors({ general: "An error occurred. Please try again." });
       }
+
+      // Reset to idle after showing error
+      setTimeout(() => {
+        setButtonState("idle");
+      }, 2000);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const getButtonContent = () => {
+    switch (buttonState) {
+      case "loading":
+        return (
+          <>
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            Signing in...
+          </>
+        );
+      case "success":
+        return (
+          <>
+            <Check className="mr-2 h-4 w-4" />
+            Success!
+          </>
+        );
+      case "error":
+        return (
+          <>
+            <X className="mr-2 h-4 w-4" />
+            Error
+          </>
+        );
+      default:
+        return "Login";
+    }
+  };
+
+  const getButtonVariant = () => {
+    switch (buttonState) {
+      case "success":
+        return "default"; // or create a success variant
+      case "error":
+        return "destructive";
+      default:
+        return "default";
     }
   };
 
@@ -92,12 +149,24 @@ export function SignInForm({
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit}>
-            <div className="grid gap-6">
-              {errors.general && (
-                <div className="rounded bg-red-50 p-2 text-center text-sm text-red-600">
-                  {errors.general}
-                </div>
-              )}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              className="grid gap-6"
+            >
+              <AnimatePresence>
+                {errors.general && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    className="rounded bg-red-50 p-2 text-center text-sm text-red-600"
+                  >
+                    {errors.general}
+                  </motion.div>
+                )}
+              </AnimatePresence>
               <div className="grid gap-6">
                 <div className="grid gap-3">
                   <Label htmlFor="email">Email</Label>
@@ -111,19 +180,28 @@ export function SignInForm({
                     required
                     className={errors.email ? "border-red-500" : ""}
                   />
-                  {errors.email && (
-                    <span className="text-sm text-red-600">{errors.email}</span>
-                  )}
+                  <AnimatePresence>
+                    {errors.email && (
+                      <motion.p
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 10 }}
+                        className="text-sm text-red-500"
+                      >
+                        {errors.email}
+                      </motion.p>
+                    )}
+                  </AnimatePresence>
                 </div>
                 <div className="grid gap-3">
                   <div className="flex items-center">
                     <Label htmlFor="password">Password</Label>
-                    <a
+                    {/* <a
                       href="#"
                       className="ml-auto text-sm underline-offset-4 hover:underline"
                     >
                       Forgot your password?
-                    </a>
+                    </a> */}
                   </div>
                   <Input
                     id="password"
@@ -134,14 +212,41 @@ export function SignInForm({
                     required
                     className={errors.password ? "border-red-500" : ""}
                   />
-                  {errors.password && (
-                    <span className="text-sm text-red-600">
-                      {errors.password}
-                    </span>
-                  )}
+                  <AnimatePresence>
+                    {errors.password && (
+                      <motion.p
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 10 }}
+                        className="text-sm text-red-500"
+                      >
+                        {errors.password}
+                      </motion.p>
+                    )}
+                  </AnimatePresence>
                 </div>
-                <Button type="submit" className="w-full" disabled={isLoading}>
-                  {isLoading ? "Signing in..." : "Login"}
+                <Button
+                  type="submit"
+                  className={cn(
+                    "w-full transition-all duration-300",
+                    buttonState === "success" &&
+                      "bg-green-600 hover:bg-green-700",
+                    buttonState === "error" && "bg-red-600 hover:bg-red-700",
+                  )}
+                  disabled={isLoading}
+                >
+                  <AnimatePresence mode="wait">
+                    <motion.span
+                      key={buttonState}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.2 }}
+                      className="flex items-center justify-center"
+                    >
+                      {getButtonContent()}
+                    </motion.span>
+                  </AnimatePresence>
                 </Button>
               </div>
               <div className="text-center text-sm">
@@ -150,14 +255,10 @@ export function SignInForm({
                   Sign up
                 </a>
               </div>
-            </div>
+            </motion.div>
           </form>
         </CardContent>
       </Card>
-      <div className="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4">
-        By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
-        and <a href="#">Privacy Policy</a>.
-      </div>
     </div>
   );
 }
