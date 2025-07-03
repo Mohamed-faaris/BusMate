@@ -11,6 +11,68 @@ export const seatStatusEnum = pgEnum("seatStatus", [
   "reserved",
 ]);
 
+// BUSES
+export const buses = createTable("bus", (d) => ({
+  id: d
+    .uuid()
+    .primaryKey()
+    .notNull()
+    .$defaultFn(() => crypto.randomUUID()),
+  model: d.varchar({ length: 255 }).notNull(),
+  busNumber: d.varchar({ length: 10 }).notNull().unique(),
+  routeName: d.varchar({ length: 255 }),
+  driverName: d.varchar({ length: 255 }).notNull(),
+  driverPhone: d.varchar({ length: 15 }).notNull(),
+
+  createdAt: d
+    .timestamp({ mode: "date", withTimezone: true })
+    .notNull()
+    .$defaultFn(() => sql`now()`),
+  updatedAt: d
+    .timestamp({ mode: "date", withTimezone: true })
+    .notNull()
+    .$defaultFn(() => sql`now()`),
+}));
+
+export const busesBusNumberRouteIdx = index("buses_bus_number_idx").on(
+  buses.busNumber,
+  buses.routeName,
+);
+
+export const busesRelations = relations(buses, ({ many }) => ({
+  users: many(users),
+  seats: many(seats),
+  boardingPoints: many(busBoardingPoints),
+}));
+
+// BUS BOARDING POINTS
+export const busBoardingPoints = createTable("busBoardingPoint", (d) => ({
+  id: d.serial().primaryKey().notNull(),
+  busId: d
+    .varchar({ length: 255 })
+    .notNull()
+    .references(() => buses.id),
+  boardingPointId: d
+    .varchar({ length: 255 })
+    .notNull()
+    .references(() => boardingPoints.id),
+  arrivalTime: d.timestamp({ mode: "date", withTimezone: true }),
+}));
+
+export const busBoardingPointsRelations = relations(
+  busBoardingPoints,
+  ({ one }) => ({
+    bus: one(buses, {
+      fields: [busBoardingPoints.busId],
+      references: [buses.id],
+    }),
+    boardingPoint: one(boardingPoints, {
+      fields: [busBoardingPoints.boardingPointId],
+      references: [boardingPoints.id],
+    }),
+  }),
+);
+
 // USERS
 export const users = createTable("user", (d) => ({
   id: d
@@ -99,39 +161,6 @@ export const acceptedRollsRelations = relations(acceptedRolls, ({ one }) => ({
   }),
 }));
 
-// BUSES
-export const buses = createTable("bus", (d) => ({
-  id: d
-    .uuid()
-    .primaryKey()
-    .notNull()
-    .$defaultFn(() => crypto.randomUUID()),
-  model: d.varchar({ length: 255 }).notNull(),
-  busNumber: d.varchar({ length: 10 }).notNull().unique(),
-  routeName: d.varchar({ length: 255 }),
-  driverName: d.varchar({ length: 255 }).notNull(),
-  driverPhone: d.varchar({ length: 15 }).notNull(),
-
-  createdAt: d
-    .timestamp({ mode: "date", withTimezone: true })
-    .notNull()
-    .$defaultFn(() => sql`now()`),
-  updatedAt: d
-    .timestamp({ mode: "date", withTimezone: true })
-    .notNull()
-    .$defaultFn(() => sql`now()`),
-}));
-
-export const busesBusNumberRouteIdx = index("buses_bus_number_idx").on(
-  buses.busNumber,
-  buses.routeName,
-);
-
-export const busesRelations = relations(buses, ({ many }) => ({
-  users: many(users),
-  seats: many(seats),
-  boardingPoints: many(busBoardingPoints),
-}));
 
 // SEATS
 export const seats = createTable("seat", (d) => ({
@@ -192,30 +221,4 @@ export const boardingPointsRelations = relations(
   }),
 );
 
-// BUS BOARDING POINTS
-export const busBoardingPoints = createTable("busBoardingPoint", (d) => ({
-  id: d.serial().primaryKey().notNull(),
-  busId: d
-    .varchar({ length: 255 })
-    .notNull()
-    .references(() => buses.id),
-  boardingPointId: d
-    .varchar({ length: 255 })
-    .notNull()
-    .references(() => boardingPoints.id),
-  arrivalTime: d.timestamp({ mode: "date", withTimezone: true }),
-}));
 
-export const busBoardingPointsRelations = relations(
-  busBoardingPoints,
-  ({ one }) => ({
-    bus: one(buses, {
-      fields: [busBoardingPoints.busId],
-      references: [buses.id],
-    }),
-    boardingPoint: one(boardingPoints, {
-      fields: [busBoardingPoints.boardingPointId],
-      references: [boardingPoints.id],
-    }),
-  }),
-);
