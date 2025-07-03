@@ -30,7 +30,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <div className="absolute top-5 right-5">
-            <ThemeToggle />
+            <ThemeToggle animate={true} />
           </div>
           {children}
         </ThemeProvider>
