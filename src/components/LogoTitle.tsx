@@ -1,7 +1,72 @@
-export  function LogoTitle() {
+"use client";
+
+import { motion } from "motion/react";
+
+interface LogoTitleProps {
+  animate?: boolean;
+  duration?: number;
+}
+
+export function LogoTitle({ animate = false, duration = 0.8 }: LogoTitleProps) {
   return (
-    <h1 className="text-5xl font-extrabold  text-card-foreground sm:text-[5rem]">
-      <span className="text-primary">Bus</span>Mate
-    </h1>
+    <motion.h1
+      initial={animate ? { opacity: 0, y: -20, scale: 0.9 } : false}
+      animate={animate ? { opacity: 1, y: 0, scale: 1 } : false}
+      transition={
+        animate
+          ? {
+              duration,
+              ease: "easeOut",
+              type: "spring",
+              stiffness: 100,
+              damping: 15,
+            }
+          : undefined
+      }
+      className="text-card-foreground text-5xl font-extrabold sm:text-[5rem]"
+    >
+      <motion.span
+        initial={animate ? { opacity: 0, x: -30 } : false}
+        animate={animate ? { opacity: 1, x: 0 } : false}
+        transition={
+          animate
+            ? {
+                duration: duration * 0.75,
+                delay: duration * 0.25,
+                type: "spring",
+                stiffness: 120,
+              }
+            : undefined
+        }
+        whileHover={{
+          scale: 1.05,
+          color: "hsl(var(--primary))",
+          transition: { duration: 0.2 },
+        }}
+        className="text-primary"
+      >
+        Bus
+      </motion.span>
+      <motion.span
+        initial={animate ? { opacity: 0, x: 30 } : false}
+        animate={animate ? { opacity: 1, x: 0 } : false}
+        transition={
+          animate
+            ? {
+                duration: duration * 0.75,
+                delay: duration * 0.5,
+                type: "spring",
+                stiffness: 120,
+              }
+            : undefined
+        }
+        whileHover={{
+          scale: 1.05,
+          transition: { duration: 0.2 },
+        }}
+      >
+        Mate
+      </motion.span>
+    </motion.h1>
   );
 }
