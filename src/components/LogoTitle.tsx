@@ -37,13 +37,7 @@ export function LogoTitle({ animate = false, duration = 0.8 }: LogoTitleProps) {
                 stiffness: 120,
               }
             : undefined
-        }
-        whileHover={{
-          scale: 1.05,
-          color: "hsl(var(--primary))",
-          transition: { duration: 0.2 },
-        }}
-        className="text-primary"
+        } 
       >
         Bus
       </motion.span>
