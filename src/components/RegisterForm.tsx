@@ -18,9 +18,56 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
 import { use, useState } from "react";
+import * as React from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { z } from "zod";
+import { Check, ChevronsUpDown } from "lucide-react";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
+import { useMediaQuery } from "@/hooks/use-media-query";
+
+// Boarding point options
+const BOARDING_POINTS: { value: string; label: string }[] = [
+  { value: "central-bus-stand", label: "Central Bus Stand" },
+  { value: "railway-station", label: "Railway Station" },
+  { value: "airport", label: "Airport" },
+  { value: "city-center", label: "City Center" },
+  { value: "university-gate", label: "University Gate" },
+  { value: "shopping-mall", label: "Shopping Mall" },
+  { value: "bus-depot", label: "Bus Depot" },
+  { value: "metro-station", label: "Metro Station" },
+  { value: "government-hospital", label: "Government Hospital" },
+  { value: "private-hospital", label: "Private Hospital" },
+  { value: "college-campus", label: "College Campus" },
+  { value: "tech-park", label: "Tech Park" },
+  { value: "industrial-area", label: "Industrial Area" },
+  { value: "residential-complex", label: "Residential Complex" },
+  { value: "temple-area", label: "Temple Area" },
+  { value: "market-square", label: "Market Square" },
+  { value: "sports-complex", label: "Sports Complex" },
+  { value: "library", label: "Central Library" },
+  { value: "park-entrance", label: "Park Entrance" },
+  { value: "bus-terminal", label: "Interstate Bus Terminal" },
+];
 
 const step1Schema = z.object({
   rollNo: z.string().min(1, "Roll No is required"),
@@ -55,6 +102,9 @@ export function RegisterForm({
   ...props
 }: React.ComponentProps<"div">) {
   const [step, setStep] = useState(1);
+  const [open, setOpen] = useState(false);
+  const isDesktop = useMediaQuery("(min-width: 768px)");
+
   const [formData, setFormData] = useState({
     rollNo: "",
     name: "",
@@ -119,6 +169,42 @@ export function RegisterForm({
     console.log("Form submitted:", formData);
   };
 
+  // Reusable combobox content component
+  const ComboboxContent = () => (
+    <Command>
+      <CommandInput placeholder="Search boarding point..." />
+      <CommandList>
+        <CommandEmpty>No boarding point found.</CommandEmpty>
+        <CommandGroup>
+          {BOARDING_POINTS.map((point) => (
+            <CommandItem
+              key={point.value}
+              value={point.value}
+              onSelect={(currentValue) => {
+                setFormData((prev) => ({
+                  ...prev,
+                  boardingPoint:
+                    currentValue === formData.boardingPoint ? "" : currentValue,
+                }));
+                setOpen(false);
+              }}
+            >
+              <Check
+                className={cn(
+                  "mr-2 h-4 w-4",
+                  formData.boardingPoint === point.value
+                    ? "opacity-100"
+                    : "opacity-0",
+                )}
+              />
+              {point.label}
+            </CommandItem>
+          ))}
+        </CommandGroup>
+      </CommandList>
+    </Command>
+  );
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -167,7 +253,7 @@ export function RegisterForm({
                       <Label htmlFor="name">Name</Label>
                       <Input
                         id="name"
-                        placeholder="John Doe"
+                        placeholder="Vinayak S"
                         required
                         value={formData.name}
                         onChange={handleChange}
@@ -210,13 +296,56 @@ export function RegisterForm({
                     </div>
                     <div className="grid gap-2">
                       <Label htmlFor="boardingPoint">Boarding Point</Label>
-                      <Input
-                        id="boardingPoint"
-                        placeholder="e.g., Central Bus Stand"
-                        required
-                        value={formData.boardingPoint}
-                        onChange={handleChange}
-                      />
+                      {isDesktop ? (
+                        <Popover open={open} onOpenChange={setOpen}>
+                          <PopoverTrigger asChild>
+                            <Button
+                              variant="outline"
+                              role="combobox"
+                              aria-expanded={open}
+                              className="w-full justify-between"
+                            >
+                              {formData.boardingPoint
+                                ? BOARDING_POINTS.find(
+                                    (point) =>
+                                      point.value === formData.boardingPoint,
+                                  )?.label
+                                : "Select boarding point..."}
+                              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-full p-0">
+                            <ComboboxContent />
+                          </PopoverContent>
+                        </Popover>
+                      ) : (
+                        <Drawer open={open} onOpenChange={setOpen}>
+                          <DrawerTrigger asChild>
+                            <Button
+                              variant="outline"
+                              role="combobox"
+                              aria-expanded={open}
+                              className="w-full justify-between"
+                            >
+                              {formData.boardingPoint
+                                ? BOARDING_POINTS.find(
+                                    (point) =>
+                                      point.value === formData.boardingPoint,
+                                  )?.label
+                                : "Select boarding point..."}
+                              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                            </Button>
+                          </DrawerTrigger>
+                          <DrawerContent>
+                            <DrawerHeader>
+                              <DrawerTitle>Select Boarding Point</DrawerTitle>
+                            </DrawerHeader>
+                            <div className="px-4 pb-4">
+                              <ComboboxContent />
+                            </div>
+                          </DrawerContent>
+                        </Drawer>
+                      )}
                       <AnimatePresence>
                         {errors.boardingPoint && (
                           <motion.p
