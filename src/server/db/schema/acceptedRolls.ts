@@ -8,4 +8,4 @@ export const acceptedRolls = createTable("acceptedRolls", (d) => ({
   boardingPointId: d.varchar({ length: 255 }).notNull(),
 }));
 
-export const rollNoIdx = index("accepted_roll_no_idx").on(acceptedRolls.rollNo);
+//export const rollNoIdx = index("accepted_roll_no_idx").on(acceptedRolls.rollNo);

@@ -26,7 +26,7 @@ export const buses = createTable("bus", (d) => ({
     .$defaultFn(() => sql`now()`),
 }));
 
-export const busesBusNumberRouteIdx = index("buses_bus_number_idx").on(
-  buses.busNumber,
-  buses.routeName,
-);
+// export const busesBusNumberRouteIdx = index("buses_bus_number_idx").on(
+//   buses.busNumber,
+//   buses.routeName,
+// );

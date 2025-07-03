@@ -14,6 +14,6 @@ export const boardingPoints = createTable("boardingPoint", (d) => ({
   longitude: d.doublePrecision(),
 }));
 
-export const boardingPointsNameIdx = index("boarding_points_name_idx").on(
-  boardingPoints.name,
-);
+// export const boardingPointsNameIdx = index("boarding_points_name_idx").on(
+//   boardingPoints.name,
+// );

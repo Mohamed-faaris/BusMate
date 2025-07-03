@@ -36,10 +36,10 @@ export const users = createTable("user", (d) => ({
     .$defaultFn(() => sql`now()`),
 }));
 
-export const usersRollEmailBusIdx = index("users_roll_email_bus_idx").on(
-  users.rollNo,
-  users.email,
-  users.busId,
-);
+// export const usersRollEmailBusIdx = index("users_roll_email_bus_idx").on(
+//   users.rollNo,
+//   users.email,
+//   users.busId,
+// );
 
-export const userBusIdx = index("user_bus_idx").on(users.busId, users.id);
+//export const userBusIdx = index("user_bus_idx").on(users.busId, users.id);

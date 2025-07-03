@@ -8,6 +8,6 @@ export const accounts = createTable("account", (d) => ({
   password: d.varchar({ length: 255 }).notNull(),
 }));
 
-export const accountsUserIdIdx = index("accounts_user_id_idx").on(
-  accounts.userId,
-);
+// export const accountsUserIdIdx = index("accounts_user_id_idx").on(
+//   accounts.userId,
+// );
