@@ -10,6 +10,9 @@ export default function HomePage() {
         <Link href={"/auth/register"}>
           <Button>register</Button>
         </Link>
+        <Link href={"/auth/signin"}>
+          <Button>sign in</Button>
+        </Link>
       </div>
     </main>
   );
