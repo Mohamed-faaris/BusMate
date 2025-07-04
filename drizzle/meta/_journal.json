@@ -5,36 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1751636766371,
-      "tag": "0000_cynical_stranger",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1751637408404,
-      "tag": "0001_common_mastermind",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1751637448038,
-      "tag": "0002_rapid_mac_gargan",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1751637522329,
-      "tag": "0003_amazing_night_nurse",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1751645704375,
-      "tag": "0004_colorful_jack_murdock",
+      "when": 1751646874380,
+      "tag": "0000_careful_misty_knight",
       "breakpoints": true
     }
   ]

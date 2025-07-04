@@ -1,5 +1,5 @@
 {
-  "id": "66f0766c-b978-43ae-9549-1794ee348ef9",
+  "id": "217dbacf-742e-4b57-911a-bd74b72048be",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -59,13 +59,13 @@
         },
         "busId": {
           "name": "busId",
-          "type": "varchar(255)",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
         "boardingPointId": {
           "name": "boardingPointId",
-          "type": "varchar(255)",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
@@ -363,13 +363,13 @@
         },
         "busId": {
           "name": "busId",
-          "type": "varchar(255)",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
         "boardingPointId": {
           "name": "boardingPointId",
-          "type": "varchar(255)",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
@@ -413,6 +413,19 @@
         }
       },
       "foreignKeys": {
+        "BusMate_busBoardingPoint_busId_BusMate_bus_id_fk": {
+          "name": "BusMate_busBoardingPoint_busId_BusMate_bus_id_fk",
+          "tableFrom": "BusMate_busBoardingPoint",
+          "tableTo": "BusMate_bus",
+          "columnsFrom": [
+            "busId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
         "BusMate_busBoardingPoint_boardingPointId_BusMate_boardingPoint_id_fk": {
           "name": "BusMate_busBoardingPoint_boardingPointId_BusMate_boardingPoint_id_fk",
           "tableFrom": "BusMate_busBoardingPoint",
@@ -439,7 +452,7 @@
       "columns": {
         "userId": {
           "name": "userId",
-          "type": "varchar(255)",
+          "type": "uuid",
           "primaryKey": true,
           "notNull": true
         },
@@ -494,19 +507,19 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "uuid",
+          "type": "serial",
           "primaryKey": true,
           "notNull": true
         },
         "userId": {
           "name": "userId",
-          "type": "varchar(255)",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
         "busId": {
           "name": "busId",
-          "type": "varchar(255)",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
@@ -609,7 +622,7 @@
         },
         "boardingPointId": {
           "name": "boardingPointId",
-          "type": "varchar(255)",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         }

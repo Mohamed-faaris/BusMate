@@ -27,7 +27,7 @@ export const users = createTable(
       .notNull()
       .references(() => buses.id),
     boardingPointId: d
-      .varchar({ length: 255 })
+      .uuid()
       .notNull()
       .references(() => boardingPoints.id),
     receiptId: d.varchar({ length: 255 }).notNull(),
