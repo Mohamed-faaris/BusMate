@@ -10,6 +10,3 @@ export * from "./accounts";
 export * from "./seats";
 export * from "./acceptedRolls";
 export * from "./relations";
-
-// Export the createTable function
-export { createTable } from "./users";

@@ -1,5 +1,6 @@
 import { index } from "drizzle-orm/pg-core";
 import { boardingPoints } from "./boardingPoints";
+import { buses } from "./buses";
 import { createTable } from "./table";
 
 // BUS BOARDING POINTS
@@ -7,9 +8,12 @@ export const busBoardingPoints = createTable(
   "busBoardingPoint",
   (d) => ({
     id: d.serial().primaryKey().notNull(),
-    busId: d.uuid().notNull(),
+    busId: d
+      .uuid()
+      .notNull()
+      .references(() => buses.id),
     boardingPointId: d
-      .varchar({ length: 255 })
+      .uuid()
       .notNull()
       .references(() => boardingPoints.id),
     arrivalTime: d.timestamp({ mode: "date", withTimezone: true }),
