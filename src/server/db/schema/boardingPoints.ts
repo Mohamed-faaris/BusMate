@@ -1,6 +1,5 @@
-import { index, pgTableCreator } from "drizzle-orm/pg-core";
-
-export const createTable = pgTableCreator((name) => `BusMate_${name}`);
+import { index } from "drizzle-orm/pg-core";
+import { createTable } from "./table";
 
 // BOARDING POINTS
 export const boardingPoints = createTable("boardingPoint", (d) => ({

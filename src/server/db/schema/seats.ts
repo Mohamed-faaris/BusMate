@@ -1,8 +1,8 @@
 import { sql } from "drizzle-orm";
-import { pgTableCreator } from "drizzle-orm/pg-core";
 import { seatStatusEnum } from "./enums";
-
-export const createTable = pgTableCreator((name) => `BusMate_${name}`);
+import { createTable } from "./table";
+import { buses } from "./buses";
+import { users } from "./users";
 
 // SEATS
 export const seats = createTable("seat", (d) => ({
@@ -11,8 +11,8 @@ export const seats = createTable("seat", (d) => ({
     .primaryKey()
     .notNull()
     .$defaultFn(() => crypto.randomUUID()),
-  userId: d.varchar({ length: 255 }).notNull(),
-  busId: d.varchar({ length: 255 }).notNull(),
+  userId: d.varchar({ length: 255 }).notNull().references(()=>users.id),
+  busId: d.varchar({ length: 255 }).notNull().references(() => buses.id),
   status: seatStatusEnum("status").default("available"),
 
   createdAt: d

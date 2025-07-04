@@ -1,8 +1,9 @@
 import { sql } from "drizzle-orm";
-import { index, pgTableCreator } from "drizzle-orm/pg-core";
+import { index } from "drizzle-orm/pg-core";
 import { genderEnum } from "./enums";
-
-export const createTable = pgTableCreator((name) => `BusMate_${name}`);
+import { boardingPoints } from "./boardingPoints";
+import { buses } from "./buses";
+import { createTable } from "./table";
 
 // USERS
 export const users = createTable("user", (d) => ({
@@ -19,8 +20,14 @@ export const users = createTable("user", (d) => ({
   address: d.varchar({ length: 255 }).notNull(),
   dateOfBirth: d.timestamp({ mode: "date", withTimezone: true }).notNull(),
 
-  busId: d.varchar({ length: 255 }).notNull(),
-  boardingPointId: d.varchar({ length: 255 }).notNull(),
+  busId: d
+    .varchar({ length: 255 })
+    .notNull()
+    .references(() => buses.id),
+  boardingPointId: d
+    .varchar({ length: 255 })
+    .notNull()
+    .references(() => boardingPoints.id),
   receiptId: d.varchar({ length: 255 }).notNull(),
 
   isVerified: d.boolean().notNull().default(false),

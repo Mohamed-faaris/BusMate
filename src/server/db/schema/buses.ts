@@ -1,7 +1,6 @@
 import { sql } from "drizzle-orm";
-import { index, pgTableCreator } from "drizzle-orm/pg-core";
-
-export const createTable = pgTableCreator((name) => `BusMate_${name}`);
+import { index } from "drizzle-orm/pg-core";
+import { createTable } from "./table";
 
 // BUSES
 export const buses = createTable("bus", (d) => ({

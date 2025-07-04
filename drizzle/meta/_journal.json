@@ -8,6 +8,48 @@
       "when": 1751586063598,
       "tag": "0000_silent_black_cat",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1751626510146,
+      "tag": "0001_clever_overlord",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1751626686242,
+      "tag": "0002_square_jack_power",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1751626785067,
+      "tag": "0003_parched_celestials",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1751627016898,
+      "tag": "0004_free_texas_twister",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1751627374601,
+      "tag": "0005_charming_spitfire",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1751627474963,
+      "tag": "0006_magenta_boomer",
+      "breakpoints": true
     }
   ]
 }
