@@ -49,7 +49,7 @@ export const busesRelations = relations(buses, ({ many }) => ({
 export const busBoardingPoints = createTable("busBoardingPoint", (d) => ({
   id: d.serial().primaryKey().notNull(),
   busId: d
-    .varchar({ length: 255 })
+    .uuid()
     .notNull()
     .references(() => buses.id),
   boardingPointId: d
@@ -111,7 +111,7 @@ export const boardingPoints = createTable("boardingPoint", (d) => ({
 export const busBoardingPoints = createTable("busBoardingPoint", (d) => ({
   id: d.serial().primaryKey().notNull(),
   busId: d
-    .varchar({ length: 255 })
+    .uuid()
     .notNull()
     .references(() => buses.id),
   boardingPointId: d
@@ -150,7 +150,7 @@ export const users = createTable("user", (d) => ({
   address: d.varchar({ length: 255 }).notNull(),
   dateOfBirth: d.timestamp({ mode: "date", withTimezone: true }).notNull(),
   busId: d
-    .varchar({ length: 255 })
+    .uuid()
     .notNull()
     .references(() => buses.id),
   boardingPointId: d
@@ -254,7 +254,7 @@ export const seats = createTable("seat", (d) => ({
     .notNull()
     .references(() => users.id),
   busId: d
-    .varchar({ length: 255 })
+    .uuid()
     .notNull()
     .references(() => buses.id),
   status: seatStatusEnum("status").default("available"),

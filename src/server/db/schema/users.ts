@@ -23,7 +23,7 @@ export const users = createTable(
     dateOfBirth: d.timestamp({ mode: "date", withTimezone: true }).notNull(),
 
     busId: d
-      .varchar({ length: 255 })
+      .uuid()
       .notNull()
       .references(() => buses.id),
     boardingPointId: d

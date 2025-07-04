@@ -8,7 +8,7 @@ export const acceptedRolls = createTable(
   (d) => ({
     rollNo: d.varchar({ length: 10 }).notNull().unique(),
     boardingPointId: d
-      .varchar({ length: 255 })
+      .uuid()
       .notNull()
       .references(() => boardingPoints.id),
   }),

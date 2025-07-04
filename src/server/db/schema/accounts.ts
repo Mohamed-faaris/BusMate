@@ -7,7 +7,7 @@ export const accounts = createTable(
   "account",
   (d) => ({
     userId: d
-      .varchar({ length: 255 })
+      .uuid()
       .notNull()
       .primaryKey()
       .references(() => users.id),

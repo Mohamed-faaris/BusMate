@@ -9,17 +9,13 @@ import { users } from "./users";
 export const seats = createTable(
   "seat",
   (d) => ({
-    id: d
-      .uuid()
-      .primaryKey()
-      .notNull()
-      .$defaultFn(() => crypto.randomUUID()),
+    id: d.serial().primaryKey().notNull(),
     userId: d
-      .varchar({ length: 255 })
+      .uuid()
       .notNull()
       .references(() => users.id),
     busId: d
-      .varchar({ length: 255 })
+      .uuid()
       .notNull()
       .references(() => buses.id),
     status: seatStatusEnum("status").default("available"),

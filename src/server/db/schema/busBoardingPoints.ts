@@ -7,7 +7,7 @@ export const busBoardingPoints = createTable(
   "busBoardingPoint",
   (d) => ({
     id: d.serial().primaryKey().notNull(),
-    busId: d.varchar({ length: 255 }).notNull(),
+    busId: d.uuid().notNull(),
     boardingPointId: d
       .varchar({ length: 255 })
       .notNull()
