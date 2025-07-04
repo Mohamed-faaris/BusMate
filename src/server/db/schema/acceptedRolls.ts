@@ -13,7 +13,7 @@ export const acceptedRolls = createTable(
       .references(() => boardingPoints.id),
   }),
   (table) => [
-    index("rollNo_idx").on(table.rollNo),
-    index("boardingPointId_idx").on(table.boardingPointId),
+    index("acceptedRollsTbRollNo_idx").on(table.rollNo),
+    index("acceptedRollsTbBoardingPointId_idx").on(table.boardingPointId),
   ],
 );

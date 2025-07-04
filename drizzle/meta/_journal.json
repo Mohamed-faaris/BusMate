@@ -50,6 +50,13 @@
       "when": 1751627474963,
       "tag": "0006_magenta_boomer",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1751627954684,
+      "tag": "0007_hot_zaran",
+      "breakpoints": true
     }
   ]
 }
