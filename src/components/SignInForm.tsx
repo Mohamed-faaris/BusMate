@@ -16,9 +16,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
+import { signIn } from "@/server/auth";
 
 // Zod schema for form validation
-const signInSchema = z.object({
+export const signInSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
   password: z.string().min(6, "Password must be at least 6 characters long"),
 });
@@ -62,12 +63,12 @@ export function SignInForm({
       // Validate form data with Zod
       const validatedData = signInSchema.parse(formData);
 
-      // TODO: Replace with actual API call
-      console.log("Form submitted:", validatedData);
+      const res = await signIn("credentials", {...validatedData,redirect: false});
 
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
+      console.log(res);
+      if (!res || res.error) {
+        throw new Error(res?.error || "Sign in failed");
+      }
       // Handle successful submission here
       setButtonState("success");
 
