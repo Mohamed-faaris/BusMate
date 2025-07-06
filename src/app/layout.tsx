@@ -3,8 +3,10 @@ import "@/styles/globals.css";
 import { type Metadata } from "next";
 import { Geist } from "next/font/google";
 
-import { ThemeProvider } from "@/components/ThemeProvider";
+import { ThemeProvider } from "@/providers/ThemeProvider";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { ReactQueryProvider } from "@/providers/ReactQueryProvider";
+import { NextAuthProvider } from "@/providers/NextAuthProvider";
 
 export const metadata: Metadata = {
   title: "BusMate",
@@ -32,7 +34,9 @@ export default function RootLayout({
           <div className="absolute top-5 right-5">
             <ThemeToggle animate={true} />
           </div>
-          {children}
+          <NextAuthProvider>
+            <ReactQueryProvider>{children}</ReactQueryProvider>
+          </NextAuthProvider>
         </ThemeProvider>
       </body>
     </html>
