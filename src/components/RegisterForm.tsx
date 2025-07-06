@@ -49,7 +49,6 @@ import {
   step4Schema,
 } from "@/schemas/auth";
 
-
 export function RegisterForm({
   boardingPoints,
   className,
@@ -437,40 +436,6 @@ export function RegisterForm({
                     className="grid gap-4"
                   >
                     <div className="grid gap-2">
-                      <Label htmlFor="otp">OTP</Label>
-                      <Input
-                        id="otp"
-                        placeholder="123456"
-                        required
-                        value={formData.otp}
-                        onChange={handleChange}
-                      />
-                      <AnimatePresence>
-                        {errors.otp && (
-                          <motion.p
-                            initial={{ opacity: 0, y: -10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: 10 }}
-                            className="text-sm text-red-500"
-                          >
-                            {errors.otp}
-                          </motion.p>
-                        )}
-                      </AnimatePresence>
-                    </div>
-                  </motion.div>
-                )}
-
-                {step === 4 && (
-                  <motion.div
-                    key="step4"
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                    className="grid gap-4"
-                  >
-                    <div className="grid gap-2">
                       <Label htmlFor="password">Password</Label>
                       <Input
                         id="password"
@@ -510,6 +475,40 @@ export function RegisterForm({
                             className="text-sm text-red-500"
                           >
                             {errors.confirmPassword}
+                          </motion.p>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  </motion.div>
+                )}
+
+                {step === 4 && (
+                  <motion.div
+                    key="step4"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                    className="grid gap-4"
+                  >
+                    <div className="grid gap-2">
+                      <Label htmlFor="otp">OTP</Label>
+                      <Input
+                        id="otp"
+                        placeholder="123456"
+                        required
+                        value={formData.otp}
+                        onChange={handleChange}
+                      />
+                      <AnimatePresence>
+                        {errors.otp && (
+                          <motion.p
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 10 }}
+                            className="text-sm text-red-500"
+                          >
+                            {errors.otp}
                           </motion.p>
                         )}
                       </AnimatePresence>

@@ -19,12 +19,8 @@ export const step2Schema = z.object({
   dateOfBirth: z.string().min(1, "Date of birth is required"),
 });
 
-export const step3Schema = z.object({
-  otp: z.string().length(6, "OTP must be 6 digits"),
-});
-
-export const step4Schema = z
-  .object({
+export const step3Schema = z
+.object({
     password: z.string().min(8, "Password must be at least 8 characters"),
     confirmPassword: z.string(),
   })
@@ -33,3 +29,6 @@ export const step4Schema = z
     path: ["confirmPassword"],
   });
 
+  export const step4Schema = z.object({
+    otp: z.string().length(6, "OTP must be 6 digits"),
+  });
