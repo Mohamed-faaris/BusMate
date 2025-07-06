@@ -16,7 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { signIn } from "@/server/auth";
+import { signIn } from "next-auth/react";
 
 // Zod schema for form validation
 export const signInSchema = z.object({
@@ -63,7 +63,10 @@ export function SignInForm({
       // Validate form data with Zod
       const validatedData = signInSchema.parse(formData);
 
-      const res = await signIn("credentials", {...validatedData,redirect: false});
+      const res = await signIn("credentials", {
+        ...validatedData,
+        redirect: false,
+      });
 
       console.log(res);
       if (!res || res.error) {
@@ -253,7 +256,10 @@ export function SignInForm({
               </div>
               <div className="text-center text-sm">
                 Don&apos;t have an account?{" "}
-                <Link href="/auth/register" className="underline underline-offset-4">
+                <Link
+                  href="/auth/register"
+                  className="underline underline-offset-4"
+                >
                   Register
                 </Link>
               </div>

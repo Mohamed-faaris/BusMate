@@ -26,6 +26,7 @@ export function LogoTitle({ animate = false, duration = 0.8 }: LogoTitleProps) {
       className="text-card-foreground text-5xl font-extrabold sm:text-[5rem]"
     >
       <motion.span
+        className="text-primary"
         initial={animate ? { opacity: 0, x: -30 } : false}
         animate={animate ? { opacity: 1, x: 0 } : false}
         transition={
@@ -37,7 +38,7 @@ export function LogoTitle({ animate = false, duration = 0.8 }: LogoTitleProps) {
                 stiffness: 120,
               }
             : undefined
-        } 
+        }
       >
         Bus
       </motion.span>
