@@ -1,5 +1,8 @@
 //TODO : use zod and custom models to verify
 "use client";
+import { useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
+import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -31,19 +34,14 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { use, useState } from "react";
-import * as React from "react";
-import { motion, AnimatePresence } from "motion/react";
-import { z } from "zod";
-import { Check, ChevronsUpDown } from "lucide-react";
-import {
-  Drawer,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
 import { useMediaQuery } from "@/hooks/use-media-query";
+import {
+  step1Schema,
+  step2Schema,
+  step3Schema,
+  step4Schema,
+} from "@/schemas/auth";
 
 // Boarding point options
 const BOARDING_POINTS: { value: string; label: string }[] = [
@@ -68,34 +66,6 @@ const BOARDING_POINTS: { value: string; label: string }[] = [
   { value: "park-entrance", label: "Park Entrance" },
   { value: "bus-terminal", label: "Interstate Bus Terminal" },
 ];
-
-const step1Schema = z.object({
-  rollNo: z.string().min(1, "Roll No is required"),
-  name: z.string().min(1, "Name is required"),
-  email: z.string().email("Invalid email address"),
-  boardingPoint: z.string().min(1, "Boarding point is required"),
-});
-
-const step2Schema = z.object({
-  gender: z.string().min(1, "Gender is required"),
-  phone: z.string().min(10, "Phone number must be at least 10 digits"),
-  address: z.string().min(1, "Address is required"),
-  dateOfBirth: z.string().min(1, "Date of birth is required"),
-});
-
-const step3Schema = z.object({
-  otp: z.string().length(6, "OTP must be 6 digits"),
-});
-
-const step4Schema = z
-  .object({
-    password: z.string().min(8, "Password must be at least 8 characters"),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
-  });
 
 export function RegisterForm({
   className,
