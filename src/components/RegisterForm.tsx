@@ -1,6 +1,6 @@
 //TODO : use zod and custom models to verify
 "use client";
-import { useState } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -49,34 +49,14 @@ import {
   step4Schema,
 } from "@/schemas/auth";
 
-// Boarding point options
-const BOARDING_POINTS: { value: string; label: string }[] = [
-  { value: "central-bus-stand", label: "Central Bus Stand" },
-  { value: "railway-station", label: "Railway Station" },
-  { value: "airport", label: "Airport" },
-  { value: "city-center", label: "City Center" },
-  { value: "university-gate", label: "University Gate" },
-  { value: "shopping-mall", label: "Shopping Mall" },
-  { value: "bus-depot", label: "Bus Depot" },
-  { value: "metro-station", label: "Metro Station" },
-  { value: "government-hospital", label: "Government Hospital" },
-  { value: "private-hospital", label: "Private Hospital" },
-  { value: "college-campus", label: "College Campus" },
-  { value: "tech-park", label: "Tech Park" },
-  { value: "industrial-area", label: "Industrial Area" },
-  { value: "residential-complex", label: "Residential Complex" },
-  { value: "temple-area", label: "Temple Area" },
-  { value: "market-square", label: "Market Square" },
-  { value: "sports-complex", label: "Sports Complex" },
-  { value: "library", label: "Central Library" },
-  { value: "park-entrance", label: "Park Entrance" },
-  { value: "bus-terminal", label: "Interstate Bus Terminal" },
-];
 
 export function RegisterForm({
+  boardingPoints,
   className,
   ...props
-}: React.ComponentProps<"div">) {
+}: {
+  boardingPoints: { id: string; name: string }[];
+} & React.ComponentProps<"div">) {
   const [step, setStep] = useState(1);
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
@@ -152,10 +132,10 @@ export function RegisterForm({
       <CommandList>
         <CommandEmpty>No boarding point found.</CommandEmpty>
         <CommandGroup>
-          {BOARDING_POINTS.map((point) => (
+          {boardingPoints.map((point) => (
             <CommandItem
-              key={point.value}
-              value={point.value}
+              key={point.id}
+              value={point.id}
               onSelect={(currentValue) => {
                 setFormData((prev) => ({
                   ...prev,
@@ -168,12 +148,12 @@ export function RegisterForm({
               <Check
                 className={cn(
                   "mr-2 h-4 w-4",
-                  formData.boardingPoint === point.value
+                  formData.boardingPoint === point.id
                     ? "opacity-100"
                     : "opacity-0",
                 )}
               />
-              {point.label}
+              {point.name}
             </CommandItem>
           ))}
         </CommandGroup>
@@ -282,10 +262,10 @@ export function RegisterForm({
                               className="w-full justify-between"
                             >
                               {formData.boardingPoint
-                                ? BOARDING_POINTS.find(
+                                ? boardingPoints.find(
                                     (point) =>
-                                      point.value === formData.boardingPoint,
-                                  )?.label
+                                      point.id === formData.boardingPoint,
+                                  )?.name
                                 : "Select boarding point..."}
                               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                             </Button>
@@ -304,10 +284,10 @@ export function RegisterForm({
                               className="w-full justify-between"
                             >
                               {formData.boardingPoint
-                                ? BOARDING_POINTS.find(
+                                ? boardingPoints.find(
                                     (point) =>
-                                      point.value === formData.boardingPoint,
-                                  )?.label
+                                      point.id === formData.boardingPoint,
+                                  )?.name
                                 : "Select boarding point..."}
                               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                             </Button>
