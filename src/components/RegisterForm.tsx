@@ -87,10 +87,18 @@ export function RegisterForm({
       fetch("/api/register/send", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: formData.email, otp: formData.otp }),
+        body: JSON.stringify({
+          email: formData.email,
+          rollNo: formData.rollNo,
+        }),
       }).then(async (res) => {
         const data = await res.json();
-        if (!res.ok) throw new Error(data.error || "Failed to send OTP");
+        if (!res.ok) {
+          // Throw the entire data object to preserve buttonMessage
+          const error = new Error(data.error || "Failed to send OTP");
+          (error as any).data = data;
+          throw error;
+        }
         return data;
       }),
   });
@@ -573,19 +581,25 @@ export function RegisterForm({
                       <Button
                         type="button"
                         variant="outline"
-                        disabled={resendOtpMutation.isLoading}
+                        disabled={
+                          resendOtpMutation.isPending ||
+                          resendOtpMutation.isSuccess
+                        }
                         onClick={handleResendOtp}
-                        className="text-sm"
+                        className="text-sm w-full "
                       >
-                        {resendOtpMutation.isLoading && (
+                        {resendOtpMutation.isPending && (
                           <>
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                             Resending...
                           </>
                         )}
-                        {resendOtpMutation.isError && "Error"}
+                        {resendOtpMutation.isError &&
+                          ((resendOtpMutation.error as any)?.data
+                            ?.buttonMessage ||
+                            "Error")}
                         {resendOtpMutation.isSuccess && "OTP Sent"}
-                        {!resendOtpMutation.isLoading &&
+                        {!resendOtpMutation.isPending &&
                           !resendOtpMutation.isSuccess &&
                           !resendOtpMutation.isError &&
                           "Resend OTP"}
@@ -646,7 +660,7 @@ export function RegisterForm({
                         type="button"
                         onClick={handleVerifyOtp}
                         disabled={
-                          verifyOtpMutation.isLoading ||
+                          verifyOtpMutation.isPending ||
                           verifyOtpMutation.isSuccess
                         }
                         className={cn(
@@ -667,7 +681,7 @@ export function RegisterForm({
                             className="flex items-center justify-center"
                           >
                             {verifyOtpMutation.isIdle && "Verify OTP"}
-                            {verifyOtpMutation.isLoading && (
+                            {verifyOtpMutation.isPending && (
                               <>
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                                 Verifying...
