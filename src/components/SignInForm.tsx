@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { z } from "zod";
 import { motion, AnimatePresence } from "motion/react";
+import { motionConfig } from "@/lib/motion";
 import { Loader2, Check, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -150,17 +151,20 @@ export function SignInForm({
         <CardContent>
           <form onSubmit={handleSubmit}>
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              variants={motionConfig.variants.step}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              transition={motionConfig.transition}
               className="grid gap-6"
             >
               <AnimatePresence>
                 {errors.general && (
                   <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
+                    variants={motionConfig.variants.error}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
                     className="rounded bg-red-50 p-2 text-center text-sm text-red-600"
                   >
                     {errors.general}
@@ -183,9 +187,10 @@ export function SignInForm({
                   <AnimatePresence>
                     {errors.email && (
                       <motion.p
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 10 }}
+                        variants={motionConfig.variants.error}
+                        initial="initial"
+                        animate="animate"
+                        exit="exit"
                         className="text-sm text-red-500"
                       >
                         {errors.email}
@@ -215,9 +220,10 @@ export function SignInForm({
                   <AnimatePresence>
                     {errors.password && (
                       <motion.p
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 10 }}
+                        variants={motionConfig.variants.error}
+                        initial="initial"
+                        animate="animate"
+                        exit="exit"
                         className="text-sm text-red-500"
                       >
                         {errors.password}

@@ -1,7 +1,9 @@
 //TODO : use zod and custom models to verify
 "use client";
+
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import { motionConfig } from "@/lib/motion";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -176,10 +178,11 @@ export function RegisterForm({
                 {step === 1 && (
                   <motion.div
                     key="step1"
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                    variants={motionConfig.variants.step}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                    transition={motionConfig.transition}
                     className="grid gap-4"
                   >
                     <div className="grid gap-2">
@@ -320,10 +323,11 @@ export function RegisterForm({
                 {step === 2 && (
                   <motion.div
                     key="step2"
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                    variants={motionConfig.variants.step}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                    transition={motionConfig.transition}
                     className="grid gap-4"
                   >
                     <div className="grid gap-2">
@@ -429,10 +433,11 @@ export function RegisterForm({
                 {step === 3 && (
                   <motion.div
                     key="step3"
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                    variants={motionConfig.variants.step}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                    transition={motionConfig.transition}
                     className="grid gap-4"
                   >
                     <div className="grid gap-2">
@@ -485,10 +490,11 @@ export function RegisterForm({
                 {step === 4 && (
                   <motion.div
                     key="step4"
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                    variants={motionConfig.variants.step}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                    transition={motionConfig.transition}
                     className="grid gap-4"
                   >
                     <div className="grid gap-2">
@@ -582,9 +588,10 @@ export function RegisterForm({
         </CardContent>
       </Card>
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.5 }}
+        variants={motionConfig.variants.fadeUp}
+        initial="initial"
+        animate="animate"
+        exit="exit"
         className="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4"
       >
         By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
