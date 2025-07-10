@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
           error: "Invalid OTP",
           message: "The OTP you entered is incorrect",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
           error: "User already exists",
           message: "A user with this email already exists",
         },
-        { status: 409 }
+        { status: 409 },
       );
     }
 
@@ -80,7 +80,7 @@ export async function POST(request: NextRequest) {
           error: "Roll number already exists",
           message: "A user with this roll number already exists",
         },
-        { status: 409 }
+        { status: 409 },
       );
     }
 
@@ -97,7 +97,7 @@ export async function POST(request: NextRequest) {
           error: "Invalid boarding point",
           message: "The selected boarding point does not exist",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -111,7 +111,7 @@ export async function POST(request: NextRequest) {
           error: "No buses available",
           message: "No buses are currently available for registration",
         },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -161,7 +161,7 @@ export async function POST(request: NextRequest) {
           receiptId: result.receiptId,
         },
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
     console.error("Registration error:", error);
@@ -170,7 +170,7 @@ export async function POST(request: NextRequest) {
         error: "Internal server error",
         message: "An error occurred during registration",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
