@@ -16,6 +16,13 @@ export const registrationSchema = z.object({
   password: z.string().min(8, "Password must be at least 8 characters"),
 });
 
+// Send OTP API
+export const sendSchema = z.object({
+  email: z.string().email("Please enter a valid email address"),
+  rollNo: z.string().min(1, "Roll No is required"),
+});
+
+
 export const signInSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
   password: z.string().min(6, "Password must be at least 6 characters long"),
