@@ -45,6 +45,10 @@ export async function POST(request: NextRequest) {
       password,
     } = validationResult.data;
 
+    // Normalize fields to lowercase
+    const normalizedEmail = email.toLowerCase();
+    const normalizedRollNo = rollNo.toLowerCase();
+
     // Check if OTP is correct
     if (otp !== "123123") {
       return NextResponse.json(
@@ -61,7 +65,7 @@ export async function POST(request: NextRequest) {
     const existingUser = await db
       .select()
       .from(users)
-      .where(eq(users.email, email))
+      .where(eq(users.email, normalizedEmail))
       .limit(1);
 
     if (existingUser.length > 0) {
@@ -79,7 +83,7 @@ export async function POST(request: NextRequest) {
     const existingRollNo = await db
       .select()
       .from(users)
-      .where(eq(users.rollNo, rollNo))
+      .where(eq(users.rollNo, normalizedRollNo))
       .limit(1);
 
     if (existingRollNo.length > 0) {
@@ -123,9 +127,9 @@ export async function POST(request: NextRequest) {
       const newUsers = await tx
         .insert(users)
         .values({
-          rollNo,
+          rollNo: normalizedRollNo,
           name,
-          email,
+          email: normalizedEmail,
           gender: gender as "male" | "female" | "other",
           phone,
           address,
