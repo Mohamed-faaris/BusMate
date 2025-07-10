@@ -24,13 +24,12 @@ export const users = createTable(
 
     busId: d
       .uuid()
-      .notNull()
       .references(() => buses.id),
+
     boardingPointId: d
       .uuid()
-      .notNull()
       .references(() => boardingPoints.id),
-    receiptId: d.varchar({ length: 255 }).notNull(),
+    receiptId: d.varchar({ length: 255 }),
 
     isVerified: d.boolean().notNull().default(false),
     isAdmin: d.boolean().notNull().default(false),
