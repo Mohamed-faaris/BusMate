@@ -50,6 +50,7 @@ import {
   step3Schema,
   step4Schema,
 } from "@/schemas/auth";
+import { useMutation } from "@tanstack/react-query";
 
 export function RegisterForm({
   boardingPoints,
@@ -76,10 +77,35 @@ export function RegisterForm({
     confirmPassword: "",
   });
   const [errors, setErrors] = useState<any>({});
-  const [skipValidation, setSkipValidation] = useState(false);
 
   // Determine if running in development environment
   const isDev = process.env.NODE_ENV === "development";
+  const [skipValidation, setSkipValidation] = useState(isDev);
+  // React Query mutations for OTP verify and resend via API routes
+  const resendOtpMutation = useMutation({
+    mutationFn: () =>
+      fetch("/api/register/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: formData.email }),
+      }).then(async (res) => {
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Failed to send OTP");
+        return data;
+      }),
+  });
+  const verifyOtpMutation = useMutation({
+    mutationFn: (otp: string) =>
+      fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ otp }),
+      }).then(async (res) => {
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Invalid OTP");
+        return data;
+      }),
+  });
 
   const handleNext = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -117,19 +143,16 @@ export function RegisterForm({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    // Keep original submit logic (for future use). Currently not triggered for OTP step.
+    console.log("Form submit invoked", formData);
+  };
 
-    // Validate final step only in development unless skipping validation
-    if (isDev && !skipValidation) {
-      const result = step4Schema.safeParse(formData);
-      if (!result.success) {
-        setErrors(result.error.formErrors.fieldErrors);
-        return;
-      }
-    } else {
-      setErrors({});
-    }
-    // TODO: Handle form submission (send data to server)
-    console.log("Form submitted:", formData);
+  const handleVerifyOtp = () => {
+    verifyOtpMutation.mutate(formData.otp);
+  };
+
+  const handleResendOtp = () => {
+    resendOtpMutation.mutate();
   };
 
   // Reusable combobox content component
@@ -537,13 +560,31 @@ export function RegisterForm({
                         )}
                       </AnimatePresence>
                     </div>
+                    {/* Resend OTP button */}
+                    <div className="flex justify-center">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        disabled={resendOtpMutation.isLoading}
+                        onClick={handleResendOtp}
+                        className="text-sm"
+                      >
+                        {resendOtpMutation.isLoading && "Resending..."}
+                        {resendOtpMutation.isError && "Error"}
+                        {resendOtpMutation.isSuccess && "OTP Sent"}
+                        {!resendOtpMutation.isLoading &&
+                          !resendOtpMutation.isSuccess &&
+                          !resendOtpMutation.isError &&
+                          "Resend OTP"}
+                      </Button>
+                    </div>
                   </motion.div>
                 )}
               </AnimatePresence>
 
               <div className="flex justify-between gap-2">
                 <AnimatePresence>
-                  {step > 1 && (
+                  {step > 1 && step < 4 && (
                     <motion.div
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
@@ -588,8 +629,36 @@ export function RegisterForm({
                       transition={{ duration: 0.2 }}
                       className="flex-1"
                     >
-                      <Button type="submit" className="w-full">
-                        Create an account
+                      <Button
+                        type="button"
+                        onClick={handleVerifyOtp}
+                        disabled={
+                          verifyOtpMutation.isLoading ||
+                          verifyOtpMutation.isSuccess
+                        }
+                        className={cn(
+                          "w-full transition-all duration-300",
+                          verifyOtpMutation.isSuccess &&
+                            "bg-green-600 hover:bg-green-700",
+                          verifyOtpMutation.isError &&
+                            "bg-red-600 hover:bg-red-700",
+                        )}
+                      >
+                        <AnimatePresence mode="wait">
+                          <motion.span
+                            key={verifyOtpMutation.status}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            transition={{ duration: 0.2 }}
+                            className="flex items-center justify-center"
+                          >
+                            {verifyOtpMutation.isIdle && "Verify OTP"}
+                            {verifyOtpMutation.isLoading && "Verifying..."}
+                            {verifyOtpMutation.isSuccess && "Success!"}
+                            {verifyOtpMutation.isError && "Error! Try Again"}
+                          </motion.span>
+                        </AnimatePresence>
                       </Button>
                     </motion.div>
                   )}
