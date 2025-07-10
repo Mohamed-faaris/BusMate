@@ -13,9 +13,9 @@ export async function POST(request: NextRequest) {
     // Validate the input
     const validationResult = sendSchema.safeParse(body);
 
-    if(isDev && !validationResult.success) {
-        console.error("Validation error:", validationResult.error);
-    }
+    // if(isDev && !validationResult.success) {
+    //     console.error("Validation error:", validationResult.error.issues);
+    // }
 
     if (!validationResult.success) {
       return NextResponse.json(
