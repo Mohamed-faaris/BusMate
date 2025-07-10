@@ -1,6 +1,6 @@
 import { isDev } from "@/lib/utils";
 import { NextRequest, NextResponse } from "next/server";
-import { sendSchema } from "@/lib/schemas/auth";
+import { sendSchema } from "@/schemas/auth";
 import { db } from "@/server/db";
 import { users } from "@/server/db/schema/users";
 import { eq, or } from "drizzle-orm";
@@ -12,6 +12,10 @@ export async function POST(request: NextRequest) {
 
     // Validate the input
     const validationResult = sendSchema.safeParse(body);
+
+    if(isDev && !validationResult.success) {
+        console.error("Validation error:", validationResult.error);
+    }
 
     if (!validationResult.success) {
       return NextResponse.json(

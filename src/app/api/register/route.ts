@@ -7,6 +7,7 @@ import { boardingPoints } from "@/server/db/schema/boardingPoints";
 import { buses } from "@/server/db/schema/buses";
 import { eq } from "drizzle-orm";
 import bcrypt from "bcryptjs";
+import { isDev } from "@/lib/utils";
 
 export async function POST(request: NextRequest) {
   try {
@@ -16,13 +17,18 @@ export async function POST(request: NextRequest) {
     // Validate the input
     const validationResult = registrationSchema.safeParse(body);
 
+    if (isDev && !validationResult.success) {
+      console.error("Validation error:", validationResult.error.issues);
+    }
+
     if (!validationResult.success) {
       return NextResponse.json(
         {
           error: "Invalid input data",
           details: validationResult.error.errors,
+          buttonMessage: "Fix form errors",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -45,6 +51,7 @@ export async function POST(request: NextRequest) {
         {
           error: "Invalid OTP",
           message: "The OTP you entered is incorrect",
+          buttonMessage: "Invalid OTP",
         },
         { status: 400 },
       );
@@ -62,6 +69,7 @@ export async function POST(request: NextRequest) {
         {
           error: "User already exists",
           message: "A user with this email already exists",
+          buttonMessage: "Email already taken",
         },
         { status: 409 },
       );
@@ -79,6 +87,7 @@ export async function POST(request: NextRequest) {
         {
           error: "Roll number already exists",
           message: "A user with this roll number already exists",
+          buttonMessage: "Roll number taken",
         },
         { status: 409 },
       );
@@ -91,29 +100,19 @@ export async function POST(request: NextRequest) {
       .where(eq(boardingPoints.name, boardingPoint))
       .limit(1);
 
-    if (boardingPointResult.length === 0) {
-      return NextResponse.json(
-        {
-          error: "Invalid boarding point",
-          message: "The selected boarding point does not exist",
-        },
-        { status: 400 },
-      );
-    }
+    // if (boardingPointResult.length === 0) {
+    //   return NextResponse.json(
+    //     {
+    //       error: "Invalid boarding point",
+    //       message: "The selected boarding point does not exist",
+    //       buttonMessage: "Invalid stop selected",
+    //     },
+    //     { status: 400 },
+    //   );
+    // }
 
     // For now, we'll assign the first available bus
     // In a real application, this would be based on boarding point and other criteria
-    const availableBuses = await db.select().from(buses).limit(1);
-
-    if (availableBuses.length === 0) {
-      return NextResponse.json(
-        {
-          error: "No buses available",
-          message: "No buses are currently available for registration",
-        },
-        { status: 500 },
-      );
-    }
 
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 12);
@@ -131,10 +130,9 @@ export async function POST(request: NextRequest) {
           phone,
           address,
           dateOfBirth: new Date(dateOfBirth),
-          boardingPointId: boardingPointResult[0]!.id,
-          busId: availableBuses[0]!.id,
-          receiptId: `RCP-${Date.now()}-${rollNo}`, // Generate a simple receipt ID
-          isVerified: true, // Since OTP is verified
+          boardingPointId: null,
+          busId: null,
+          receiptId: null, // Generate a simple receipt ID
         })
         .returning();
 
@@ -169,6 +167,7 @@ export async function POST(request: NextRequest) {
       {
         error: "Internal server error",
         message: "An error occurred during registration",
+        buttonMessage: "Server error",
       },
       { status: 500 },
     );
