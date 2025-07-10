@@ -22,6 +22,7 @@ export async function POST(request: NextRequest) {
         {
           error: "Invalid input data",
           details: validationResult.error.errors,
+          buttonMessage: "Fix input data",
         },
         { status: 400 },
       );
@@ -58,6 +59,7 @@ export async function POST(request: NextRequest) {
                 ? "both"
                 : "email"
               : "rollNo",
+          buttonMessage: `${conflictField} already exists`,
         },
         { status: 409 },
       );
@@ -70,13 +72,14 @@ export async function POST(request: NextRequest) {
         message: "Email and Roll No are valid and available",
         email: email,
         rollNo: rollNo,
+        buttonMessage: "Continue",
       },
       { status: 200 },
     );
   } catch (error) {
     console.error("Send validation error:", error);
     return NextResponse.json(
-      { error: "Invalid request format" },
+      { error: "Invalid request format", buttonMessage: "Invalid request" },
       { status: 400 },
     );
   }

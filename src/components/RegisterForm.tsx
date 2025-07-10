@@ -4,7 +4,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { motionConfig } from "@/lib/motion";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { Check, ChevronsUpDown, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -87,22 +87,30 @@ export function RegisterForm({
       fetch("/api/register/send", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: formData.email }),
+        body: JSON.stringify({ email: formData.email, otp: formData.otp }),
       }).then(async (res) => {
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || "Failed to send OTP");
         return data;
       }),
   });
+
   const verifyOtpMutation = useMutation({
-    mutationFn: (otp: string) =>
+    mutationFn: () =>
       fetch("/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ otp }),
+        body: JSON.stringify(
+          (({ confirmPassword, ...rest }) => rest)(formData),
+        ),
       }).then(async (res) => {
         const data = await res.json();
-        if (!res.ok) throw new Error(data.error || "Invalid OTP");
+        if (!res.ok) {
+          // Throw the entire data object to preserve buttonMessage
+          const error = new Error(data.error || "Invalid OTP");
+          (error as any).data = data;
+          throw error;
+        }
         return data;
       }),
   });
@@ -569,7 +577,12 @@ export function RegisterForm({
                         onClick={handleResendOtp}
                         className="text-sm"
                       >
-                        {resendOtpMutation.isLoading && "Resending..."}
+                        {resendOtpMutation.isLoading && (
+                          <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Resending...
+                          </>
+                        )}
                         {resendOtpMutation.isError && "Error"}
                         {resendOtpMutation.isSuccess && "OTP Sent"}
                         {!resendOtpMutation.isLoading &&
@@ -654,9 +667,17 @@ export function RegisterForm({
                             className="flex items-center justify-center"
                           >
                             {verifyOtpMutation.isIdle && "Verify OTP"}
-                            {verifyOtpMutation.isLoading && "Verifying..."}
+                            {verifyOtpMutation.isLoading && (
+                              <>
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                Verifying...
+                              </>
+                            )}
                             {verifyOtpMutation.isSuccess && "Success!"}
-                            {verifyOtpMutation.isError && "Error! Try Again"}
+                            {verifyOtpMutation.isError &&
+                              ((verifyOtpMutation.error as any)?.data
+                                ?.buttonMessage ||
+                                "Error! Try Again")}
                           </motion.span>
                         </AnimatePresence>
                       </Button>
