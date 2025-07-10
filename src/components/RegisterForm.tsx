@@ -76,6 +76,10 @@ export function RegisterForm({
     confirmPassword: "",
   });
   const [errors, setErrors] = useState<any>({});
+  const [skipValidation, setSkipValidation] = useState(false);
+
+  // Determine if running in development environment
+  const isDev = process.env.NODE_ENV === "development";
 
   const handleNext = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -84,7 +88,7 @@ export function RegisterForm({
     if (step === 2) schema = step2Schema;
     if (step === 3) schema = step3Schema;
 
-    if (schema) {
+    if (isDev && schema && !skipValidation) {
       const result = schema.safeParse(formData);
       if (!result.success) {
         setErrors(result.error.formErrors.fieldErrors);
@@ -114,14 +118,16 @@ export function RegisterForm({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validate final step
-    const result = step4Schema.safeParse(formData);
-    if (!result.success) {
-      setErrors(result.error.formErrors.fieldErrors);
-      return;
+    // Validate final step only in development unless skipping validation
+    if (isDev && !skipValidation) {
+      const result = step4Schema.safeParse(formData);
+      if (!result.success) {
+        setErrors(result.error.formErrors.fieldErrors);
+        return;
+      }
+    } else {
+      setErrors({});
     }
-
-    setErrors({});
     // TODO: Handle form submission (send data to server)
     console.log("Form submitted:", formData);
   };
@@ -173,6 +179,18 @@ export function RegisterForm({
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit}>
+            {/* Toggle to skip Zod validation */}
+            <div className="mb-4 flex items-center gap-2">
+              <input
+                type="checkbox"
+                id="skipValidation"
+                checked={skipValidation}
+                onChange={() => setSkipValidation((prev) => !prev)}
+                title="Skip Validation"
+                aria-label="Skip Validation"
+              />
+              <Label htmlFor="skipValidation">Skip Validation</Label>
+            </div>
             <div className="grid gap-4">
               <AnimatePresence mode="wait">
                 {step === 1 && (
