@@ -14,7 +14,11 @@ export default function LeftSeatColumns({
   ...divProps
 }: LeftSeatColumnsProps) {
   return (
-    <div id={id} className={cn(className)} {...divProps}>
+    <div
+      id={id}
+      className={cn("flex flex-grow flex-col justify-around", className)}
+      {...divProps}
+    >
       {Array.from({ length: noOfRows }).map((_, rowIndex) => (
         <div key={rowIndex} className="flex">
           {Array.from({ length: noOfSeatsInRow }).map((_, seatIndex) => (

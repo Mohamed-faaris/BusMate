@@ -17,7 +17,7 @@ export default function RightSeatColumns({
   return (
     <div
       id={id}
-      className={cn("justify-items-around flex-grow", className)}
+      className={cn("flex flex-col justify-around flex-grow", className)}
       {...divProps}
     >
       {Array.from({ length: noOfRows }).map((_, rowIndex) => (
