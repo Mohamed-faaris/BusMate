@@ -3,7 +3,7 @@ type SeatProps = {
 }
 
 export default function Seat({ state = "available" }: SeatProps) {
-    let colorClass;
+    let colorClass = "";
     if(state === "selected") {
         colorClass = "bg-selected";
     }
