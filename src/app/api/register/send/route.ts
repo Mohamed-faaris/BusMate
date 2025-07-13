@@ -38,12 +38,7 @@ export async function POST(request: NextRequest) {
     const existingUser = await db
       .select()
       .from(users)
-      .where(
-        or(
-          eq(users.email, normalizedEmail),
-          eq(users.rollNo, normalizedRollNo),
-        ),
-      )
+      .where(or(eq(users.email, email), eq(users.rollNo, rollNo)))
       .limit(1);
 
     if (existingUser.length > 0) {
