@@ -19,8 +19,8 @@ export default function BusWrapper() {
           <Door />
           <LeftSeatColumns />
         </div>
-        <div id="middle" className="w-2"></div>
-        <div id="right">
+        <div id="middle" className="flex-grow"></div>
+        <div id="right" className="flex flex-col">
           <Driver />
           <RightSeatColumns />
         </div>

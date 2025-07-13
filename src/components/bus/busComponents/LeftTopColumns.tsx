@@ -1,4 +1,5 @@
 import React from "react";
+import { cn } from "@/lib/utils";
 import Seat from "../seats/Seat";
 
 interface LeftTopSeatColumnsProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -13,7 +14,7 @@ export default function LeftTopSeatColumns({
   ...divProps
 }: LeftTopSeatColumnsProps) {
   return (
-    <div id={id} className={className} {...divProps}>
+    <div id={id} className={cn(className)} {...divProps}>
       {Array.from({ length: noOfRows }).map((_, rowIndex) => (
         <div key={rowIndex} className="flex">
           {Array.from({ length: noOfSeatsInRow }).map((_, seatIndex) => (
