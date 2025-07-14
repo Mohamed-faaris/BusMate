@@ -9,12 +9,11 @@ type BusWrapperProps = {
   busId: string;
 };
 
-
 export default function BusWrapper() {
   return (
     <div id="bus">
       <div className="flex">
-        <div id="left">
+        <div id="left" className="flex flex-col">
           <LeftTopSeatColumns />
           <Door />
           <LeftSeatColumns />
@@ -27,7 +26,7 @@ export default function BusWrapper() {
         </div>
         <div id="right" className="flex flex-col">
           <Driver />
-          <RightSeatColumns />
+          <RightSeatColumns noOfRows={13} />
         </div>
       </div>
       <BackSeats />
