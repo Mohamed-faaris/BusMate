@@ -78,9 +78,7 @@ export function RegisterForm({
   });
   const [errors, setErrors] = useState<any>({});
 
-  // Determine if running in development environment
-  const isDev = process.env.NODE_ENV === "development";
-  const [skipValidation, setSkipValidation] = useState(isDev);
+  // Zod validation will run on each step change
   // React Query mutations for OTP verify and resend via API routes
   const resendOtpMutation = useMutation({
     mutationFn: () =>
@@ -130,7 +128,7 @@ export function RegisterForm({
     if (step === 2) schema = step2Schema;
     if (step === 3) schema = step3Schema;
 
-    if (isDev && schema && !skipValidation) {
+    if (schema) {
       const result = schema.safeParse(formData);
       if (!result.success) {
         setErrors(result.error.formErrors.fieldErrors);
@@ -218,18 +216,6 @@ export function RegisterForm({
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit}>
-            {/* Toggle to skip Zod validation */}
-            <div className="mb-4 flex items-center gap-2">
-              <input
-                type="checkbox"
-                id="skipValidation"
-                checked={skipValidation}
-                onChange={() => setSkipValidation((prev) => !prev)}
-                title="Skip Validation"
-                aria-label="Skip Validation"
-              />
-              <Label htmlFor="skipValidation">Skip Validation</Label>
-            </div>
             <div className="grid gap-4">
               <AnimatePresence mode="wait">
                 {step === 1 && (
@@ -586,7 +572,7 @@ export function RegisterForm({
                           resendOtpMutation.isSuccess
                         }
                         onClick={handleResendOtp}
-                        className="text-sm w-full "
+                        className="w-full text-sm"
                       >
                         {resendOtpMutation.isPending && (
                           <>
