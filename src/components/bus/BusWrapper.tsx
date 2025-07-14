@@ -12,7 +12,7 @@ type BusWrapperProps = {
 
 export default function BusWrapper() {
   return (
-    <Card id="bus" className="rounded-lg p-4 gap-0">
+    <Card id="bus" className="gap-0 rounded-lg p-4">
       <div className="flex">
         <div id="left" className="flex flex-col">
           <LeftTopSeatColumns />
@@ -21,13 +21,13 @@ export default function BusWrapper() {
         </div>
         <div
           id="middle"
-          className="flex-grow text-center [letter-spacing:1em] [text-orientation:upright] [writing-mode:vertical-rl]"
+          className="text-secondary flex flex-grow flex-col items-center justify-center [letter-spacing:1em] [text-orientation:upright] [writing-mode:vertical-rl]"
         >
-          {/* AISLE */}
+          AISLE
         </div>
         <div id="right" className="flex flex-col">
           <Driver />
-          <RightSeatColumns noOfRows={13} />
+          <RightSeatColumns noOfRows={10} />
         </div>
       </div>
       <BackSeats />
