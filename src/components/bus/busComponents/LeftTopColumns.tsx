@@ -5,10 +5,13 @@ import Seat from "../seats/Seat";
 interface LeftTopSeatColumnsProps extends React.HTMLAttributes<HTMLDivElement> {
   noOfSeatsInRow?: number;
   noOfRows?: number;
+  /** Optional height in px */
+  height?: number;
 }
 export default function LeftTopSeatColumns({
   noOfSeatsInRow = 2,
   noOfRows = 3,
+  height,
   id,
   className,
   ...divProps
@@ -16,6 +19,7 @@ export default function LeftTopSeatColumns({
   return (
     <div
       id={id}
+      style={{ height } }
       className={cn("flex flex-grow flex-col justify-around", className)}
       {...divProps}
     >

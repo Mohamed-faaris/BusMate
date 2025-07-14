@@ -46,6 +46,8 @@ export default tseslint.config(
         "error",
         { drizzleObjectName: ["db", "ctx.db"] },
       ],
+      // allow inline styles for dynamic height
+      "react/no-inline-styles": "off",
     },
   },
   {

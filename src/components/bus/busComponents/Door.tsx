@@ -1,5 +1,10 @@
-export default function Door() {
+export default function Door({height = 80}: { height?: number }) {
   return (
-    <div className="border-accent hover:bg-secondary h-20 w-20 rounded-md border flex flex-col justify-center text-center">Door</div>
+    <div
+      style={{height}}
+      className="border-accent hover:bg-secondary w-full rounded-md border flex items-center justify-center text-center"
+      >
+      Door
+    </div>
   );
 }

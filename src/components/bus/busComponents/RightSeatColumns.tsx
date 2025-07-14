@@ -6,10 +6,13 @@ import SeatsRow from "../seats/SeatsRow";
 interface RightSeatColumnsProps extends React.HTMLAttributes<HTMLDivElement> {
   noOfSeatsInRow?: number;
   noOfRows?: number;
+  /** Optional height in px */
+  height?: number;
 }
 export default function RightSeatColumns({
   noOfSeatsInRow = 3,
   noOfRows = 10,
+  height,
   id,
   className,
   ...divProps
@@ -17,6 +20,7 @@ export default function RightSeatColumns({
   return (
     <div
       id={id}
+      style={{height} }
       className={cn("flex flex-col justify-around flex-grow", className)}
       {...divProps}
     >

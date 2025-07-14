@@ -1,3 +1,4 @@
+import { Card } from "../ui/card";
 import BackSeats from "./busComponents/BackSeats";
 import Door from "./busComponents/Door";
 import Driver from "./busComponents/Driver";
@@ -11,7 +12,7 @@ type BusWrapperProps = {
 
 export default function BusWrapper() {
   return (
-    <div id="bus">
+    <Card id="bus" className="rounded-lg p-4 gap-0">
       <div className="flex">
         <div id="left" className="flex flex-col">
           <LeftTopSeatColumns />
@@ -30,6 +31,6 @@ export default function BusWrapper() {
         </div>
       </div>
       <BackSeats />
-    </div>
+    </Card>
   );
 }
