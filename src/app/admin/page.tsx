@@ -10,6 +10,11 @@ export default function AdminPage() {
             Manage Boarding Points
           </button>
         </Link>
+        <Link href="/admin/bus">
+          <button className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">
+            Manage Buses
+          </button>
+        </Link>
       </div>
     </div>
   );

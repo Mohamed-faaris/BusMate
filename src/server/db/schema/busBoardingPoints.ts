@@ -16,7 +16,7 @@ export const busBoardingPoints = createTable(
       .uuid()
       .notNull()
       .references(() => boardingPoints.id),
-    arrivalTime: d.timestamp({ mode: "date", withTimezone: true }),
+    arrivalTime: d.time().notNull(),
   }),
   (table) => [
     index("BPbusId_idx").on(table.busId),
