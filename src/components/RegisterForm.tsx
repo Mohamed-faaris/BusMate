@@ -7,6 +7,7 @@ import { motionConfig } from "@/lib/motion";
 import { Check, ChevronsUpDown, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import type { BoardingPoint } from "@/app/api/busRoutes/route";
 import {
   Card,
   CardContent,
@@ -57,7 +58,7 @@ export function RegisterForm({
   className,
   ...props
 }: {
-  boardingPoints: { id: string; name: string }[];
+  boardingPoints: BoardingPoint[];
 } & React.ComponentProps<"div">) {
   const [step, setStep] = useState(1);
   const [open, setOpen] = useState(false);

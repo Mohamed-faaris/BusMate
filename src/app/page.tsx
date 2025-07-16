@@ -64,7 +64,7 @@ export default function HomePage() {
           </div>
         )}
         <div className="flex justify-between">
-          <Link href={"/auth/register"} >
+          <Link href={"/auth/register"}>
             <Button>register</Button>
           </Link>
           <Link href={"/auth/signIn"}>
@@ -72,6 +72,9 @@ export default function HomePage() {
           </Link>
           <Link href={"/dashboard/booking"}>
             <Button>Booking</Button>
+          </Link>
+          <Link href={"/admin"}>
+            <Button>Admin</Button>
           </Link>
           <p>{/* {JSON.stringify(session)} */}</p>
         </div>
