@@ -1,6 +1,7 @@
 "use client";
 import { LogoTitle } from "@/components/LogoTitle";
 import { Button } from "@/components/ui/button";
+import UserDetails from "@/components/UserDetails";
 import { auth } from "@/server/auth";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -76,8 +77,8 @@ export default function HomePage() {
           <Link href={"/admin"}>
             <Button>Admin</Button>
           </Link>
-          <p>{/* {JSON.stringify(session)} */}</p>
         </div>
+          <UserDetails />
       </div>
     </main>
   );

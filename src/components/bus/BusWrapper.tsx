@@ -10,6 +10,38 @@ type BusWrapperProps = {
   busId: string;
 };
 
+type BusModelProperties = {
+  leftTopSeatColumns?:{
+    noOfRows ?: number;
+    numberOfSeats?: number;
+    height?: string;
+    startingSeatNumbers?: number[];
+  };
+  door: {
+    height?: string;
+  };
+  leftSeatColumns: {
+    noOfRows?: number;
+    numberOfSeats?: number;
+    height?: string;
+    startingSeatNumbers?: number[];
+  };
+  driver?: {
+    height?: string;
+  };
+  rightSeatColumns: {
+    noOfRows?: number;
+    numberOfSeats?: number;
+    height?: string;
+    startingSeatNumbers?: number[];
+  };
+  backSeats: {
+    noOfRows?: number;
+    numberOfSeats?: number;
+    height?: string;
+  };
+}
+
 export default function BusWrapper() {
   return (
     <Card id="bus" className="gap-0 rounded-lg p-4">
