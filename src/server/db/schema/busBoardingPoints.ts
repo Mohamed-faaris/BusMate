@@ -1,4 +1,4 @@
-import { index } from "drizzle-orm/pg-core";
+import { index, time } from "drizzle-orm/pg-core";
 import { boardingPoints } from "./boardingPoints";
 import { buses } from "./buses";
 import { createTable } from "./table";
@@ -16,7 +16,7 @@ export const busBoardingPoints = createTable(
       .uuid()
       .notNull()
       .references(() => boardingPoints.id),
-    arrivalTime: d.time().notNull(),
+    arrivalTime: time("arrivalTime").notNull(),
   }),
   (table) => [
     index("BPbusId_idx").on(table.busId),

@@ -37,6 +37,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+    console.log("Received body:", body);
     const parseResult = createBusSchema.safeParse(body);
     if (!parseResult.success) {
       return NextResponse.json(
@@ -64,7 +65,7 @@ export async function POST(request: NextRequest) {
       const values = boardingPoints.map((bp) => ({
         busId: newBus.id,
         boardingPointId: bp.boardingPointId,
-        arrivalTime: new Date(bp.arrivalTime),
+        arrivalTime: bp.arrivalTime,
       }));
       insertedPoints = await db
         .insert(busBoardingPoints)

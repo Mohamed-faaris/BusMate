@@ -153,7 +153,7 @@ const AdminBusPage = () => {
               ))}
             </select>
             <input
-              type="datetime-local"
+              type="time"
               value={row.arrivalTime}
               onChange={(e) =>
                 handleRowChange(idx, "arrivalTime", e.target.value)
@@ -162,10 +162,12 @@ const AdminBusPage = () => {
             />
           </div>
         ))}
-        <button type="button" onClick={handleAddRow}>
-          Add Point
+        <button type="button" onClick={handleAddRow} className="bg-gray-500 text-white px-3 py-2 rounded">
+          Add Boarding Point
         </button>
-        <button type="submit">Save</button>
+        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded font-semibold">
+          Save Bus
+        </button>
       </form>
 
       <h1 className="mt-8 text-xl font-bold">Existing Buses</h1>
@@ -195,8 +197,8 @@ const AdminBusPage = () => {
                 <td>
                   {pts.map((p) => (
                     <div key={p.id}>
-                      {p.boardingPointId} @{" "}
-                      {new Date(p.arrivalTime).toLocaleString()}
+                      {p.id} @{" "}
+                      {p.arrivalTime}
                     </div>
                   ))}
                 </td>
