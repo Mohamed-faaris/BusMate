@@ -37,7 +37,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    console.log("Received body:", body);
+    // console.log("Received body:", body);
     const parseResult = createBusSchema.safeParse(body);
     if (!parseResult.success) {
       return NextResponse.json(
