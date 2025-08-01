@@ -29,6 +29,27 @@
       "when": 1752180998262,
       "tag": "0003_serious_sinister_six",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1754031493138,
+      "tag": "0004_purple_lady_bullseye",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1754033455582,
+      "tag": "0005_perpetual_rhodey",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1754033476628,
+      "tag": "0006_nostalgic_leper_queen",
+      "breakpoints": true
     }
   ]
 }
