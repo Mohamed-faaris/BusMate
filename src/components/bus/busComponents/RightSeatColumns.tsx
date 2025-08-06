@@ -29,7 +29,7 @@ export default function RightSeatColumns({
       {...divProps}
     >
       {seatArray.map((seats, rowIndex) => (
-        <SeatsRow key={rowIndex} noOfSeatsInRow={seats} />
+        <SeatsRow key={rowIndex} noOfSeatsInRow={seats} fullSize={noOfSeatsInRow} reversed={true} />
       ))}
     </div>
   );
