@@ -2,6 +2,33 @@ import { sql } from "drizzle-orm";
 import { index } from "drizzle-orm/pg-core";
 import { createTable } from "./table";
 
+export interface Seat {
+  id: string;
+  seatStatus?:
+    | "available"
+    | "bookedMale"
+    | "bookedFemale"
+    | "reserved"
+    | "unavailable";
+}
+export type SeatRows = Seat[];
+export interface SeatColumns {
+  height?: number;
+  seatIds: SeatRows[];
+}
+
+export interface BusComponents {
+  height?: number;
+}
+
+export interface BusModelProperties {
+  leftTopSeatColumns: SeatColumns;
+  door?: BusComponents;
+  leftSeatColumns: SeatColumns;
+  rightSeatColumns: SeatColumns;
+  driver?: BusComponents;
+  backSeats: SeatColumns;
+}
 // MODELS
 export const models = createTable(
   "model",

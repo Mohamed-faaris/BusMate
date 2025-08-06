@@ -1,29 +1,25 @@
-type SeatProps = {
-  state?:
-    | "selected"
-    | "maleBooked"
-    | "femaleBooked"
-    | "available"
-    | "invisible";
-    seatId?: string;
-};
+import type { Seat } from "@/server/db/schema";
 
-export default function Seat({ state = "available",seatId = "d3" }: SeatProps) {
+type SeatProps = Seat;
+
+export default function Seat({ id, seatStatus }: SeatProps) {
   let colorClass = "";
-  if (state === "selected") {
+  if (seatStatus === "available") {
     colorClass = "bg-selected";
-  } else if (state === "maleBooked") {
+  } else if (seatStatus === "bookedMale") {
     colorClass = "bg-maleBooked";
-  } else if (state === "femaleBooked") {
+  } else if (seatStatus === "bookedFemale") {
     colorClass = "bg-femaleBooked";
-  } else if (state === "invisible") {
+  } else if (seatStatus === "reserved") {
+    colorClass = "bg-reserved";
+  } else if (seatStatus === "unavailable") {
     return <div className="hidden h-10 w-10"></div>;
   }
   return (
     <div
       className={`border-accent hover:bg-secondary m-0.5 flex h-10 w-10 flex-col justify-center rounded-md border text-center ${colorClass}`}
     >
-      {seatId}
+      {id.slice(-3)}
     </div>
   );
 }
