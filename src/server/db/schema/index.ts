@@ -9,4 +9,5 @@ export * from "./busBoardingPoints";
 export * from "./accounts";
 export * from "./seats";
 export * from "./acceptedRolls";
+export * from "./models";
 export * from "./relations";
