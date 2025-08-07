@@ -1,31 +1,42 @@
-import type { BusModelProperties } from "@/server/db/schema";
+import type { BusModelProperties, SeatColumns } from "@/server/db/schema";
 import { Card } from "../ui/card";
-import BackSeats from "./busComponents/BackSeats";
 import Door from "./busComponents/Door";
 import Driver from "./busComponents/Driver";
-import SeatColumns from "./busComponents/seatColumns";
+import SeatGroup from "./busComponents/SeatGroup";
 
 type BusWrapperProps = {
   busId: string;
 };
 
-const busSeats:BusModelProperties = {
-  leftSeatColumns:{
-    
+const generateSeatColumns= (rows: number, cols: number) => {
+  const columns: any = {};
+  for (let c = 1; c <= cols; c++) {
+    columns[`col${c}`] = [];
+    for (let r = 1; r <= rows; r++) {
+      columns[`col${c}`].push({ seatNumber: `${c}-${r}` });
+    }
   }
-}
+  return columns;
+};
 
+const busSeats: BusModelProperties = {
+  leftTopSeatColumns: generateSeatColumns(3, 1),
+  door: {},
+  leftSeatColumns: generateSeatColumns(8, 2),
+  rightSeatColumns: generateSeatColumns(10, 2),
+  driver: {},
+  backSeats: generateSeatColumns(1, 5),
+};
 
-
-export default function BusWrapper( { busId }: BusWrapperProps) {
+export default function BusWrapper({ busId }: BusWrapperProps) {
   return (
     <Card id="bus" className="gap-0 rounded-lg p-4">
       <div className="flex">
         <div id="left" className="flex flex-col">
-          <SeatColumns />
+          <SeatGroup {...busSeats.leftTopSeatColumns} />
           {/* <LeftTopSeatColumns /> */}
           <Door />
-          <SeatColumns />
+          <SeatGroup {...busSeats.leftSeatColumns} />
           {/* <LeftSeatColumns /> */}
         </div>
         <div
@@ -36,11 +47,12 @@ export default function BusWrapper( { busId }: BusWrapperProps) {
         </div>
         <div id="right" className="flex flex-col">
           <Driver />
-          <SeatColumns/>
+          <SeatGroup {...busSeats.rightSeatColumns} />
           {/* <RightSeatColumns /> */}
         </div>
       </div>
-      <BackSeats />
+      <SeatGroup {...busSeats.backSeats} />
+      {/* <BackSeats /> */}
     </Card>
   );
 }

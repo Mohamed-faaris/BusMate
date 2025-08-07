@@ -7,7 +7,7 @@ interface SeatColumnsProps extends React.HTMLAttributes<HTMLDivElement> {
     reverse?: boolean;
     maxSeatsInRow:number
 }
-export default function SeatColumns({ seatColumns, className, reverse, maxSeatsInRow, ...divProps }: SeatColumnsProps) {
+export default function SeatGroup({ seatColumns, className, reverse, maxSeatsInRow, ...divProps }: SeatColumnsProps) {
   return (
     <div className={cn("flex flex-grow flex-col justify-around", className)}
       {...divProps}>
