@@ -4,13 +4,13 @@ import { SeatRows } from "@/server/db/schema";
 
 interface SeatsRowProps {
   seatRow: SeatRows;
-  fullSize?: number;
+  maxSeatsInRow?: number;
   reversed?: boolean;
 }
 
 export default function SeatsRowProps({
   seatRow,
-  fullSize,
+  maxSeatsInRow,
   reversed = false,
 }: SeatsRowProps) {
   return (
@@ -24,4 +24,5 @@ export default function SeatsRowProps({
         <Seat key={seatIndex} {...seat} />
       ))}
     </div>
-  );}
+  );
+}

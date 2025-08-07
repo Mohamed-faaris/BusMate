@@ -1,6 +1,5 @@
 import { Icon } from "lucide-react";
 import { steeringWheel } from "@lucide/lab";
-// Removed cn import since inline style is used for dynamic height
 
 export default function Driver({ height = 45 }: { height?: number }) {
   return (

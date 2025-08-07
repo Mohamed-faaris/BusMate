@@ -1,15 +1,19 @@
+import type { BusModelProperties } from "@/server/db/schema";
 import { Card } from "../ui/card";
 import BackSeats from "./busComponents/BackSeats";
 import Door from "./busComponents/Door";
 import Driver from "./busComponents/Driver";
-import LeftSeatColumns from "./busComponents/LeftSeatColumns";
-import LeftTopSeatColumns from "./busComponents/LeftTopColumns";
-import RightSeatColumns from "./busComponents/RightSeatColumns";
+import SeatColumns from "./busComponents/seatColumns";
 
 type BusWrapperProps = {
   busId: string;
-
 };
+
+const busSeats:BusModelProperties = {
+  leftSeatColumns:{
+    
+  }
+}
 
 
 
@@ -18,9 +22,11 @@ export default function BusWrapper( { busId }: BusWrapperProps) {
     <Card id="bus" className="gap-0 rounded-lg p-4">
       <div className="flex">
         <div id="left" className="flex flex-col">
-          <LeftTopSeatColumns  />
+          <SeatColumns />
+          {/* <LeftTopSeatColumns /> */}
           <Door />
-          <LeftSeatColumns />
+          <SeatColumns />
+          {/* <LeftSeatColumns /> */}
         </div>
         <div
           id="middle"
@@ -30,7 +36,8 @@ export default function BusWrapper( { busId }: BusWrapperProps) {
         </div>
         <div id="right" className="flex flex-col">
           <Driver />
-          <RightSeatColumns />
+          <SeatColumns/>
+          {/* <RightSeatColumns /> */}
         </div>
       </div>
       <BackSeats />
