@@ -1,14 +1,14 @@
 import { cn } from "@/lib/utils";
 import Seat from "./Seat";
-import { SeatRows } from "@/server/db/schema";
+import {type SeatRows } from "@/server/db/schema";
 
 interface SeatsRowProps {
   seatRow: SeatRows;
-  maxSeatsInRow?: number;
-  reversed?: boolean;
+  maxSeatsInRow: number;
+  reversed: boolean;
 }
 
-export default function SeatsRowProps({
+export default function SeatsRow({
   seatRow,
   maxSeatsInRow,
   reversed = false,
@@ -20,9 +20,19 @@ export default function SeatsRowProps({
         reversed ? "flex-row-reverse" : "",
       )}
     >
-      {seatRow.map((seat, seatIndex) => (
-        <Seat key={seatIndex} {...seat} />
-      ))}
+      {Array.from({ length: maxSeatsInRow }).map((_, index) => {
+        if(seatRow[index]) {
+          return (
+            <Seat
+              key={index}
+              {...seatRow[index]}
+            />
+
+          );
+        } else {
+          return <Seat key={index} id={`empty-${index}`} seatStatus="unavailable" />;
+        }
+      })}
     </div>
   );
 }

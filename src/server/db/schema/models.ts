@@ -12,9 +12,9 @@ export interface Seat {
     | "unavailable";
 }
 export type SeatRows = Seat[];
-export interface SeatColumns {
+export interface SeatGroups {
   height?: number;
-  seatIds: SeatRows[];
+  seatsRows: SeatRows[];
 }
 
 export interface BusComponents {
@@ -22,12 +22,12 @@ export interface BusComponents {
 }
 
 export interface BusModelProperties {
-  leftTopSeatColumns: SeatColumns;
+  leftTopSeatColumns: SeatGroups;
   door?: BusComponents;
-  leftSeatColumns: SeatColumns;
-  rightSeatColumns: SeatColumns;
+  leftSeatColumns: SeatGroups;
+  rightSeatColumns: SeatGroups;
   driver?: BusComponents;
-  backSeats: SeatColumns;
+  backSeats: SeatGroups;
 }
 // MODELS
 export const models = createTable(
