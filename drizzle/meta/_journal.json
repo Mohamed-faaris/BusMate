@@ -50,6 +50,13 @@
       "when": 1754033476628,
       "tag": "0006_nostalgic_leper_queen",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1754565634220,
+      "tag": "0007_aromatic_wendigo",
+      "breakpoints": true
     }
   ]
 }

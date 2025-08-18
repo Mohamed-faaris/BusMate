@@ -1,3 +1,16 @@
+import type { Seat, SeatRows } from "@/server/db/schema";
+
+export function generateSeatColumns(cols: number, rows: number): SeatRows[] {
+  const seatColumns: SeatRows[] = [];
+  for (let c = 1; c <= cols; c++) {
+    const seatRow: Seat[] = [];
+    for (let r = 1; r <= rows; r++) {
+      seatRow.push({ id: `${c}-${r}`, seatStatus: "available" });
+    }
+    seatColumns.push(seatRow);
+  }
+  return seatColumns;
+}
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -11,7 +24,6 @@ export const extendArray = (arr, len, val) => [
   ...arr,
   ...Array(Math.max(len - arr.length, 0)).fill(val),
 ];
-
 
 // Utility function to safely stringify objects for logging
 export function safeStringify(obj: any, space?: number): string {

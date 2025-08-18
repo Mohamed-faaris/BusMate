@@ -1,9 +1,4 @@
-import type {
-  BusModelProperties,
-  Seat,
-  SeatGroups,
-  SeatRows,
-} from "@/server/db/schema";
+import type { Seat, SeatRows } from "@/server/db/schema";
 import { Card } from "../ui/card";
 import Door from "./busComponents/Door";
 import Driver from "./busComponents/Driver";
@@ -13,53 +8,30 @@ type BusWrapperProps = {
   busId: string;
 };
 
-//   const generateSeatColumns: (rows: number, cols: number) => SeatGroups = (
-//     rows: number,
-//     cols: number,
-//   ) => {
-//     const columns: SeatGroups = {
-//       seatIds: [],
-//     };
-//     for (let c = 1; c <= cols; c++) {
-//       const seatRows: SeatRows = [];
-//       for (let r = 1; r <= rows; r++) {
-//         seatRows.push({ id: `${c}-${r}` } as Seat); // Assuming Seat interface has an id property
-//       }
-//       columns.seatIds.push(seatRows);
-//     }
-//     console.log("Generated seat columns:", columns);
-//     return columns;
-//   };
+import { generateSeatColumns } from "@/lib/utils";
 
-// const busSeats: BusModelProperties = {
-//   leftTopSeatColumns: {
-//     seatIds: [
-//       [{ id: "1-1" }, { id: "1-2" }, { id: "1-3" }],
-//       [{ id: "1-4" }, { id: "1-5" }, { id: "1-6" }],
-//     ],
-//   },
-//   door: {},
-//   leftSeatColumns: generateSeatColumns(8, 2),
-//   rightSeatColumns: generateSeatColumns(10, 2),
-//   driver: {},
-//   backSeats: generateSeatColumns(1, 5),
-// };
+const busSeats = {
+  leftTopSeatColumns: generateSeatColumns(3, 4),
+  door: {},
+  leftSeatColumns: generateSeatColumns(8, 3),
+  rightSeatColumns: generateSeatColumns(10, 2),
+  driver: {},
+  backSeats: generateSeatColumns(1, 6),
+};
 
 export default function BusWrapper({ busId }: BusWrapperProps) {
+  // console.log(JSON.stringify(busSeats));
   return (
     <Card id="bus" className="gap-0 rounded-lg p-4">
       <div className="flex">
         <div id="left" className="flex flex-col">
           <SeatGroup
-            seatGroups={[
-              [{ id: "1-1" }, { id: "1-2" }, { id: "1-3" }] as SeatRows,
-              [{ id: "1-4" }, { id: "1-5" }, { id: "1-6" }] as SeatRows,
-            ] as SeatGroups}
+            seatGroups={busSeats.leftTopSeatColumns}
             maxSeatsInRow={3}
           />
           {/* <LeftTopSeatColumns /> */}
           <Door />
-          {/* <SeatGroup {...busSeats.leftSeatColumns} /> */}
+          <SeatGroup seatGroups={busSeats.leftSeatColumns} maxSeatsInRow={3} />
           {/* <LeftSeatColumns /> */}
         </div>
         <div
@@ -70,11 +42,11 @@ export default function BusWrapper({ busId }: BusWrapperProps) {
         </div>
         <div id="right" className="flex flex-col">
           <Driver />
-          {/* <SeatGroup {...busSeats.rightSeatColumns} /> */}
+          <SeatGroup seatGroups={busSeats.rightSeatColumns} maxSeatsInRow={3} />
           {/* <RightSeatColumns /> */}
         </div>
       </div>
-      {/* <SeatGroup {...busSeats.backSeats} /> */}
+      <SeatGroup seatGroups={busSeats.backSeats} maxSeatsInRow={6} />
       {/* <BackSeats /> */}
     </Card>
   );
