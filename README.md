@@ -27,3 +27,34 @@ You can check out the [create-t3-app GitHub repository](https://github.com/t3-os
 ## How do I deploy this?
 
 Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+
+## Docker Command
+
+To run a local PostgreSQL database for BusMate using Docker, use the following command:
+
+```sh
+docker run -d \
+    --name busmate-db \
+    -e POSTGRES_USER=root \
+    -e POSTGRES_PASSWORD=root \
+    -e POSTGRES_DB=BusMate \
+    -p 5432:5432 \
+    -v busmate_data:/var/lib/postgresql/data \
+    postgres:latest
+```
+
+**Explanation of options:**
+
+- `-d`: Run container in detached mode
+- `--name busmate-db`: Name the container `busmate-db`
+- `-e POSTGRES_USER=root`: Set the database user to `root`
+- `-e POSTGRES_PASSWORD=root`: Set the database password to `root`
+- `-e POSTGRES_DB=BusMate`: Create a database named `BusMate`
+- `-p 5432:5432`: Map port 5432 of the container to your local machine
+- `-v busmate_data:/var/lib/postgresql/data`: Persist database data in a Docker volume
+
+> **Tip:**  
+> You can stop the container with `docker stop busmate-db` and remove it with `docker rm busmate-db`.
+
+> **To remove persisted data:**  
+> Run `docker volume rm busmate_data` after stopping and removing the container. This will delete all data stored in the volume.
