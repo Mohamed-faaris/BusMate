@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+
 export default function AdminPage() {
   return (
     <div className="p-6">
@@ -8,6 +9,11 @@ export default function AdminPage() {
         <Link href="/admin/boardingPoint">
           <button className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">
             Manage Boarding Points
+          </button>
+        </Link>
+        <Link href={"/admin/model"}>
+          <button className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">
+            Manage Models
           </button>
         </Link>
         <Link href="/admin/bus">
