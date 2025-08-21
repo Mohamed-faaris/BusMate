@@ -19,20 +19,18 @@ export async function GET(
           .select()
           .from(buses)
           .leftJoin(models, eq(models.id, buses.modelId))
-          //.leftJoin(boardingPoints, eq(users.boardingPointId, boardingPoints.id))
-          // .where(eq(users.id, userId))
+          .where(eq(buses.id, busId))
           .limit(1);
     
       // .from(users)
-      // .leftJoin(models, eq(buses.modelId, models.id))
-      // .where(eq(buses.id, busId));
+      //.leftJoin(models, eq(buses.modelId, models.id))
 
 
     if (!result || result.length === 0) {
       return NextResponse.json({ error: "Bus not found" }, { status: 404 });
     }
     // Send bus details along with model details
-    return NextResponse.json({ success: true, bus: result[0] }, { status: 200 });
+    return NextResponse.json({ success: true, data: result[0] }, { status: 200 });
   } catch (error) {
     console.error("Error fetching bus details:", error);
     return NextResponse.json(

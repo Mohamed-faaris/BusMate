@@ -19,10 +19,10 @@ export default function Bus({ busId }: { busId: string }) {
     queryKey: ["busSeats", busId],
     queryFn: () => fetch(`/api/bus/${busId}`).then((res) => res.json()),
   });
-
+  
   return (
     <>
-      <BusWrapper busId={busId} busSeats={busSeats || fallbackBusSeats} />
+      <BusWrapper busId={busId} busSeats={busSeats.data.model.data} />
     </>
   );
 }
