@@ -6,6 +6,7 @@ import { busBoardingPoints } from "./busBoardingPoints";
 import { accounts } from "./accounts";
 import { seats } from "./seats";
 import { acceptedRolls } from "./acceptedRolls";
+import { models } from "./models";
 
 export const usersRelations = relations(users, ({ one }) => ({
   bus: one(buses, { fields: [users.busId], references: [buses.id] }),
@@ -58,4 +59,8 @@ export const acceptedRollsRelations = relations(acceptedRolls, ({ one }) => ({
     fields: [acceptedRolls.boardingPointId],
     references: [boardingPoints.id],
   }),
+}));
+
+export const busModelRelations = relations(buses, ({ one }) => ({
+  model: one(models, { fields: [buses.modelId], references: [models.id] }),
 }));

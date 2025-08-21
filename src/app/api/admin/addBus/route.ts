@@ -5,7 +5,7 @@ import { buses } from "@/server/db/schema/buses";
 import { busBoardingPoints } from "@/server/db/schema/busBoardingPoints";
 
 const createBusSchema = z.object({
-  model: z.string().min(1, "Model is required"),
+  modelId: z.string().min(1, "Model is required"),
   busNumber: z.string().min(1, "Bus number is required"),
   routeName: z.string().optional(),
   driverName: z.string().min(1, "Driver name is required"),
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
       );
     }
     const {
-      model,
+      modelId,
       busNumber,
       routeName,
       driverName,
@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
     // Insert bus
     const [newBus] = await db
       .insert(buses)
-      .values({ model, busNumber, routeName, driverName, driverPhone })
+      .values({ modelId, busNumber, routeName, driverName, driverPhone })
       .returning();
 
     let insertedPoints = [];

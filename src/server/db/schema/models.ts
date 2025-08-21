@@ -38,7 +38,7 @@ export const models = createTable(
       .primaryKey()
       .notNull()
       .$defaultFn(() => crypto.randomUUID()),
-    model: d.varchar({ length: 255 }).notNull(),
+    model: d.varchar({ length: 255 }).notNull().unique(),
     data: d.json("data").notNull(),
 
     createdAt: d

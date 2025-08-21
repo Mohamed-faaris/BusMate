@@ -53,7 +53,7 @@ export default function Page() {
     // use busSeats defined above
 
     try {
-      const res = await fetch("/api/admin/addModel", {
+      const res = await fetch("/api/admin/model", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ model: modelName, data: busSeats }),

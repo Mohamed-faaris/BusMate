@@ -11,7 +11,7 @@ export const buses = createTable(
       .primaryKey()
       .notNull()
       .$defaultFn(() => crypto.randomUUID()),
-    model: d.varchar({ length: 255 }).notNull(),
+    modelId: d.uuid().notNull(),
     busNumber: d.varchar({ length: 10 }).notNull().unique(),
     routeName: d.varchar({ length: 255 }),
     driverName: d.varchar({ length: 255 }).notNull(),

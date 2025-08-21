@@ -1,10 +1,28 @@
-import React from 'react';
-import BusWrapper from './BusWrapper';
+"use client";
+import React from "react";
+import BusWrapper from "./BusWrapper";
 
-export default function bus() {
-   return (
-       <>
-           <BusWrapper busId = "sample1"/>
-       </>
-   );
+import { generateSeatColumns } from "@/lib/utils";
+import { useQuery } from "@tanstack/react-query";
+
+const fallbackBusSeats = {
+  leftTopSeatColumns: { seatsRows: generateSeatColumns(3, 4) },
+  door: {},
+  leftSeatColumns: { seatsRows: generateSeatColumns(8, 3) },
+  rightSeatColumns: { seatsRows: generateSeatColumns(10, 2) },
+  driver: {},
+  backSeats: { seatsRows: generateSeatColumns(1, 6) },
+};
+
+export default function Bus({ busId }: { busId: string }) {
+  const { data: busSeats } = useQuery({
+    queryKey: ["busSeats", busId],
+    queryFn: () => fetch(`/api/bus/${busId}`).then((res) => res.json()),
+  });
+
+  return (
+    <>
+      <BusWrapper busId={busId} busSeats={busSeats || fallbackBusSeats} />
+    </>
+  );
 }

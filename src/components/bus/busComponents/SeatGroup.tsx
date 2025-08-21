@@ -7,6 +7,7 @@ interface SeatColumnsProps extends React.HTMLAttributes<HTMLDivElement> {
   reverse?: boolean;
   maxSeatsInRow: number;
 }
+
 export default function SeatGroup({
   seatGroups,
   className,

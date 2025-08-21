@@ -1,5 +1,5 @@
 {
-  "id": "217dbacf-742e-4b57-911a-bd74b72048be",
+  "id": "93c8e1f0-ddec-4f1e-920e-7a078def788f",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -61,19 +61,19 @@
           "name": "busId",
           "type": "uuid",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "boardingPointId": {
           "name": "boardingPointId",
           "type": "uuid",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "receiptId": {
           "name": "receiptId",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "isVerified": {
           "name": "isVerified",
@@ -208,9 +208,9 @@
           "primaryKey": true,
           "notNull": true
         },
-        "model": {
-          "name": "model",
-          "type": "varchar(255)",
+        "modelId": {
+          "name": "modelId",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
@@ -375,9 +375,9 @@
         },
         "arrivalTime": {
           "name": "arrivalTime",
-          "type": "timestamp with time zone",
+          "type": "time",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         }
       },
       "indexes": {
@@ -687,6 +687,73 @@
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
+    },
+    "public.BusMate_model": {
+      "name": "BusMate_model",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "model": {
+          "name": "model",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "data": {
+          "name": "data",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "model_idx": {
+          "name": "model_idx",
+          "columns": [
+            {
+              "expression": "model",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "BusMate_model_model_unique": {
+          "name": "BusMate_model_model_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "model"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     }
   },
   "enums": {
@@ -695,7 +762,8 @@
       "schema": "public",
       "values": [
         "male",
-        "female"
+        "female",
+        "other"
       ]
     },
     "public.seatStatus": {
@@ -703,7 +771,8 @@
       "schema": "public",
       "values": [
         "available",
-        "booked",
+        "bookedMale",
+        "bookedFemale",
         "reserved"
       ]
     }

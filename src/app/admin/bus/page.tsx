@@ -31,7 +31,7 @@ interface BusesResponse {
 }
 
 interface CreateBusInput {
-  model: string;
+  modelId: string;
   busNumber: string;
   routeName?: string;
   driverName: string;
@@ -42,7 +42,7 @@ interface CreateBusInput {
 const AdminBusPage = () => {
   const queryClient = useQueryClient();
   const [form, setForm] = useState<CreateBusInput>({
-    model: "",
+    modelId: "",
     busNumber: "",
     routeName: "",
     driverName: "",
@@ -59,6 +59,13 @@ const AdminBusPage = () => {
     queryKey: ["boardingPoints"],
     queryFn: () => fetch("/api/busRoutes").then((res) => res.json()),
   });
+  // Fetch available bus models
+  const { data: modelsOptions } = useQuery<{
+    models: { id: string; model: string }[];
+  }>({
+    queryKey: ["models"],
+    queryFn: () => fetch("/api/admin/model").then((res) => res.json()),
+  });
 
   const { data } = useQuery<BusesResponse>({
     queryKey: ["buses"],
@@ -74,15 +81,15 @@ const AdminBusPage = () => {
       }).then((res) => res.json()),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["buses"] });
-      setForm({
-        model: "",
-        busNumber: "",
-        routeName: "",
-        driverName: "",
-        driverPhone: "",
-        boardingPoints: [],
-      });
-      setBpRows([]);
+      // setForm({
+      //   model: "",
+      //   busNumber: "",
+      //   routeName: "",
+      //   driverName: "",
+      //   driverPhone: "",
+      //   boardingPoints: [],
+      // });
+      // setBpRows([]);
     },
   });
 
@@ -106,33 +113,48 @@ const AdminBusPage = () => {
     <div className="p-4">
       <h1 className="text-xl font-bold">Add Bus</h1>
       <form onSubmit={handleSubmit} className="space-y-2">
-        <input
-          value={form.model}
-          onChange={(e) => setForm({ ...form, model: e.target.value })}
-          placeholder="Model"
-          required
-        />
+        <div>
+          <label className="block font-medium">Model</label>
+          <select
+            value={form.modelId}
+            onChange={(e) => setForm({ ...form, modelId: e.target.value })}
+            required
+            title="Model"
+            className="mt-1 w-full rounded border px-2 py-1"
+          >
+            <option value="">Select Model</option>
+            {modelsOptions?.models.map((m) => (
+              <option key={m.id} value={m.id}>
+                {m.model}
+              </option>
+            ))}
+          </select>
+        </div>
         <input
           value={form.busNumber}
           onChange={(e) => setForm({ ...form, busNumber: e.target.value })}
           placeholder="Bus Number"
+          title="Bus Number"
           required
         />
         <input
           value={form.routeName}
           onChange={(e) => setForm({ ...form, routeName: e.target.value })}
           placeholder="Route Name"
+          title="Route Name"
         />
         <input
           value={form.driverName}
           onChange={(e) => setForm({ ...form, driverName: e.target.value })}
           placeholder="Driver Name"
+          title="Driver Name"
           required
         />
         <input
           value={form.driverPhone}
           onChange={(e) => setForm({ ...form, driverPhone: e.target.value })}
           placeholder="Driver Phone"
+          title="Driver Phone"
           required
         />
         <h2 className="font-semibold">Boarding Points</h2>
@@ -144,6 +166,7 @@ const AdminBusPage = () => {
                 handleRowChange(idx, "boardingPointId", e.target.value)
               }
               required
+              title="Select Boarding Point"
             >
               <option value="">Select point</option>
               {bpOptions?.boardingPoints.map((bp) => (
@@ -158,14 +181,22 @@ const AdminBusPage = () => {
               onChange={(e) =>
                 handleRowChange(idx, "arrivalTime", e.target.value)
               }
+              title="Arrival Time"
               required
             />
           </div>
         ))}
-        <button type="button" onClick={handleAddRow} className="bg-gray-500 text-white px-3 py-2 rounded">
+        <button
+          type="button"
+          onClick={handleAddRow}
+          className="rounded bg-gray-500 px-3 py-2 text-white"
+        >
           Add Boarding Point
         </button>
-        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded font-semibold">
+        <button
+          type="submit"
+          className="rounded bg-blue-500 px-4 py-2 font-semibold text-white"
+        >
           Save Bus
         </button>
       </form>
@@ -197,8 +228,7 @@ const AdminBusPage = () => {
                 <td>
                   {pts.map((p) => (
                     <div key={p.id}>
-                      {p.id} @{" "}
-                      {p.arrivalTime}
+                      {p.id} @ {p.arrivalTime}
                     </div>
                   ))}
                 </td>

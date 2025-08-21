@@ -10,16 +10,6 @@ type BusWrapperProps = {
   busSeats: BusModelProperties;
 };
 
-import { generateSeatColumns } from "@/lib/utils";
-
-const busSeats = {
-  leftTopSeatColumns: generateSeatColumns(3, 4),
-  door: {},
-  leftSeatColumns: generateSeatColumns(8, 3),
-  rightSeatColumns: generateSeatColumns(10, 2),
-  driver: {},
-  backSeats: generateSeatColumns(1, 6),
-};
 
 export default function BusWrapper({ busId, busSeats }: BusWrapperProps) {
   // console.log(JSON.stringify(busSeats));

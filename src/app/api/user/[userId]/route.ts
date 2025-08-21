@@ -7,9 +7,9 @@ import { eq } from "drizzle-orm";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { userId: string } },
+  { params }: { params: Promise<{ userId: string }> },
 ) {
-  const { userId } = params;
+  const { userId } = await params;
   try {
     const result = await db
       .select({
@@ -28,7 +28,7 @@ export async function GET(
         updatedAt: users.updatedAt,
         bus: {
           id: buses.id,
-          model: buses.model,
+          modelID: buses.modelId,
           busNumber: buses.busNumber,
           routeName: buses.routeName,
           driverName: buses.driverName,
