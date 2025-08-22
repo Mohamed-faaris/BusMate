@@ -134,7 +134,7 @@ export async function POST(request: NextRequest) {
           phone,
           address,
           dateOfBirth: new Date(dateOfBirth),
-          boardingPointId: null,
+          boardingPointId: boardingPoint,
           busId: null,
           receiptId: null, // Generate a simple receipt ID
         })

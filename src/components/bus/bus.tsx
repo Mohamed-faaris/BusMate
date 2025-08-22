@@ -4,6 +4,8 @@ import BusWrapper from "./BusWrapper";
 
 import { generateSeatColumns } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
+import { is } from "drizzle-orm";
+import { Loader } from "lucide-react";
 
 const fallbackBusSeats = {
   leftTopSeatColumns: { seatsRows: generateSeatColumns(3, 4) },
@@ -15,11 +17,16 @@ const fallbackBusSeats = {
 };
 
 export default function Bus({ busId }: { busId: string }) {
-  const { data: busSeats } = useQuery({
+  const { data: busSeats, isLoading } = useQuery({
     queryKey: ["busSeats", busId],
     queryFn: () => fetch(`/api/bus/${busId}`).then((res) => res.json()),
+   
   });
   try{
+    if(isLoading){
+      //TODO : fix add different loader
+      return <Loader />;
+    }
     return (
       <>
         <BusWrapper busId={busId} busSeats={busSeats.data.model.data} />
