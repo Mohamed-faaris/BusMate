@@ -1,6 +1,16 @@
 import { sql } from "drizzle-orm";
 import { index } from "drizzle-orm/pg-core";
 import { createTable } from "./table";
+import type { UUID } from "crypto";
+
+interface seatsJSON{
+  [seatId: string]: {
+    userId:UUID
+    createdAt: Date
+    updatedAt: Date
+    isBooked: boolean
+  } 
+}
 
 // BUSES
 export const buses = createTable(
@@ -16,7 +26,7 @@ export const buses = createTable(
     routeName: d.varchar({ length: 255 }),
     driverName: d.varchar({ length: 255 }).notNull(),
     driverPhone: d.varchar({ length: 15 }).notNull(),
-
+    seats: d.json("seats"),
     createdAt: d
       .timestamp({ mode: "date", withTimezone: true })
       .notNull()

@@ -23,6 +23,7 @@
     "jsx": "preserve",
     "plugins": [{ "name": "next" }],
     "incremental": true,
+    "forceConsistentCasingInFileNames": true,
 
     /* Path Aliases */
     "baseUrl": ".",

@@ -5,9 +5,9 @@ import { NextResponse } from "next/server";
 
 export async function GET(
   req: Request,
-  { params }: { params: { boardingPointId: string } },
+  { params }: { params: Promise<{ boardingPointId: string }> },
 ) {
-  const { boardingPointId } = params;
+  const { boardingPointId } = await params;
   const busList = await db
     .select({
       id: buses.id,
