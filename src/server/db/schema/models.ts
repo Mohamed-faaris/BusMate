@@ -2,14 +2,10 @@ import { sql } from "drizzle-orm";
 import { index } from "drizzle-orm/pg-core";
 import { createTable } from "./table";
 
+export type SeatStatus = "available" | "bookedMale" | "bookedFemale" | "reserved" | "unavailable";
 export interface Seat {
   id: string;
-  seatStatus?:
-    | "available"
-    | "bookedMale"
-    | "bookedFemale"
-    | "reserved"
-    | "unavailable";
+  seatStatus?: SeatStatus;
 }
 export type SeatRows = Seat[];
 export interface SeatGroups {
@@ -39,7 +35,7 @@ export const models = createTable(
       .notNull()
       .$defaultFn(() => crypto.randomUUID()),
     model: d.varchar({ length: 255 }).notNull().unique(),
-    data: d.json("data").notNull(),
+    data: d.json("data").$type<BusModelProperties>().notNull(),
 
     createdAt: d
       .timestamp({ mode: "date", withTimezone: true })

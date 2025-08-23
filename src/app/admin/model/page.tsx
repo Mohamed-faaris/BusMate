@@ -2,7 +2,8 @@
 import React, { useState } from "react";
 import { generateSeatColumns } from "@/lib/utils";
 import BusWrapper from "@/components/bus/BusWrapper";
-import type { BusModelProperties } from "@/server/db/schema";
+import type { BusModelProperties, Seat } from "@/server/db/schema";
+import { SeatProvider } from "@/contexts/SeatContext";
 //TODO : do not use Form
 export default function Page() {
   const [modelName, setModelName] = useState("");
@@ -23,25 +24,34 @@ export default function Page() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+
+ 
+
+  
   // Prepare busSeats for preview and submission
   const busSeats: BusModelProperties = {
     leftTopSeatColumns: {
       height: leftTopHeight,
-      seatsRows: generateSeatColumns(leftTopCols, leftTopRows),
+      seatsRows: generateSeatColumns(leftTopCols, leftTopRows, "A","L"),
     },
     door: { height: doorHeight },
     leftSeatColumns: {
       height: leftHeight,
-      seatsRows: generateSeatColumns(leftCols, leftRows),
+      seatsRows: generateSeatColumns(
+        leftCols,
+        leftRows,
+        String.fromCharCode("A".charCodeAt(0) + leftTopCols),
+        "L"
+      ),
     },
     rightSeatColumns: {
       height: rightHeight,
-      seatsRows: generateSeatColumns(rightCols, rightRows),
+      seatsRows: generateSeatColumns(rightCols, rightRows, "A", "R"),
     },
     driver: { height: driverHeight },
     backSeats: {
       height: backHeight,
-      seatsRows: generateSeatColumns(backCols, backRows),
+      seatsRows: generateSeatColumns(backCols, backRows, "A", "B"),
     },
   };
 
@@ -193,7 +203,7 @@ export default function Page() {
               <input
                 type="range"
                 min={0}
-                max={10}
+                max={100}
                 value={leftTopHeight}
                 onChange={(e) => setLeftTopHeight(parseInt(e.target.value))}
                 className="w-full"
@@ -205,7 +215,7 @@ export default function Page() {
               <input
                 type="range"
                 min={0}
-                max={10}
+                max={100}
                 value={leftHeight}
                 onChange={(e) => setLeftHeight(parseInt(e.target.value))}
                 className="w-full"
@@ -217,7 +227,7 @@ export default function Page() {
               <input
                 type="range"
                 min={0}
-                max={10}
+                max={100}
                 value={rightHeight}
                 onChange={(e) => setRightHeight(parseInt(e.target.value))}
                 className="w-full"
@@ -229,7 +239,7 @@ export default function Page() {
               <input
                 type="range"
                 min={0}
-                max={10}
+                max={100}
                 value={backHeight}
                 onChange={(e) => setBackHeight(parseInt(e.target.value))}
                 className="w-full"
@@ -242,7 +252,7 @@ export default function Page() {
               <input
                 type="range"
                 min={0}
-                max={10}
+                max={100}
                 value={doorHeight}
                 onChange={(e) => setDoorHeight(parseInt(e.target.value))}
                 className="w-full"
@@ -254,7 +264,7 @@ export default function Page() {
               <input
                 type="range"
                 min={0}
-                max={10}
+                max={100}
                 value={driverHeight}
                 onChange={(e) => setDriverHeight(parseInt(e.target.value))}
                 className="w-full"
@@ -275,7 +285,9 @@ export default function Page() {
           )}
         </form>
       </div>
-      <BusWrapper busId="test" busSeats={busSeats} />
+      <SeatProvider>
+        <BusWrapper busId="test" busSeats={busSeats} />
+      </SeatProvider>
     </div>
   );
 }

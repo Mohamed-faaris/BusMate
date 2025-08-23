@@ -1,5 +1,10 @@
+import { SeatProvider } from "@/contexts/SeatContext";
 import BookingPage from "./BookingPage";
 
 export default function Page() {
-  return <BookingPage />;
+  return (
+    <SeatProvider>
+      <BookingPage />
+    </SeatProvider>
+  );
 }

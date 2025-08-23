@@ -3,6 +3,9 @@ import { z } from "zod";
 import { db } from "@/server/db";
 import { buses } from "@/server/db/schema/buses";
 import { busBoardingPoints } from "@/server/db/schema/busBoardingPoints";
+import { models, type BusModelProperties } from "@/server/db/schema";
+import { eq } from "drizzle-orm";
+import { flattenBusSeats, seatsArrayToMap } from "@/lib/utils";
 
 const createBusSchema = z.object({
   modelId: z.string().min(1, "Model is required"),
@@ -54,11 +57,28 @@ export async function POST(request: NextRequest) {
       boardingPoints,
     } = parseResult.data;
 
+    const [seats] = await db.select().from(models).where(eq(models.id, modelId));
+    
+    if (!seats) {
+      return NextResponse.json(
+        { error: "Bus model not found" },
+        { status: 404 },
+      );
+    }
+
     // Insert bus
     const [newBus] = await db
       .insert(buses)
-      .values({ modelId, busNumber, routeName, driverName, driverPhone })
+      .values({
+        modelId,
+        busNumber,
+        routeName,
+        driverName,
+        driverPhone,
+        seats: seatsArrayToMap(flattenBusSeats(seats.data)),
+      })
       .returning();
+    
 
     let insertedPoints = [];
     if (boardingPoints && boardingPoints.length > 0) {

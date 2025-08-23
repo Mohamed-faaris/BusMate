@@ -1,11 +1,45 @@
-import type { Seat, SeatRows } from "@/server/db/schema";
+import type { BusModelProperties, Seat, SeatRows } from "@/server/db/schema";
 
-export function generateSeatColumns(cols: number, rows: number): SeatRows[] {
+// Converts an array of seats to an object mapping seat id to seatStatus
+export function seatsArrayToMap(seats: Seat[]): Record<string, Seat["seatStatus"]> {
+  return seats.reduce((acc, seat) => {
+    acc[seat.id] = seat.seatStatus;
+    return acc;
+  }, {} as Record<string, Seat["seatStatus"]>);
+}
+export function flattenBusSeats(busSeats: BusModelProperties): Seat[] {
+  const seats: Seat[] = [];
+  for (const value of Object.values(busSeats)) {
+    if (Array.isArray(value.seatsRows)) {
+      for (const row of value.seatsRows) {
+        if (Array.isArray(row)) {
+          seats.push(...row);
+        } else {
+          seats.push(row);
+        }
+      }
+    }
+  }
+  return seats;
+}
+
+export function generateSeatColumns(
+  columns: number,
+  rows: number,
+  startColumnLetter = "A",
+  prefix = "-",
+): SeatRows[] {
   const seatColumns: SeatRows[] = [];
-  for (let c = 1; c <= cols; c++) {
+  for (let c = 1; c <= columns; c++) {
+    const colLetter = String.fromCharCode(
+      startColumnLetter.charCodeAt(0) + c - 1,
+    ); // Start from the given letter
     const seatRow: Seat[] = [];
     for (let r = 1; r <= rows; r++) {
-      seatRow.push({ id: `${c}-${r}`, seatStatus: "available" });
+      seatRow.push({
+        id: `${prefix}${colLetter}${r}`,
+        seatStatus: "available",
+      });
     }
     seatColumns.push(seatRow);
   }

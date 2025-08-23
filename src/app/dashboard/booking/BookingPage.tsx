@@ -2,10 +2,20 @@
 
 import { Button } from "@/components/ui/button";
 import { Combobox } from "@/components/ui/combobox";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { useEffect, useState } from "react";
 import Bus from "@/components/bus/Bus";
 import { useSession } from "next-auth/react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useSeat } from "@/contexts/SeatContext";
 
 interface Bus {
   id: string;
@@ -15,6 +25,8 @@ interface Bus {
 export default function BookingPage() {
   const [selectedBus, setSelectedBus] = useState("");
   const { data: session } = useSession();
+  const { selectedSeat, setSelectedSeat } = useSeat();
+  const queryClient = useQueryClient();
 
   const { data: userData, isLoading: isUserLoading } = useQuery({
     queryKey: ["user", session?.user?.id],
@@ -25,6 +37,34 @@ export default function BookingPage() {
       return res.json();
     },
     enabled: !!session?.user?.id,
+  });
+
+  const { mutate: bookSeat, isPending: isBooking } = useMutation({
+    mutationFn: async () => {
+      if (!selectedSeat || !userData?.user) return;
+
+      const newStatus =
+        userData.user.gender === "male" ? "bookedMale" : "bookedFemale";
+
+      const res = await fetch("/api/bookSeat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          seatId: selectedSeat.id,
+          newStatus,
+        }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to book seat");
+      }
+
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["busSeats", selectedBus] });
+      setSelectedSeat(null);
+    },
   });
 
   const boardingPointId = userData?.user?.boardingPoint?.id;
@@ -43,7 +83,7 @@ export default function BookingPage() {
   const buses: Bus[] = busesData || [];
 
   useEffect(() => {
-    if (buses.length > 0 && !selectedBus) {
+    if (buses.length > 0 && !selectedBus && buses[0]) {
       setSelectedBus(buses[0].id);
     }
   }, [buses, selectedBus]);
@@ -72,7 +112,48 @@ export default function BookingPage() {
         searchPlaceholder="Search buses..."
         emptyPlaceholder="No buses found for this route."
       />
-      <Button>Book Now</Button>
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button
+            disabled={!selectedSeat || selectedSeat.seatStatus !== "available"}
+          >
+            Book Now
+          </Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Confirm your booking</DialogTitle>
+            <DialogDescription>
+              Please review your booking details before confirming.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <p className="text-right font-semibold">Name</p>
+              <p className="col-span-3">{userData?.user?.name}</p>
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <p className="text-right font-semibold">Boarding Point</p>
+              <p className="col-span-3">
+                {userData?.user?.boardingPoint?.name}
+              </p>
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <p className="text-right font-semibold">Seat</p>
+              <p className="col-span-3">{selectedSeat?.id.slice(-3)}</p>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button
+              type="submit"
+              onClick={() => bookSeat()}
+              disabled={isBooking}
+            >
+              {isBooking ? "Booking..." : "Confirm Booking"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

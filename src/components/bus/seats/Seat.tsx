@@ -1,13 +1,21 @@
 import type { Seat } from "@/server/db/schema";
+import { useSeat } from "@/contexts/SeatContext";
+import { useSeatsData } from "@/contexts/seatsDataContext";
 
 type SeatProps = Seat;
 
 export default function Seat({ id, seatStatus }: SeatProps) {
+  const { selectedSeat, setSelectedSeat } = useSeat();
+  const seatsData = useSeatsData();
+  const isSelected = selectedSeat?.id === id;
+
   let colorClass = "";
-  if (seatStatus === "available") {
-    colorClass = "bg-selected";
+  if (isSelected) {
+    colorClass = "bg-black";
+  } else if (seatStatus === "available") {
+    colorClass = "bg-available";
   } else if (seatStatus === "bookedMale") {
-    colorClass = "bg-maleBooked";
+    colorClass = "bg-blue-500";
   } else if (seatStatus === "bookedFemale") {
     colorClass = "bg-femaleBooked";
   } else if (seatStatus === "reserved") {
@@ -17,6 +25,7 @@ export default function Seat({ id, seatStatus }: SeatProps) {
   }
   return (
     <div
+      onClick={() => setSelectedSeat({ id, seatStatus })}
       className={`border-accent hover:bg-secondary m-0.5 flex h-10 w-10 flex-col justify-center rounded-md border text-center ${colorClass}`}
     >
       {id.slice(-3)}

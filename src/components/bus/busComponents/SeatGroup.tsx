@@ -6,6 +6,7 @@ interface SeatColumnsProps extends React.HTMLAttributes<HTMLDivElement> {
   seatGroups: SeatRows[];
   reverse?: boolean;
   maxSeatsInRow: number;
+  height?: number;
 }
 
 export default function SeatGroup({
@@ -13,12 +14,14 @@ export default function SeatGroup({
   className,
   reverse,
   maxSeatsInRow,
+  height,
   ...divProps
 }: SeatColumnsProps) {
   return (
     <div
       className={cn("flex flex-grow flex-col justify-around", className)}
       {...divProps}
+      style={{ minHeight:height }}
     >
       {seatGroups.map((seatRow: SeatRows, rowIndex: number) => (
         <div key={rowIndex} className="flex">

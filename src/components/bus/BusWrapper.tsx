@@ -20,12 +20,14 @@ export default function BusWrapper({ busId, busSeats }: BusWrapperProps) {
           <SeatGroup
             seatGroups={busSeats.leftTopSeatColumns.seatsRows}
             maxSeatsInRow={3}
+            height={busSeats?.leftTopSeatColumns?.height}
           />
           {/* <LeftTopSeatColumns /> */}
-          <Door />
+          <Door height={busSeats?.door?.height} />
           <SeatGroup
             seatGroups={busSeats.leftSeatColumns.seatsRows}
             maxSeatsInRow={3}
+            height={busSeats?.leftSeatColumns?.height}
           />
           {/* <LeftSeatColumns /> */}
         </div>
@@ -36,15 +38,16 @@ export default function BusWrapper({ busId, busSeats }: BusWrapperProps) {
           AISLE
         </div>
         <div id="right" className="flex flex-col">
-          <Driver />
+          <Driver height={busSeats?.driver?.height} />
           <SeatGroup
             seatGroups={busSeats.rightSeatColumns.seatsRows}
             maxSeatsInRow={3}
+            height={busSeats?.rightSeatColumns?.height}
           />
           {/* <RightSeatColumns /> */}
         </div>
       </div>
-      <SeatGroup seatGroups={busSeats.backSeats.seatsRows} maxSeatsInRow={6} />
+      <SeatGroup seatGroups={busSeats.backSeats.seatsRows} maxSeatsInRow={6} height={busSeats?.backSeats?.height} />
       {/* <BackSeats /> */}
     </Card>
   );

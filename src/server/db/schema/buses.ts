@@ -2,6 +2,7 @@ import { sql } from "drizzle-orm";
 import { index } from "drizzle-orm/pg-core";
 import { createTable } from "./table";
 import type { UUID } from "crypto";
+import type { Seat } from "./models";
 
 interface seatsJSON{
   [seatId: string]: {
@@ -26,7 +27,10 @@ export const buses = createTable(
     routeName: d.varchar({ length: 255 }),
     driverName: d.varchar({ length: 255 }).notNull(),
     driverPhone: d.varchar({ length: 15 }).notNull(),
-    seats: d.json("seats"),
+    seats: d
+      .json("seats")
+      .$type<Record<string, Seat["seatStatus"]>>()
+      .notNull(),
     createdAt: d
       .timestamp({ mode: "date", withTimezone: true })
       .notNull()
