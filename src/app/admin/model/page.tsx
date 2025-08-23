@@ -1,9 +1,10 @@
 "use client";
 import React, { useState } from "react";
-import { generateSeatColumns } from "@/lib/utils";
+import { flattenBusSeats, generateSeatColumns, seatsArrayToMap } from "@/lib/utils";
 import BusWrapper from "@/components/bus/BusWrapper";
 import type { BusModelProperties, Seat } from "@/server/db/schema";
 import { SeatProvider } from "@/contexts/SeatContext";
+import { SeatsDataProvider } from "@/contexts/seatsDataContext";
 //TODO : do not use Form
 export default function Page() {
   const [modelName, setModelName] = useState("");
@@ -33,6 +34,7 @@ export default function Page() {
     leftTopSeatColumns: {
       height: leftTopHeight,
       seatsRows: generateSeatColumns(leftTopCols, leftTopRows, "A","L"),
+      seatsPerRow: leftTopRows,
     },
     door: { height: doorHeight },
     leftSeatColumns: {
@@ -43,15 +45,18 @@ export default function Page() {
         String.fromCharCode("A".charCodeAt(0) + leftTopCols),
         "L"
       ),
+      seatsPerRow: leftRows,
     },
     rightSeatColumns: {
       height: rightHeight,
       seatsRows: generateSeatColumns(rightCols, rightRows, "A", "R"),
+      seatsPerRow: rightRows,
     },
     driver: { height: driverHeight },
     backSeats: {
       height: backHeight,
       seatsRows: generateSeatColumns(backCols, backRows, "A", "B"),
+      seatsPerRow: backRows,
     },
   };
 
@@ -286,7 +291,9 @@ export default function Page() {
         </form>
       </div>
       <SeatProvider>
-        <BusWrapper busId="test" busSeats={busSeats} />
+        <SeatsDataProvider data={seatsArrayToMap(flattenBusSeats(busSeats))}> 
+          <BusWrapper busId="test" busSeats={busSeats} />
+        </SeatsDataProvider>
       </SeatProvider>
     </div>
   );

@@ -2,9 +2,9 @@ import React, { createContext, useContext } from "react";
 import type { ReactNode } from "react";
 import type { Seat } from "@/server/db/schema/models";
 
-type SeatsData = Seat[];
+type SeatsData = Record<string, Seat["seatStatus"]>;
 
-const SeatsDataContext = createContext<Seat[] | undefined>(undefined);
+const SeatsDataContext = createContext<SeatsData | undefined>(undefined);
 
 export const useSeatsData = () => {
   const context = useContext(SeatsDataContext);
@@ -18,7 +18,7 @@ export const SeatsDataProvider = ({
   data,
   children,
 }: {
-  data: Seat[];
+  data: Record<string, Seat["seatStatus"]>;
   children: ReactNode;
 }) => (
   <SeatsDataContext.Provider value={data}>{children}</SeatsDataContext.Provider>

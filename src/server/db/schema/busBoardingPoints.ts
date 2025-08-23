@@ -11,11 +11,11 @@ export const busBoardingPoints = createTable(
     busId: d
       .uuid()
       .notNull()
-      .references(() => buses.id),
+      .references(() => buses.id, { onDelete: "cascade" }),
     boardingPointId: d
       .uuid()
       .notNull()
-      .references(() => boardingPoints.id),
+      .references(() => boardingPoints.id, { onDelete: "cascade" }),
     arrivalTime: time("arrivalTime").notNull(),
   }),
   (table) => [

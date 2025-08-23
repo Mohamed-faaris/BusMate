@@ -50,8 +50,7 @@ export default function BookingPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          seatId: selectedSeat.id,
-          newStatus,
+          seatId: selectedSeat.id
         }),
       });
 

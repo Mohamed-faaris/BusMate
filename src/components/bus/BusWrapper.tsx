@@ -10,23 +10,22 @@ type BusWrapperProps = {
   busSeats: BusModelProperties;
 };
 
-
 export default function BusWrapper({ busId, busSeats }: BusWrapperProps) {
-  // console.log(JSON.stringify(busSeats));
+  console.log((busSeats));
   return (
     <Card id="bus" className="gap-0 rounded-lg p-4">
       <div className="flex">
         <div id="left" className="flex flex-col">
           <SeatGroup
             seatGroups={busSeats.leftTopSeatColumns.seatsRows}
-            maxSeatsInRow={3}
+            maxSeatsInRow={busSeats.leftTopSeatColumns.seatsPerRow || 2}
             height={busSeats?.leftTopSeatColumns?.height}
           />
           {/* <LeftTopSeatColumns /> */}
           <Door height={busSeats?.door?.height} />
           <SeatGroup
             seatGroups={busSeats.leftSeatColumns.seatsRows}
-            maxSeatsInRow={3}
+            maxSeatsInRow={busSeats.leftSeatColumns.seatsPerRow || 2}
             height={busSeats?.leftSeatColumns?.height}
           />
           {/* <LeftSeatColumns /> */}
@@ -41,13 +40,17 @@ export default function BusWrapper({ busId, busSeats }: BusWrapperProps) {
           <Driver height={busSeats?.driver?.height} />
           <SeatGroup
             seatGroups={busSeats.rightSeatColumns.seatsRows}
-            maxSeatsInRow={3}
+            maxSeatsInRow={busSeats.rightSeatColumns.seatsPerRow || 3}
             height={busSeats?.rightSeatColumns?.height}
           />
           {/* <RightSeatColumns /> */}
         </div>
       </div>
-      <SeatGroup seatGroups={busSeats.backSeats.seatsRows} maxSeatsInRow={6} height={busSeats?.backSeats?.height} />
+      <SeatGroup
+        seatGroups={busSeats.backSeats.seatsRows}
+        maxSeatsInRow={busSeats.backSeats.seatsPerRow || 7}
+        height={busSeats?.backSeats?.height}
+      />
       {/* <BackSeats /> */}
     </Card>
   );

@@ -11,6 +11,7 @@ export type SeatRows = Seat[];
 export interface SeatGroups {
   height?: number;
   seatsRows: SeatRows[];
+  seatsPerRow: number;
 }
 
 export interface BusComponents {
