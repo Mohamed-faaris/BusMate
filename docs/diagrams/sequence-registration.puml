@@ -16,7 +16,7 @@ Visitor -> UI: Fill remaining fields + OTP
 UI -> APIRegister: POST registrationSchema
 APIRegister -> DB: SELECT users WHERE email
 APIRegister -> DB: SELECT users WHERE rollNo
-APIRegister -> UI: 400 if otp != 123123
+APIRegister -> UI: 400 if otp != SentOTP
 APIRegister -> DB: INSERT user
 APIRegister -> DB: INSERT account(password)
 APIRegister --> UI: 201 Created { user }

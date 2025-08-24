@@ -1,0 +1,52 @@
+@startuml
+
+title BusMate Simple Class Diagram (Entities + Methods)
+
+' Example classes (tables)
+class Bus {
+  +id: UUID
+  +busNumber: String
+  +routeName: String
+  +driverName: String
+  +driverPhone: String
+  -- methods --
+  +getSeats(): Seat[]
+  +addSeat(seatNumber: String): Seat
+  +findSeat(seatNumber: String): Seat
+}
+
+class Seat {
+  +id: UUID
+  +busId: UUID
+  +seatNumber: String
+  +seatStatus: String
+  -- methods --
+  +isAvailable(): Boolean
+  +assignTo(userId: UUID): Booking
+}
+
+class Booking {
+  +id: UUID
+  +seatId: UUID
+  +userId: UUID
+  +status: String
+  -- methods --
+  +confirm(): void
+  +cancel(): void
+}
+
+class User {
+  +id: UUID
+  +name: String
+  +phone: String
+  -- methods --
+  +getBookings(): Booking[]
+  +bookSeat(busId: UUID, seatNumber: String): Booking
+}
+
+' Relationships
+Bus "1" --> "*" Seat
+Seat "1" --> "0..1" Booking
+User "1" --> "*" Booking
+
+@enduml

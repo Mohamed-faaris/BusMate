@@ -1,4 +1,5 @@
 @startuml
+title BusMate Use Case Diagram
 left to right direction
 
 actor Admin

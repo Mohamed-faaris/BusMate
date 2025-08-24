@@ -1,0 +1,42 @@
+@startuml Booking-Sequence
+title Booking Flow (User selects bus and books a seat)
+
+actor User
+participant "Dashboard/Booking Page" as UI
+participant "NextAuth" as Auth
+participant "API /api/user/{id}" as APIUser
+participant "API /api/bus/byBoardingPoint/{bpId}" as APIBusList
+participant "API /api/bus/{busId}" as APIBus
+participant "API /api/bookSeat" as APIBook
+database "DB (Postgres)" as DB
+
+User -> UI: Open /dashboard/booking
+UI -> Auth: getSession()
+Auth --> UI: session(userId)
+UI -> APIUser: GET /api/user/{userId}
+APIUser -> DB: SELECT user + joins(bus, boardingPoint)
+DB --> APIUser: row
+APIUser --> UI: { user, boardingPointId }
+UI -> APIBusList: GET /api/bus/byBoardingPoint/{bpId}
+APIBusList -> DB: SELECT buses by boardingPoint
+DB --> APIBusList: bus list
+APIBusList --> UI: [{ id, name }]
+User -> UI: Choose busId
+UI -> APIBus: GET /api/bus/{busId}
+APIBus -> DB: SELECT bus LEFT JOIN model
+DB --> APIBus: { bus, model }
+APIBus --> UI: { model.data, bus.seats }
+User -> UI: Select seat
+User -> UI: Click "Book Now"
+UI -> APIBook: POST /api/bookSeat { seatId, busId }
+APIBook -> Auth: auth()
+Auth --> APIBook: session(userId)
+APIBook -> DB: BEGIN TRANSACTION
+APIBook -> DB: SELECT user by id
+APIBook -> DB: INSERT seat (userId,busId,seatId,status)
+APIBook -> DB: UPDATE bus.seats JSONB
+DB --> APIBook: COMMIT
+APIBook --> UI: { message: "success" }
+UI --> User: Confirmed
+
+@enduml
