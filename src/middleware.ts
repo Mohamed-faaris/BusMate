@@ -6,7 +6,7 @@ import {
   formatBytes,
 } from "@/lib/utils";
 
-const need  = true; // Set to true if you want to enable logging in production
+const need  = false; // Set to true if you want to enable logging in production
 export async function middleware(request: NextRequest) {
   // Only log in development environment
   if (!isDev || !need) {
