@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { motionConfig } from "@/lib/motion";
 import { Check, ChevronsUpDown, Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import type { BoardingPoint } from "@/app/api/busRoutes/route";
@@ -60,6 +61,7 @@ export function RegisterForm({
 }: {
   boardingPoints: BoardingPoint[];
 } & React.ComponentProps<"div">) {
+  const router = useRouter();
   const [step, setStep] = useState(1);
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
@@ -674,7 +676,13 @@ export function RegisterForm({
                                 Verifying...
                               </>
                             )}
-                            {verifyOtpMutation.isSuccess && "Success!"}
+                            {verifyOtpMutation.isSuccess &&
+                              (() => {
+                                setTimeout(() => {
+                                  router.push("/auth/signIn");
+                                }, 1500);
+                                return "Success! Redirecting to sign in...";
+                              })()}
                             {verifyOtpMutation.isError &&
                               ((verifyOtpMutation.error as any)?.data
                                 ?.buttonMessage ||

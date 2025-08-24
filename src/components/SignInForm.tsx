@@ -7,6 +7,7 @@ import { motionConfig } from "@/lib/motion";
 import { Loader2, Check, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 import {
   Card,
   CardContent,
@@ -24,6 +25,7 @@ export function SignInForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -71,11 +73,10 @@ export function SignInForm({
       // Handle successful submission here
       setButtonState("success");
 
-      // Reset to idle after showing success
+      // Redirect to dashboard after showing success
       setTimeout(() => {
-        setButtonState("idle");
-        alert("Sign in successful!");
-      }, 1500);
+        router.push("/dashboard");
+      }, 1000);
     } catch (error) {
       setButtonState("error");
 
