@@ -4,16 +4,22 @@ import { Card } from "../ui/card";
 import Door from "./busComponents/Door";
 import Driver from "./busComponents/Driver";
 import SeatGroup from "./busComponents/SeatGroup";
+import type { HTMLAttributes } from "react";
+import { cn } from "@/lib/utils";
 
 type BusWrapperProps = {
   busId: string;
   busSeats: BusModelProperties;
-};
+  className?: string;
+} & HTMLAttributes<HTMLDivElement>;
 
-export default function BusWrapper({ busId, busSeats }: BusWrapperProps) {
-  console.log((busSeats));
+export default function BusWrapper({ busId, busSeats, className, ...props }: BusWrapperProps) {
   return (
-    <Card id="bus" className="gap-0 rounded-lg p-4">
+    <Card
+      id="bus"
+      className={cn("gap-0 rounded-lg p-4 h-min", className)}
+      {...props}
+    >
       <div className="flex">
         <div id="left" className="flex flex-col">
           <SeatGroup

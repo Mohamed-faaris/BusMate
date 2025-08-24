@@ -1,5 +1,5 @@
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
-
 
 export default function AdminPage() {
   return (
@@ -7,19 +7,13 @@ export default function AdminPage() {
       <h1 className="mb-4 text-2xl font-semibold">Admin Dashboard</h1>
       <div className="flex flex-wrap gap-4">
         <Link href="/admin/boardingPoint">
-          <button className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">
-            Manage Boarding Points
-          </button>
+          <Button variant="default">Manage Boarding Points</Button>
         </Link>
-        <Link href={"/admin/model"}>
-          <button className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">
-            Manage Models
-          </button>
+        <Link href="/admin/model">
+          <Button variant="default">Manage Models</Button>
         </Link>
         <Link href="/admin/bus">
-          <button className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">
-            Manage Buses
-          </button>
+          <Button variant="default">Manage Buses</Button>
         </Link>
       </div>
     </div>

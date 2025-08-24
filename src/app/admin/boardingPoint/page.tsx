@@ -1,9 +1,13 @@
 "use client";
 import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import type { BoardingPoint,BoardingPointGet } from "@/app/api/busRoutes/route";
-
-
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import type {
+  BoardingPoint,
+  BoardingPointGet,
+} from "@/app/api/busRoutes/route";
 
 export default function BoardingPointPage() {
   const queryClient = useQueryClient();
@@ -54,80 +58,46 @@ export default function BoardingPointPage() {
     });
   };
 
-  // Ensure points is always an array for mapping
-  const points: BoardingPoint[] = data ?? [];
   return (
     <div className="p-6">
-      <h1 className="mb-4 text-2xl font-semibold">Boarding Points</h1>
-      <form onSubmit={handleSubmit} className="mb-6 space-y-4">
-        <div>
-          <label className="mb-1 block font-medium">Name</label>
-          <input
-            type="text"
+      <h1 className="mb-4 text-2xl font-semibold">Manage Boarding Points</h1>
+      <Card className="mb-6 p-4">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <Input
+            placeholder="Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full rounded border px-3 py-2"
-            placeholder="Enter name"
-            required
           />
-        </div>
-        <div>
-          <label className="mb-1 block font-medium">Latitude</label>
-          <input
-            type="number"
+          <Input
+            placeholder="Latitude"
             value={latitude}
             onChange={(e) => setLatitude(e.target.value)}
-            className="w-full rounded border px-3 py-2"
-            placeholder="Enter latitude"
           />
-        </div>
-        <div>
-          <label className="mb-1 block font-medium">Longitude</label>
-          <input
-            type="number"
+          <Input
+            placeholder="Longitude"
             value={longitude}
             onChange={(e) => setLongitude(e.target.value)}
-            className="w-full rounded border px-3 py-2"
-            placeholder="Enter longitude"
           />
-        </div>
-        <button
-          type="submit"
-          disabled={addMutation.status === "pending"}
-          className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 disabled:opacity-50"
-        >
-          Add Boarding Point
-        </button>
-        {addMutation.error && (
-          <p className="mt-2 text-red-600">
-            {(addMutation.error as Error).message}
-          </p>
-        )}
-      </form>
-      {isLoading ? (
-        <p>Loading...</p>
-      ) : error ? (
-        <p className="text-red-600">Error loading boarding points</p>
-      ) : (
-        <table className="w-full border-collapse border">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="border px-4 py-2 text-left">Name</th>
-              <th className="border px-4 py-2 text-left">Latitude</th>
-              <th className="border px-4 py-2 text-left">Longitude</th>
-            </tr>
-          </thead>
-          <tbody>
-            {points.map((pt) => (
-              <tr key={pt.id} className="hover:bg-gray-50">
-                <td className="border px-4 py-2">{pt.name}</td>
-                <td className="border px-4 py-2">{pt.latitude ?? ""}</td>
-                <td className="border px-4 py-2">{pt.longitude ?? ""}</td>
-              </tr>
+          <Button type="submit" disabled={addMutation.isLoading}>
+            Add Boarding Point
+          </Button>
+        </form>
+      </Card>
+      <div>
+        {isLoading ? (
+          <p>Loading...</p>
+        ) : error ? (
+          <p>Error: {error.message}</p>
+        ) : (
+          <ul className="space-y-2">
+            {data?.map((point) => (
+              <li key={point.id} className="rounded border p-2">
+                {point.name} ({point.latitude}, {point.longitude})
+              </li>
             ))}
-          </tbody>
-        </table>
-      )}
+          </ul>
+        )}
+      </div>
     </div>
   );
 }
