@@ -35,7 +35,9 @@ export default function RootLayout({
             <ThemeToggle animate={true} />
           </div>
           <NextAuthProvider>
-            <ReactQueryProvider>{children}</ReactQueryProvider>
+            <ReactQueryProvider>
+              <div className="bg-background min-h-screen">{children}</div>
+            </ReactQueryProvider>
           </NextAuthProvider>
         </ThemeProvider>
       </body>

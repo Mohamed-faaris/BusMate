@@ -1,14 +1,15 @@
 import { auth } from "@/server/auth";
 import { db } from "@/server/db";
 import { eq } from "drizzle-orm";
-import { boardingPoints, seats, users } from "@/server/db/schema";
+import { boardingPoints, buses, seats, users } from "@/server/db/schema";
 import { NextResponse } from "next/server";
 
 const dashboardQuery = db
   .select()
   .from(users)
   .leftJoin(seats, eq(users.id, seats.userId))
-  .leftJoin(boardingPoints, eq(users.boardingPointId, boardingPoints.id));
+  .leftJoin(boardingPoints, eq(users.boardingPointId, boardingPoints.id))
+  .leftJoin(buses, eq(seats.busId, buses.id));
 
 export type DashboardApiResponseSuccess = Awaited<
   ReturnType<typeof dashboardQuery['execute']>

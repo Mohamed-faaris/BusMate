@@ -15,6 +15,13 @@
       "when": 1755849397800,
       "tag": "0001_peaceful_mephisto",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1756065008729,
+      "tag": "0002_wakeful_skrulls",
+      "breakpoints": true
     }
   ]
 }

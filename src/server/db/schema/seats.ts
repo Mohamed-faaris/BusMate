@@ -18,6 +18,7 @@ export const seats = createTable(
       .uuid()
       .notNull()
       .references(() => buses.id),
+    seatId: d.varchar({ length: 16 }).notNull(),
     status: seatStatusEnum("status").default("available"),
 
     createdAt: d
