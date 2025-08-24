@@ -1,0 +1,66 @@
+@startuml BusMate-EndToEnd
+title End-to-End User Journey (Register/Sign-in -> Browse -> Book)
+
+actor User
+participant "UI (Next.js)" as UI
+participant "NextAuth" as Auth
+participant "API /api/register/send" as APISend
+participant "API /api/register" as APIRegister
+participant "API /api/auth/[...nextauth]" as APIAuth
+participant "API /api/user/{id}" as APIUser
+participant "API /api/bus/byBoardingPoint/{bpId}" as APIBusList
+participant "API /api/bus/{busId}" as APIBus
+participant "API /api/bookSeat" as APIBook
+database "DB (Postgres / Drizzle)" as DB
+
+User -> UI: Open app (/dashboard/booking)
+UI -> Auth: getSession()
+alt Session exists
+  Auth --> UI: session(userId)
+else No session
+  User -> UI: Start registration
+  UI -> APISend: POST { email, rollNo }
+  APISend -> DB: SELECT users WHERE email OR rollNo
+  DB --> APISend: [] or existing
+  APISend --> UI: 200 OK or 409 Conflict
+  User -> UI: Submit registration form
+  UI -> APIRegister: POST registrationSchema (incl. otp)
+  APIRegister -> DB: Validate + INSERT user
+  APIRegister -> DB: INSERT account(password)
+  DB --> APIRegister: created
+  APIRegister --> UI: 201 Created { user }
+  UI -> APIAuth: POST signIn(credentials)
+  APIAuth -> DB: Verify account
+  DB --> APIAuth: ok
+  APIAuth --> UI: session(userId)
+end
+
+UI -> APIUser: GET /api/user/{userId}
+APIUser -> DB: SELECT user LEFT JOIN bus, boardingPoint
+DB --> APIUser: row
+APIUser --> UI: { user, boardingPointId }
+
+UI -> APIBusList: GET /api/bus/byBoardingPoint/{bpId}
+APIBusList -> DB: SELECT buses serving bp
+DB --> APIBusList: list
+APIBusList --> UI: [{ id, name }]
+
+User -> UI: Select busId
+UI -> APIBus: GET /api/bus/{busId}
+APIBus -> DB: SELECT bus LEFT JOIN model
+DB --> APIBus: { bus, model }
+APIBus --> UI: { model.data, bus.seats }
+
+User -> UI: Select seat
+UI -> APIBook: POST { seatId, busId }
+APIBook -> Auth: auth()
+Auth --> APIBook: session(userId)
+APIBook -> DB: BEGIN
+APIBook -> DB: SELECT user by id
+APIBook -> DB: INSERT seat (userId,busId,seatId,status)
+APIBook -> DB: UPDATE bus.seats JSONB
+DB --> APIBook: COMMIT
+APIBook --> UI: { message: "success" }
+UI --> User: Booking confirmed
+
+@enduml

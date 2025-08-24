@@ -1,0 +1,33 @@
+@startuml Admin-Sequence
+title Admin Setup Flow (models, stops, buses)
+
+actor Admin
+participant "UI /admin/model" as UIM
+participant "API /api/admin/addModel" as APIModel
+participant "UI /admin/boardingPoint" as UIBP
+participant "API /api/admin/addBoardingPoints" as APIBP
+participant "UI /admin/bus" as UIBus
+participant "API /api/admin/addBus" as APIBus
+database "DB (Postgres)" as DB
+
+Admin -> UIM: Create seat model
+UIM -> APIModel: POST { model, data }
+APIModel -> DB: INSERT model
+DB --> APIModel: model
+APIModel --> UIM: 201 Created
+
+Admin -> UIBP: Add boarding point
+UIBP -> APIBP: POST { name, lat?, lng? }
+APIBP -> DB: INSERT boardingPoint
+DB --> APIBP: point
+APIBP --> UIBP: 201 Created
+
+Admin -> UIBus: Create bus + stops
+UIBus -> APIBus: POST { modelId, busNumber, ..., boardingPoints[] }
+APIBus -> DB: SELECT model by id
+APIBus -> DB: INSERT bus (with seats JSON from model)
+APIBus -> DB: INSERT busBoardingPoints[*]
+DB --> APIBus: bus + points
+APIBus --> UIBus: 201 Created
+
+@enduml

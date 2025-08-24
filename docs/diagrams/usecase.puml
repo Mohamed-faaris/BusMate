@@ -1,0 +1,67 @@
+@startuml BusMate-UseCases
+title BusMate Use Case Diagram
+
+left to right direction
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor Visitor as v
+actor User as u
+actor Admin as a
+
+package "Public" {
+	usecase "View Home" as UC_Home
+	usecase "Check Availability (email/rollNo)" as UC_Check
+	usecase "Register Account" as UC_Register
+	usecase "Sign In" as UC_SignIn
+}
+
+package "User Dashboard" {
+	usecase "View Dashboard" as UC_Dashboard
+	usecase "Browse Buses by Boarding Point" as UC_Browse
+	usecase "View Seat Map" as UC_SeatMap
+	usecase "Book Seat" as UC_Book
+	usecase "View Account" as UC_Account
+}
+
+package "Administration" {
+	usecase "Manage Boarding Points" as UC_BP
+	usecase "Manage Seat Models" as UC_Model
+	usecase "Manage Buses and Routes" as UC_Bus
+	usecase "View User Details" as UC_UserDetails
+}
+
+v --> UC_Home
+v --> UC_Check
+v --> UC_Register
+v --> UC_SignIn
+
+u --> UC_Dashboard
+u --> UC_Browse
+u --> UC_SeatMap
+u --> UC_Book
+u --> UC_Account
+
+a --> UC_BP
+a --> UC_Model
+a --> UC_Bus
+a --> UC_UserDetails
+
+UC_Register .> UC_Check : <<includes>>
+UC_Book .> UC_SeatMap : <<includes>>
+UC_Browse .> UC_SeatMap : <<includes>>
+
+note over UC_Check, UC_Register
+	Implements: /api/register/send, /api/register
+end note
+
+note over UC_Browse, UC_SeatMap
+	Implements: /api/bus/byBoardingPoint/{id}, /api/bus/{id}
+end note
+
+note over UC_Book
+	Implements: /api/bookSeat (auth required)
+end note
+
+@enduml
+
