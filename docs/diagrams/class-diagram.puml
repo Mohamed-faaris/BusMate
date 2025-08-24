@@ -1,0 +1,124 @@
+@startuml BusMate-ClassDiagram
+title BusMate Class Diagram
+
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam packageStyle rectangle
+
+package "Data Model" {
+  class User {
+    +id: UUID
+    +rollNo: string
+    +name: string
+    +gender: Gender
+    +email: string
+    +phone: string
+    +address: string
+    +dateOfBirth: timestamp
+    +busId: UUID?
+    +boardingPointId: UUID?
+    +receiptId: string?
+    +isVerified: boolean
+    +isAdmin: boolean
+    +createdAt: timestamp
+    +updatedAt: timestamp
+  }
+
+  class Account {
+    +userId: UUID
+    +password: string
+  }
+
+  class BoardingPoint {
+    +id: UUID
+    +name: string
+    +latitude: number?
+    +longitude: number?
+  }
+
+  class Model {
+    +id: UUID
+    +model: string
+    +data: BusModelProperties
+    +createdAt: timestamp
+    +updatedAt: timestamp
+  }
+
+  class Bus {
+    +id: UUID
+    +modelId: UUID
+    +busNumber: string
+    +routeName: string?
+    +driverName: string
+    +driverPhone: string
+    +seats: Map<string, SeatStatus>
+    +createdAt: timestamp
+    +updatedAt: timestamp
+  }
+
+  class BusBoardingPoint {
+    +id: serial
+    +busId: UUID
+    +boardingPointId: UUID
+    +arrivalTime: time
+  }
+
+  class Seat {
+    +id: serial
+    +userId: UUID
+    +busId: UUID
+    +seatId: string
+    +status: SeatStatus
+    +createdAt: timestamp
+    +updatedAt: timestamp
+  }
+
+  enum Gender {
+    male
+    female
+    other
+  }
+
+  enum SeatStatus {
+    available
+    bookedMale
+    bookedFemale
+    reserved
+    unavailable
+  }
+
+  class BusModelProperties {
+    +leftTopSeatColumns: SeatGroups
+    +door: BusComponents?
+    +leftSeatColumns: SeatGroups
+    +rightSeatColumns: SeatGroups
+    +driver: BusComponents?
+    +backSeats: SeatGroups
+  }
+
+  class SeatGroups {
+    +height: number?
+    +seatsRows: Seat[]
+    +seatsPerRow: number
+  }
+
+  class BusComponents {
+    +height: number?
+  }
+
+  User "0..*" --> "0..1" Bus : assigned to
+  User "1" --> "0..1" BoardingPoint : boards at
+  Account "1" --> "1" User : belongs to
+  Seat "*" --> "1" Bus : on
+  Seat "*" --> "1" User : booked by
+  BusBoardingPoint "*" --> "1" Bus : serves
+  BusBoardingPoint "*" --> "1" BoardingPoint : stop
+  Bus "1" --> "1" Model : uses
+}
+
+note right of Bus
+  seats: JSONB map of seatId -> SeatStatus
+  used for fast seat status lookup
+end note
+
+@enduml
