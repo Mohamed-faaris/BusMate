@@ -13,24 +13,25 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useMutation } from "@tanstack/react-query";
+import { Label } from "@radix-ui/react-label";
 
 //TODO : do not use Form
 export default function Page() {
   const [modelName, setModelName] = useState("");
-  const [leftTopCols, setLeftTopCols] = useState(3);
-  const [leftTopRows, setLeftTopRows] = useState(4);
+  const [leftTopCols, setLeftTopCols] = useState(2);
+  const [leftTopRows, setLeftTopRows] = useState(2);
   const [leftCols, setLeftCols] = useState(8);
-  const [leftRows, setLeftRows] = useState(3);
+  const [leftRows, setLeftRows] = useState(2);
   const [rightCols, setRightCols] = useState(10);
-  const [rightRows, setRightRows] = useState(2);
+  const [rightRows, setRightRows] = useState(3);
   const [backCols, setBackCols] = useState(1);
   const [backRows, setBackRows] = useState(6);
-  const [leftTopHeight, setLeftTopHeight] = useState<number>(1);
-  const [doorHeight, setDoorHeight] = useState<number>(1);
-  const [leftHeight, setLeftHeight] = useState<number>(1);
-  const [rightHeight, setRightHeight] = useState<number>(1);
-  const [driverHeight, setDriverHeight] = useState<number>(1);
-  const [backHeight, setBackHeight] = useState<number>(1);
+  const [leftTopHeight, setLeftTopHeight] = useState<number>(80);
+  const [doorHeight, setDoorHeight] = useState<number>(50);
+  const [leftHeight, setLeftHeight] = useState<number>(40);
+  const [rightHeight, setRightHeight] = useState<number>(40);
+  const [driverHeight, setDriverHeight] = useState<number>(50);
+  const [backHeight, setBackHeight] = useState<number>(50);
 
   // Prepare busSeats for preview and submission
   const busSeats: BusModelProperties = {
@@ -86,12 +87,12 @@ export default function Page() {
       setRightRows(2);
       setBackCols(1);
       setBackRows(6);
-      setLeftTopHeight(1);
-      setDoorHeight(1);
-      setLeftHeight(1);
-      setRightHeight(1);
-      setDriverHeight(1);
-      setBackHeight(1);
+      setLeftTopHeight(80);
+      setDoorHeight(50);
+      setLeftHeight(100);
+      setRightHeight(100);
+      setDriverHeight(50);
+      setBackHeight(50);
       alert("Model saved successfully!");
     },
     onError: (error: Error) => {
@@ -105,9 +106,9 @@ export default function Page() {
   };
 
   return (
-    <div className="p-6">
+    <div className="p-6 flex flex-col w-full">
       <h1 className="mb-4 text-2xl font-semibold">Configure Bus Model</h1>
-      <div className="flex justify-around">
+      <div className="flex gap-12">
         <Card className="mb-6 flex p-4">
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <Input
@@ -115,89 +116,87 @@ export default function Page() {
               value={modelName}
               onChange={(e) => setModelName(e.target.value)}
             />
-            <Input
-              type="number"
-              placeholder="Left Top Columns"
-              value={leftTopCols}
-              onChange={(e) => setLeftTopCols(Number(e.target.value))}
-            />
-            <Input
-              type="number"
-              placeholder="Left Top Rows"
-              value={leftTopRows}
-              onChange={(e) => setLeftTopRows(Number(e.target.value))}
-            />
+            <div className="flex justify-around">
+              <div>
+                <Label htmlFor="left-top-cols">Left Top Columns</Label>
+                <Input
+                  id="left-top-cols"
+                  type="number"
+                  placeholder="Left Top Columns"
+                  value={leftTopCols}
+                  onChange={(e) => setLeftTopCols(Number(e.target.value))}
+                />
+              </div>
+              <div>
+                <Label htmlFor="left-top-rows">Left Top Rows</Label>
+                <Input
+                  id="left-top-rows"
+                  type="number"
+                  placeholder="Left Top Rows"
+                  value={leftTopRows}
+                  onChange={(e) => setLeftTopRows(Number(e.target.value))}
+                />
+              </div>
+            </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block">Left Cols</label>
-                <input
+                <Label htmlFor="left-cols">Left Columns</Label>
+                <Input
+                  id="left-cols"
                   type="number"
+                  placeholder="Left Columns"
                   value={leftCols}
-                  onChange={(e) => setLeftCols(parseInt(e.target.value))}
-                  min={0}
-                  placeholder="Left Cols"
-                  title="Left Cols"
-                  className="mt-1 w-full rounded border px-2 py-1"
+                  onChange={(e) => setLeftCols(Number(e.target.value))}
                 />
               </div>
               <div>
-                <label className="block">Left Rows</label>
-                <input
+                <Label htmlFor="left-rows">Left Rows</Label>
+                <Input
+                  id="left-rows"
                   type="number"
-                  value={leftRows}
-                  onChange={(e) => setLeftRows(parseInt(e.target.value))}
-                  min={0}
                   placeholder="Left Rows"
-                  title="Left Rows"
-                  className="mt-1 w-full rounded border px-2 py-1"
+                  value={leftRows}
+                  onChange={(e) => setLeftRows(Number(e.target.value))}
                 />
               </div>
               <div>
-                <label className="block">Right Cols</label>
-                <input
+                <Label htmlFor="right-cols">Right Columns</Label>
+                <Input
+                  id="right-cols"
                   type="number"
+                  placeholder="Right Columns"
                   value={rightCols}
-                  onChange={(e) => setRightCols(parseInt(e.target.value))}
-                  min={0}
-                  placeholder="Right Cols"
-                  title="Right Cols"
-                  className="mt-1 w-full rounded border px-2 py-1"
+                  onChange={(e) => setRightCols(Number(e.target.value))}
                 />
               </div>
               <div>
-                <label className="block">Right Rows</label>
-                <input
+                <Label htmlFor="right-rows">Right Rows</Label>
+                <Input
+                  id="right-rows"
                   type="number"
-                  value={rightRows}
-                  onChange={(e) => setRightRows(parseInt(e.target.value))}
-                  min={0}
                   placeholder="Right Rows"
-                  title="Right Rows"
-                  className="mt-1 w-full rounded border px-2 py-1"
+                  value={rightRows}
+                  onChange={(e) => setRightRows(Number(e.target.value))}
                 />
               </div>
               <div>
-                <label className="block">Back Cols</label>
-                <input
+                <Label htmlFor="back-cols">Back Columns</Label>
+                <Input
+                  id="back-cols"
                   type="number"
+                  placeholder="Back Columns"
                   value={backCols}
-                  onChange={(e) => setBackCols(parseInt(e.target.value))}
-                  min={0}
-                  placeholder="Back Cols"
-                  title="Back Cols"
-                  className="mt-1 w-full rounded border px-2 py-1"
+                  onChange={(e) => setBackCols(Number(e.target.value))}
                 />
               </div>
               <div>
-                <label className="block">Back Rows</label>
-                <input
+                <Label htmlFor="back-rows">Back Rows</Label>
+                <Input
+                  id="back-rows"
                   type="number"
-                  value={backRows}
-                  onChange={(e) => setBackRows(parseInt(e.target.value))}
-                  min={0}
                   placeholder="Back Rows"
-                  title="Back Rows"
-                  className="mt-1 w-full rounded border px-2 py-1"
+                  value={backRows}
+                  onChange={(e) => setBackRows(Number(e.target.value))}
                 />
               </div>
             </div>
@@ -288,11 +287,15 @@ export default function Page() {
             </Button>
           </form>
         </Card>
-      <SeatProvider>
-        <SeatsDataProvider data={seatsArrayToMap(flattenBusSeats(busSeats))}>
-          <BusWrapper busId="test" busSeats={busSeats} className="sticky top-10"/>
-        </SeatsDataProvider>
-      </SeatProvider>
+        <SeatProvider>
+          <SeatsDataProvider data={seatsArrayToMap(flattenBusSeats(busSeats))}>
+            <BusWrapper
+              busId="test"
+              busSeats={busSeats}
+              className="sticky top-10"
+            />
+          </SeatsDataProvider>
+        </SeatProvider>
       </div>
     </div>
   );

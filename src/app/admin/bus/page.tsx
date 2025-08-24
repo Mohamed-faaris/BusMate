@@ -112,50 +112,134 @@ const AdminBusPage = () => {
     createBus.mutate({ ...form, boardingPoints: bpRows });
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-  };
-
   return (
-    <div className="p-6">
-      <h1 className="mb-4 text-2xl font-semibold">Manage Buses</h1>
-      <Card className="mb-6 p-4">
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <Input
-            name="modelId"
-            placeholder="Model ID"
+    <div className="p-4">
+      <h1 className="text-xl font-bold">Add Bus</h1>
+      <form onSubmit={handleSubmit} className="space-y-2">
+          <div>
+          <label className="block font-medium">Model</label>
+          <select
             value={form.modelId}
-            onChange={handleChange}
-          />
-          <Input
-            name="busNumber"
-            placeholder="Bus Number"
+            onChange={(e) => setForm({ ...form, modelId: e.target.value })}
+            required
+            title="Model"
+            className="mt-1 w-full rounded border px-2 py-1"
+          >
+            <option value="">Select Model</option>
+            {modelsOptions?.models.map((m) => (
+              <option key={m.id} value={m.id}>
+                {m.model}
+              </option>
+            ))}
+          </select>
+        </div>
+        <input
             value={form.busNumber}
-            onChange={handleChange}
+          onChange={(e) => setForm({ ...form, busNumber: e.target.value })}
+          placeholder="Bus Number"
+          title="Bus Number"
+          required
           />
-          <Input
-            name="routeName"
-            placeholder="Route Name"
+        <input
             value={form.routeName}
-            onChange={handleChange}
+          onChange={(e) => setForm({ ...form, routeName: e.target.value })}
+          placeholder="Route Name"
+          title="Route Name"
           />
-          <Input
-            name="driverName"
-            placeholder="Driver Name"
+        <input
             value={form.driverName}
-            onChange={handleChange}
+          onChange={(e) => setForm({ ...form, driverName: e.target.value })}
+          placeholder="Driver Name"
+          title="Driver Name"
+          required
           />
-          <Input
-            name="driverPhone"
-            placeholder="Driver Phone"
+        <input
             value={form.driverPhone}
-            onChange={handleChange}
-          />
-          <Button type="submit">Add Bus</Button>
+          onChange={(e) => setForm({ ...form, driverPhone: e.target.value })}
+          placeholder="Driver Phone"
+          title="Driver Phone"
+          required
+        />
+        <h2 className="font-semibold">Boarding Points</h2>
+        {bpRows.map((row, idx) => (
+          <div key={idx} className="flex space-x-2">
+            <select
+              value={row.boardingPointId}
+              onChange={(e) =>
+                handleRowChange(idx, "boardingPointId", e.target.value)
+              }
+              required
+              title="Select Boarding Point"
+            >
+              <option value="">Select point</option>
+              {bpOptions?.boardingPoints.map((bp) => (
+                <option key={bp.id} value={bp.id}>
+                  {bp.name}
+                </option>
+              ))}
+            </select>
+            <input
+              type="time"
+              value={row.arrivalTime}
+              onChange={(e) =>
+                handleRowChange(idx, "arrivalTime", e.target.value)
+              }
+              title="Arrival Time"
+              required
+            />
+          </div>
+        ))}
+        <button
+          type="button"
+          onClick={handleAddRow}
+          className="rounded bg-gray-500 px-3 py-2 text-white"
+        >
+          Add Boarding Point
+        </button>
+        <button
+          type="submit"
+          className="rounded bg-blue-500 px-4 py-2 font-semibold text-white"
+        >
+          Save Bus
+        </button>
         </form>
-      </Card>
-      {/* Add logic to display buses here */}
+
+      <h1 className="mt-8 text-xl font-bold">Existing Buses</h1>
+      <table className="min-w-full border">
+        <thead>
+          <tr>
+            <th>Number</th>
+            <th>Model</th>
+            <th>Route</th>
+            <th>Driver</th>
+            <th>Phone</th>
+            <th>Points</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data?.buses.map((bus) => {
+            const pts = data.busBoardingPoints.filter(
+              (b) => b.busId === bus.id,
+            );
+            return (
+              <tr key={bus.id}>
+                <td>{bus.busNumber}</td>
+                <td>{bus.model}</td>
+                <td>{bus.routeName}</td>
+                <td>{bus.driverName}</td>
+                <td>{bus.driverPhone}</td>
+                <td>
+                  {pts.map((p) => (
+                    <div key={p.id}>
+                      {p.id} @ {p.arrivalTime}
+                    </div>
+                  ))}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     </div>
   );
 };
