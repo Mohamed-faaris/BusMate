@@ -16,6 +16,8 @@ import Bus from "@/components/bus/Bus";
 import { useSession } from "next-auth/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSeat } from "@/contexts/SeatContext";
+import { Spinner } from "@/components/ui/shadcn-io/spinner";
+import { Card } from "@/components/ui/card";
 
 interface Bus {
   id: string;
@@ -90,70 +92,78 @@ export default function BookingPage() {
 
   return (
     <div className="bg-muted flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
-      {isUserLoading && <p>Loading user details...</p>}
-      {userData?.user && (
-        <div>
-          <h2 className="text-lg font-semibold">
-            Welcome, {userData.user.name}
-          </h2>
-          <p className="text-muted-foreground text-sm">
-            Your boarding point: {userData.user.boardingPoint?.name}
-          </p>
-        </div>
-      )}
-      <div className="flex gap-4"></div>
-
-      {selectedBus && <Bus busId={selectedBus} />}
-      <Combobox
-        options={buses.map((bus) => ({ value: bus.id, label: bus.name }))}
-        value={selectedBus}
-        onChange={setSelectedBus}
-        placeholder={areBusesLoading ? "Loading buses..." : "Select Bus"}
-        searchPlaceholder="Search buses..."
-        emptyPlaceholder="No buses found for this route."
-      />
-      <Dialog>
-        <DialogTrigger asChild>
-          <Button
-            disabled={!selectedSeat || selectedSeat.seatStatus !== "available"}
-          >
-            Book Now
-          </Button>
-        </DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Confirm your booking</DialogTitle>
-            <DialogDescription>
-              Please review your booking details before confirming.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <p className="text-right font-semibold">Name</p>
-              <p className="col-span-3">{userData?.user?.name}</p>
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <p className="text-right font-semibold">Boarding Point</p>
-              <p className="col-span-3">
-                {userData?.user?.boardingPoint?.name}
-              </p>
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <p className="text-right font-semibold">Seat</p>
-              <p className="col-span-3">{selectedSeat?.id.slice(-3)}</p>
-            </div>
+      <div className="flex flex-col items-center justify-center gap-6">
+        {isUserLoading && <Spinner className="h-6 w-6" />}
+        {userData?.user && (
+          <div>
+            <h2 className="text-lg font-semibold">
+              Welcome, {userData.user.name}
+            </h2>
+            <p className="text-muted-foreground text-sm">
+              Your boarding point: {userData.user.boardingPoint?.name}
+            </p>
           </div>
-          <DialogFooter>
+        )}
+        <div className="flex gap-4"></div>
+
+        {selectedBus && <Bus busId={selectedBus} />}
+        <Combobox
+          options={buses.map((bus) => ({ value: bus.id, label: bus.name }))}
+          value={selectedBus}
+          onChange={setSelectedBus}
+          placeholder={areBusesLoading ? "Loading buses..." : "Select Bus"}
+          searchPlaceholder="Search buses..."
+          emptyPlaceholder="No buses found for this route."
+        />
+        {areBusesLoading && (
+          <Spinner className="h-6 w-6" variant="circle-filled" />
+        )}
+        <Dialog>
+          <DialogTrigger asChild>
             <Button
-              type="submit"
-              onClick={() => bookSeat()}
-              disabled={isBooking}
+              disabled={
+                !selectedSeat || selectedSeat.seatStatus !== "available"
+              }
+              className="w-full"
             >
-              {isBooking ? "Booking..." : "Confirm Booking"}
+              Book Now
             </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Confirm your booking</DialogTitle>
+              <DialogDescription>
+                Please review your booking details before confirming.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-4 items-center gap-4">
+                <p className="text-right font-semibold">Name</p>
+                <p className="col-span-3">{userData?.user?.name}</p>
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <p className="text-right font-semibold">Boarding Point</p>
+                <p className="col-span-3">
+                  {userData?.user?.boardingPoint?.name}
+                </p>
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <p className="text-right font-semibold">Seat</p>
+                <p className="col-span-3">{selectedSeat?.id.slice(-3)}</p>
+              </div>
+            </div>
+            <DialogFooter>
+              <Button
+                type="submit"
+                onClick={() => bookSeat()}
+                disabled={isBooking}
+              >
+                {isBooking ? "Booking..." : "Confirm Booking"}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </div>
     </div>
   );
 }
