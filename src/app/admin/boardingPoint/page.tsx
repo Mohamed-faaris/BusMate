@@ -78,7 +78,7 @@ export default function BoardingPointPage() {
             value={longitude}
             onChange={(e) => setLongitude(e.target.value)}
           />
-          <Button type="submit" disabled={addMutation.isLoading}>
+          <Button type="submit" disabled={addMutation.isPending}>
             Add Boarding Point
           </Button>
         </form>

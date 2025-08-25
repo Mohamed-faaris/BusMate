@@ -23,11 +23,21 @@ const createBusSchema = z.object({
     .optional(),
 });
 
+const busListQuery = db
+      .select()
+      .from(buses)
+      .orderBy(buses.createdAt)
+      .leftJoin(models, eq(buses.modelId, models.id))
+      .leftJoin(busBoardingPoints, eq(buses.id, busBoardingPoints.busId));
+
+export type AdminBusResponse = Awaited<typeof busListQuery>;
 export async function GET() {
   try {
-    const busesList = await db.select().from(buses).orderBy(buses.createdAt);
-    const bpList = await db.select().from(busBoardingPoints);
-    return NextResponse.json({ buses: busesList, busBoardingPoints: bpList });
+    const busesList: AdminBusResponse | undefined = await busListQuery;
+    if (!busesList) {
+      return NextResponse.json({ buses: [] });
+    }
+    return NextResponse.json({ buses: busesList });
   } catch (error) {
     console.error("Error fetching buses:", error);
     return NextResponse.json(
@@ -57,8 +67,11 @@ export async function POST(request: NextRequest) {
       boardingPoints,
     } = parseResult.data;
 
-    const [seats] = await db.select().from(models).where(eq(models.id, modelId));
-    
+    const [seats] = await db
+      .select()
+      .from(models)
+      .where(eq(models.id, modelId));
+
     if (!seats) {
       return NextResponse.json(
         { error: "Bus model not found" },
@@ -78,7 +91,6 @@ export async function POST(request: NextRequest) {
         seats: seatsArrayToMap(flattenBusSeats(seats.data)),
       })
       .returning();
-    
 
     let insertedPoints = [];
     if (boardingPoints && boardingPoints.length > 0) {
