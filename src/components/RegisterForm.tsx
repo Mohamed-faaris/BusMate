@@ -1,7 +1,7 @@
 //TODO : use zod and custom models to verify
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { motionConfig } from "@/lib/motion";
 import { Check, ChevronsUpDown, Loader2 } from "lucide-react";
@@ -85,7 +85,7 @@ export function RegisterForm({
   // React Query mutations for OTP verify and resend via API routes
   const resendOtpMutation = useMutation({
     mutationFn: () =>
-      fetch("/api/register/send", {
+      fetch("/api/register/otp/send", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -106,7 +106,7 @@ export function RegisterForm({
 
   const verifyOtpMutation = useMutation({
     mutationFn: () =>
-      fetch("/api/register", {
+      fetch("/api/register/otp/verify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(
@@ -137,6 +137,9 @@ export function RegisterForm({
         setErrors(result.error.formErrors.fieldErrors);
         return;
       }
+    }
+    if (step === 3) {
+      resendOtpMutation.mutate();
     }
     setErrors({});
     setStep(step + 1);

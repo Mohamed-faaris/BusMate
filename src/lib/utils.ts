@@ -1,11 +1,21 @@
+import crypto from "crypto";
+
+export function generateOTP() {
+  return crypto.randomInt(100000, 1000000).toString();
+}
 import type { BusModelProperties, Seat, SeatRows } from "@/server/db/schema";
 
 // Converts an array of seats to an object mapping seat id to seatStatus
-export function seatsArrayToMap(seats: Seat[]): Record<string, Seat["seatStatus"]> {
-  return seats.reduce((acc, seat) => {
-    acc[seat.id] = seat.seatStatus;
-    return acc;
-  }, {} as Record<string, Seat["seatStatus"]>);
+export function seatsArrayToMap(
+  seats: Seat[],
+): Record<string, Seat["seatStatus"]> {
+  return seats.reduce(
+    (acc, seat) => {
+      acc[seat.id] = seat.seatStatus;
+      return acc;
+    },
+    {} as Record<string, Seat["seatStatus"]>,
+  );
 }
 export function flattenBusSeats(busSeats: BusModelProperties): Seat[] {
   const seats: Seat[] = [];
