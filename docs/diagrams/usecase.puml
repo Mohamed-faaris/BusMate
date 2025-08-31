@@ -3,7 +3,6 @@ title BusMate Use Case Diagram
 left to right direction
 
 actor Admin
-actor Visitor
 actor User
 
 rectangle "Administration" {
@@ -13,20 +12,18 @@ rectangle "Administration" {
   Admin --> (View User Details)
 }
 
-rectangle "Public" {
-  Visitor --> (Register Account)
-  Visitor --> (Check Availability)
-  Visitor --> (View Home)
-  Visitor --> (Sign In)
-
-  (Register Account) --> (Check Availability) : <<includes>>
-}
-
 rectangle "User Dashboard" {
+  User --> (Register Account)
+  User --> (Check Availability)
+  User --> (View Home)
+  User --> (Sign In)
   User --> (Book Seat)
   User --> (View Seat Map)
   User --> (Browse Buses by Boarding Point)
   User --> (View Dashboard)
+
+  (Register Account) --> (Check Availability) : <<include>>
+
 
   (Book Seat) --> (View Seat Map) : <<includes>>
   (View Seat Map) --> (Browse Buses by Boarding Point) : <<includes>>
