@@ -106,9 +106,9 @@ export default function Page() {
   };
 
   return (
-    <div className="p-6 flex flex-col w-full">
+    <div className="flex w-full flex-col p-6">
       <h1 className="mb-4 text-2xl font-semibold">Configure Bus Model</h1>
-      <div className="flex gap-12">
+      <div className="flex gap-12 w-full justify-center">
         <Card className="mb-6 flex p-4">
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <Input
@@ -292,7 +292,7 @@ export default function Page() {
             <BusWrapper
               busId="test"
               busSeats={busSeats}
-              className="sticky top-10"
+              className="sticky top-10 origin-top-left scale-[140%]"
             />
           </SeatsDataProvider>
         </SeatProvider>

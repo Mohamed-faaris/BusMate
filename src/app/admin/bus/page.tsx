@@ -12,6 +12,7 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import type { AdminBusResponse } from "@/app/api/admin/addBus/route";
+import { Trash2 } from "lucide-react";
 
 interface BoardingPointOption {
   id: string;
@@ -62,7 +63,12 @@ const AdminBusPage = () => {
   });
   const [bpRows, setBpRows] = useState<
     { boardingPointId: string; arrivalTime: string }[]
-  >([]);
+  >([
+    {
+      boardingPointId: "",
+      arrivalTime: "",
+    },
+  ]);
 
   const { data: bpOptions } = useQuery<{
     boardingPoints: BoardingPointOption[];
@@ -106,6 +112,10 @@ const AdminBusPage = () => {
     setBpRows(rows);
   };
 
+  const handleRemoveRow = (index: number) => {
+    setBpRows(bpRows.filter((_, i) => i !== index));
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     createBus.mutate({ ...form, boardingPoints: bpRows });
@@ -115,7 +125,7 @@ const AdminBusPage = () => {
     <div className="p-6">
       <h1 className="mb-4 text-2xl font-semibold">Add Bus</h1>
       <div className="flex gap-2">
-        <Card className="mb-6 h-full w-md p-4">
+        <Card className="h-full w-md p-4">
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div>
               <Label htmlFor="model">Model</Label>
@@ -197,7 +207,7 @@ const AdminBusPage = () => {
             <h2 className="text-lg font-semibold">Boarding Points</h2>
             {bpRows.map((row, idx) => (
               <div key={idx} className="flex gap-4">
-                <div>
+                <div className="flex-grow">
                   <Label htmlFor={`boarding-point-${idx}`}>
                     Boarding Point
                   </Label>
@@ -238,6 +248,18 @@ const AdminBusPage = () => {
                     required
                   />
                 </div>
+                <div className="flex flex-col items-center justify-center">
+                  <Label htmlFor={`remove-${idx}`} className="invisible">
+                    r
+                  </Label>
+                  <Button
+                    type="button"
+                    onClick={() => handleRemoveRow(idx)}
+                    variant="outline"
+                  >
+                    <Trash2 />
+                  </Button>
+                </div>
               </div>
             ))}
             <Button type="button" onClick={handleAddRow} variant="secondary">
@@ -251,58 +273,43 @@ const AdminBusPage = () => {
         <Card className="flex-grow p-4">
           <h1 className="mt-8 text-2xl font-semibold">Existing Buses</h1>
           <div className="overflow-x-auto">
-            <table className="min-w-full table-auto border-collapse border border-gray-300">
-              <thead className="bg-gray-100">
+            <table className="min-w-full table-auto border-collapse border">
+              <thead className="">
                 <tr>
-                  <th className="border border-gray-300 px-4 py-2 text-left">
-                    Number
-                  </th>
-                  <th className="border border-gray-300 px-4 py-2 text-left">
-                    Model
-                  </th>
-                  <th className="border border-gray-300 px-4 py-2 text-left">
-                    Route
-                  </th>
-                  <th className="border border-gray-300 px-4 py-2 text-left">
-                    Driver
-                  </th>
-                  <th className="border border-gray-300 px-4 py-2 text-left">
-                    Phone
-                  </th>
-                  <th className="border border-gray-300 px-4 py-2 text-left">
-                    Points
-                  </th>
+                  <th className="border px-4 py-2 text-left">Number</th>
+                  <th className="border px-4 py-2 text-left">Model</th>
+                  <th className="border px-4 py-2 text-left">Route</th>
+                  <th className="border px-4 py-2 text-left">Driver</th>
+                  <th className="border px-4 py-2 text-left">Phone</th>
+                  <th className="border px-4 py-2 text-left">Points</th>
                 </tr>
               </thead>
               <tbody>
-                {/* {data?.buses.map((bus) => {
-                  const pts =
-                    data?.busBoardingPoints?.filter(
-                      (b) => b.busId === bus.id,
-                    ) || [];
+                {data?.buses?.map((item, idx) => {
+                  const bus = item.bus;
+                  const model = item.model;
+                  const bp = item.busBoardingPoint;
+                  const pts = bp ? [bp] : [];
                   return (
-                    <tr key={bus.id} className="odd:bg-white even:bg-gray-50">
-                      <td className="border border-gray-300 px-4 py-2">
-                        {bus.busNumber}
+                    <tr key={idx} className="">
+                      <td className="border px-4 py-2">{bus.busNumber}</td>
+                      <td className="border px-4 py-2">
+                        {model?.model || "N/A"}
                       </td>
-                      <td className="border border-gray-300 px-4 py-2">
-                        {bus.model}
-                      </td>
-                      <td className="border border-gray-300 px-4 py-2">
+                      <td className="border px-4 py-2">
                         {bus.routeName || "N/A"}
                       </td>
-                      <td className="border border-gray-300 px-4 py-2">
-                        {bus.driverName}
-                      </td>
-                      <td className="border border-gray-300 px-4 py-2">
-                        {bus.driverPhone}
-                      </td>
-                      <td className="border border-gray-300 px-4 py-2">
+                      <td className="border px-4 py-2">{bus.driverName}</td>
+                      <td className="border px-4 py-2">{bus.driverPhone}</td>
+                      <td className="border px-4 py-2">
                         {pts.length > 0 ? (
                           <ul className="list-disc pl-4">
                             {pts.map((p, index) => (
                               <li key={`${p.id}-${index}`}>
-                                {p.id} @ {p.arrivalTime}
+                                {bpOptions?.boardingPoints.find(
+                                  (bp) => bp.id === p.boardingPointId,
+                                )?.name || p.boardingPointId}{" "}
+                                @ {p.arrivalTime}
                               </li>
                             ))}
                           </ul>
@@ -312,7 +319,7 @@ const AdminBusPage = () => {
                       </td>
                     </tr>
                   );
-                })} */}
+                })}
               </tbody>
             </table>
           </div>

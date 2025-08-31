@@ -74,11 +74,14 @@ export default function HomePage() {
           <Link href={"/dashboard/booking"}>
             <Button>Booking</Button>
           </Link>
+          <Link href={"/dashboard"}>
+            <Button>dashboard</Button>
+          </Link>
           <Link href={"/admin"}>
             <Button>Admin</Button>
           </Link>
         </div>
-          <UserDetails />
+        <UserDetails />
       </div>
     </main>
   );

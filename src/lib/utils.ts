@@ -1,10 +1,8 @@
-import crypto from "crypto";
-
-export function generateOTP() {
-  return crypto.randomInt(100000, 1000000).toString();
-}
 import type { BusModelProperties, Seat, SeatRows } from "@/server/db/schema";
 
+export function generateOTP() {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+}
 // Converts an array of seats to an object mapping seat id to seatStatus
 export function seatsArrayToMap(
   seats: Seat[],
