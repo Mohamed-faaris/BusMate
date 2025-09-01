@@ -70,7 +70,6 @@ export default function BookingPage() {
   });
 
   const boardingPointId = userData?.user?.boardingPoint?.id;
-  //console.log(userData, boardingPointId);
   const { data: busesData, isLoading: areBusesLoading } = useQuery({
     queryKey: ["buses", boardingPointId],
     queryFn: async () => {

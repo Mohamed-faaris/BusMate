@@ -16,6 +16,8 @@ import type { DashboardApiResponseSuccess } from "@/app/api/dashboard/route";
 import { motion } from "motion/react";
 import { motionConfig } from "@/lib/motion";
 import { Ticket } from "@/components/Ticket";
+import { useWindowSize } from "@/hooks/use-window-size";
+import { MobileTicket } from "@/components/MobileTicket";
 
 async function fetchDashboardData(): Promise<DashboardApiResponseSuccess> {
   const res = await fetch("/api/dashboard", { cache: "no-store" });
@@ -25,6 +27,7 @@ async function fetchDashboardData(): Promise<DashboardApiResponseSuccess> {
 
 export default function DashboardPage() {
   const { data: session, status } = useSession();
+  const { width } = useWindowSize();
 
   const { data, isLoading, isError } = useQuery<DashboardApiResponseSuccess>({
     queryKey: ["dashboard", session?.user?.id],
@@ -61,10 +64,16 @@ export default function DashboardPage() {
   }
 
   const { user, seat, boardingPoint, bus } = data;
-
+  if(width < 730) {
+    return (
+      <div className="flex justify-center p-6 ">
+        <MobileTicket className="" />
+      </div>
+    );
+  }
   return (
-    <div className="mx-auto p-6">
-          <Ticket className="" />
+    <div className="flex justify-center p-6 ">
+      <Ticket className="" />
     </div>
   );
 }

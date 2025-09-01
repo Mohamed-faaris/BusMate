@@ -15,6 +15,7 @@ type BusWrapperProps = {
 } & HTMLAttributes<HTMLDivElement>;
 
 export default function BusWrapper({ busId, busSeats, className, ...props }: BusWrapperProps) {
+  const { scale } = useSeat();
   return (
     <Card
       id="bus"
@@ -39,6 +40,7 @@ export default function BusWrapper({ busId, busSeats, className, ...props }: Bus
         </div>
         <div
           id="middle"
+          style={{ fontSize: 14 * scale }}
           className="text-secondary flex flex-grow flex-col items-center justify-center [letter-spacing:1em] [text-orientation:upright] [writing-mode:vertical-rl]"
         >
           AISLE

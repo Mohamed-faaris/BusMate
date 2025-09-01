@@ -20,7 +20,7 @@ async function fetchDashboardData(): Promise<DashboardApiResponseSuccess> {
   return res.json();
 }
 
-export function Ticket({ className, ...props }: TicketProps) {
+export function MobileTicket({ className, ...props }: TicketProps) {
   const { data: session, status } = useSession();
   const { width } = useWindowSize();
   const { data, isLoading } = useQuery<DashboardApiResponseSuccess>({
@@ -40,7 +40,7 @@ export function Ticket({ className, ...props }: TicketProps) {
     return (
       <div
         className={cn(
-          `flex justify-between rounded-lg border-2 border-gray-300 p-8 py-10 pb-4`,
+          `flex justify-between p-8 pb-4`,
           className,
         )}
         {...props}
@@ -59,7 +59,7 @@ export function Ticket({ className, ...props }: TicketProps) {
   return (
     <div
       className={cn(
-        `flex w-7xl justify-between rounded-lg border-2 border-gray-300 p-8 pb-4`,
+        `flex flex-col w-7xl justify-between rounded-lg border-2 border-gray-300 p-8 pb-4`,
         className,
       )}
       {...props}
