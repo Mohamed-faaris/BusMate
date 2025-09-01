@@ -28,10 +28,10 @@ export function MobileTicket({ className, ...props }: TicketProps) {
     queryFn: fetchDashboardData,
     enabled: !!session?.user?.id,
   });
-  let scale = 1;
+  let scale = 0.9;
   if (width) {
-    if (1440 > width) {
-      scale = 1.1;
+    if (width< 320) {
+      scale = 0.7;
     }
   }
   if (isLoading) return <div>Loading...</div>;
@@ -39,33 +39,32 @@ export function MobileTicket({ className, ...props }: TicketProps) {
   if (data.seat == null) {
     return (
       <div
-        className={cn(
-          `flex justify-between p-8 pb-4`,
+        className={cn("h-full flex flex-col justify-between",
           className,
         )}
         {...props}
       >
-        <div className="flex flex-col gap- text-2xl sm:gap-2 lg:text-4xl">
+        <div className="flex flex-col l">
           <p className="capitalize">{data.user.name}</p>
           <p className="uppercase">{data.user.rollNo}</p>
           <p className="capitalize">{data.boardingPoint?.name}</p>
-          <Link href="dashboard/booking">
-            <Button>Book Now</Button>
-          </Link>
         </div>
+        <div className="flex-grow"></div>
+        <Link href="dashboard/booking" >
+            <Button className="w-full">Book Now</Button>
+        </Link>
       </div>
     );
   }
   return (
     <div
       className={cn(
-        `flex flex-col w-7xl justify-between rounded-lg border-2 border-gray-300 p-8 pb-4`,
+        `flex flex-col justify-between  p-4 pb-4 items-center`,
         className,
       )}
       {...props}
     >
       <div className="mb-4 flex flex-col justify-between sm:mb-6 md:mb-8 lg:mb-10">
-        <LogoTitle className="text-4xl sm:text-5xl md:text-6xl lg:text-6xl" />
         <div className="flex flex-col gap-1 text-2xl sm:gap-2 lg:text-4xl">
           <p className="capitalize">{data.user.name}</p>
           <p className="uppercase">{data.user.rollNo}</p>
@@ -73,11 +72,13 @@ export function MobileTicket({ className, ...props }: TicketProps) {
           <p className="capitalize">{data.boardingPoint?.name}</p>
         </div>
       </div>
-      <div className="">
+      <div className="flex">
+
+      <div className="flex flex-col justify-center items-center">
         <BusPropsProvider disabled={false} scale={scale}>
           <SeatsDataProvider
             data={{
-              [`${data.seat?.seatId}`]: "bookedMale",
+                [`${data.seat?.seatId}`]: "bookedMale",
             }}
           >
             <BusWrapper busId="test" busSeats={data.model!.data} />
@@ -86,6 +87,7 @@ export function MobileTicket({ className, ...props }: TicketProps) {
         <p className="w-full text-center text-sm sm:text-base md:text-lg lg:text-xl">
           BUS-{data.bus?.busNumber}
         </p>
+            </div>
       </div>
     </div>
   );

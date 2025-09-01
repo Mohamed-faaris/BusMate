@@ -66,7 +66,7 @@ export default function DashboardPage() {
   const { user, seat, boardingPoint, bus } = data;
   if(width < 730) {
     return (
-      <div className="flex justify-center p-6 ">
+      <div className="flex-grow p-6 ">
         <MobileTicket className="" />
       </div>
     );

@@ -36,7 +36,7 @@ export default function RootLayout({
           </div>
           <NextAuthProvider>
             <ReactQueryProvider>
-              <div className="bg-background min-h-screen">{children}</div>
+              <div className="bg-background min-h-screen h-full">{children}</div>
             </ReactQueryProvider>
           </NextAuthProvider>
         </ThemeProvider>

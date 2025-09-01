@@ -18,6 +18,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSeat } from "@/contexts/BusPropsContext";
 import { Spinner } from "@/components/ui/shadcn-io/spinner";
 import { Card } from "@/components/ui/card";
+import { useRouter } from "next/navigation";
 
 interface Bus {
   id: string;
@@ -29,6 +30,7 @@ export default function BookingPage() {
   const { data: session } = useSession();
   const { selectedSeat, setSelectedSeat } = useSeat();
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   const { data: userData, isLoading: isUserLoading } = useQuery({
     queryKey: ["user", session?.user?.id],
@@ -60,12 +62,12 @@ export default function BookingPage() {
       if (!res.ok) {
         throw new Error("Failed to book seat");
       }
-
       return res.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["busSeats", selectedBus] });
       setSelectedSeat(null);
+      router.push("/dashboard");
     },
   });
 
@@ -90,7 +92,7 @@ export default function BookingPage() {
   }, [buses, selectedBus]);
 
   return (
-    <div className="bg-muted flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
+    <div className="flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
       <div className="flex flex-col items-center justify-center gap-6">
         {isUserLoading && <Spinner className="h-6 w-6" />}
         {userData?.user && (
