@@ -7,7 +7,7 @@ import {
 } from "@/lib/utils";
 import BusWrapper from "@/components/bus/BusWrapper";
 import type { BusModelProperties, Seat } from "@/server/db/schema";
-import { SeatSelectorProvider } from "@/contexts/SeatContext";
+import { BusPropsProvider } from "@/contexts/BusPropsContext";
 import { SeatsDataProvider } from "@/contexts/seatsDataContext";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -287,7 +287,7 @@ export default function Page() {
             </Button>
           </form>
         </Card>
-        <SeatSelectorProvider>
+        <BusPropsProvider>
           <SeatsDataProvider data={seatsArrayToMap(flattenBusSeats(busSeats))}>
             <BusWrapper
               busId="test"
@@ -295,7 +295,7 @@ export default function Page() {
               className="sticky top-10 origin-top-left scale-[140%]"
             />
           </SeatsDataProvider>
-        </SeatSelectorProvider>
+        </BusPropsProvider>
       </div>
     </div>
   );

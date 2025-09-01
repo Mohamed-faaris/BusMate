@@ -6,6 +6,7 @@ import Driver from "./busComponents/Driver";
 import SeatGroup from "./busComponents/SeatGroup";
 import type { HTMLAttributes } from "react";
 import { cn } from "@/lib/utils";
+import { useSeat } from "@/contexts/BusPropsContext";
 
 type BusWrapperProps = {
   busId: string;

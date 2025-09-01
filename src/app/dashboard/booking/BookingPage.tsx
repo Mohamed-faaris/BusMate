@@ -15,7 +15,7 @@ import { useEffect, useState } from "react";
 import Bus from "@/components/bus/Bus";
 import { useSession } from "next-auth/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useSeat } from "@/contexts/SeatContext";
+import { useSeat } from "@/contexts/BusPropsContext";
 import { Spinner } from "@/components/ui/shadcn-io/spinner";
 import { Card } from "@/components/ui/card";
 

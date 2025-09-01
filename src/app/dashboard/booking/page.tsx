@@ -1,10 +1,10 @@
-import { SeatSelectorProvider } from "@/contexts/SeatContext";
+import { BusPropsProvider } from "@/contexts/BusPropsContext";
 import BookingPage from "./BookingPage";
 
 export default function Page() {
   return (
-    <SeatSelectorProvider>
+    <BusPropsProvider>
       <BookingPage />
-    </SeatSelectorProvider>
+    </BusPropsProvider>
   );
 }

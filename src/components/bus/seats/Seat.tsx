@@ -1,33 +1,42 @@
 import type { Seat } from "@/server/db/schema";
-import { useSeat } from "@/contexts/SeatContext";
+import { useSeat } from "@/contexts/BusPropsContext";
 import { useSeatsData } from "@/contexts/seatsDataContext";
 
 type SeatProps = Seat;
 
-export default function Seat({ id,seatStatus }: SeatProps) {
+export default function Seat({ id, seatStatus }: SeatProps) {
   const { selectedSeat, setSelectedSeat } = useSeat();
   const seatStatusFromContext = useSeatsData()[id];
   const isSelected = selectedSeat?.id === id;
-  const scale = 110;
+  const { scale, enabled: disabled } = useSeat();
 
-  let colorClass = "";
-  if (isSelected) {
-    colorClass = "bg-black";
-  } else if (seatStatusFromContext === "available") {
-    colorClass = "bg-available";
-  } else if (seatStatusFromContext === "bookedMale") {
-    colorClass = "bg-blue-500";
+  let colorClass = "bg-available";
+
+  if (seatStatusFromContext === "bookedMale") {
+    colorClass = "bg-maleBooked";
   } else if (seatStatusFromContext === "bookedFemale") {
     colorClass = "bg-femaleBooked";
   } else if (seatStatusFromContext === "reserved") {
     colorClass = "bg-reserved";
   } else if (seatStatus === "unavailable") {
-    return <div className="hidden h-10 w-10"></div>;
+    return (
+      <div
+        style={{ height: 40 * scale, width: 40 * scale }}
+        className={`hidden`}
+      ></div>
+    );
+  } else if (isSelected) {
+    colorClass = "bg-selected";
   }
   return (
     <div
-      onClick={() => setSelectedSeat({ id, seatStatus })}
-      className={`border-accent hover:bg-secondary m-0.5 flex h-[40px] w-[40px] flex-col justify-center rounded-md border text-center ${colorClass}`}
+      onClick={() => {
+        if (!disabled && colorClass === "bg-available") {
+          setSelectedSeat({ id, seatStatus });
+        }
+      }}
+      style={{ height: 40 * scale, width: 40 * scale, fontSize: 14 * scale }}
+      className={`border-accent ${colorClass === "bg-available" ? "hover:bg-secondary" : ""} m-0.5 flex flex-col justify-center rounded-md border text-center ${colorClass}`}
     >
       {id.slice(-3)}
     </div>

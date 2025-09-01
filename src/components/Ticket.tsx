@@ -1,5 +1,5 @@
 "use client";
-import { SeatSelectorProvider } from "@/contexts/SeatContext";
+import { BusPropsProvider } from "@/contexts/BusPropsContext";
 import { SeatsDataProvider } from "@/contexts/seatsDataContext";
 import { seatsArrayToMap, flattenBusSeats, cn } from "@/lib/utils";
 import Bus, { fallbackBusSeats } from "./bus/Bus";
@@ -29,35 +29,39 @@ export function Ticket({ className, ...props }: TicketProps) {
   return (
     <div
       className={cn(
-        `flex aspect-[16/9] justify-between rounded-lg border-2 border-gray-300 p-10`,
+        `flex aspect-[16/9] justify-between rounded-lg border-2 border-gray-300 p-4 sm:p-6 md:p-8 lg:p-10`,
         className,
       )}
       {...props}
     >
-      <div className="mb-10 flex flex-col justify-between">
-        <LogoTitle className="text-8xl" />
-        <div className="flex flex-col gap-2">
-          <p className="text-5xl">{data.user.name}</p>
-          <p className="text-5xl">{data.user.rollNo}</p>
-          <p className="text-5xl">{`BUS-${data.bus?.busNumber}-${data.seat?.seatId}`}</p>
-          <p className="text-5xl">{data.boardingPoint?.name}</p>
+      <div className="mb-4 flex flex-col justify-between sm:mb-6 md:mb-8 lg:mb-10">
+        <LogoTitle className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl" />
+        <div className="flex flex-col gap-1 sm:gap-2">
+          <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
+            {data.user.name}
+          </p>
+          <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
+            {data.user.rollNo}
+          </p>
+          <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl">{`BUS-${data.bus?.busNumber}-${data.seat?.seatId}`}</p>
+          <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
+            {data.boardingPoint?.name}
+          </p>
         </div>
       </div>
-      <div className="">
-        <SeatSelectorProvider>
+      <div className="w-1/2 sm:w-auto">
+        <BusPropsProvider disabled={false}>
           <SeatsDataProvider
             data={{
               [`${data.seat?.seatId}`]: "bookedMale",
             }}
           >
-            <BusWrapper
-              busId="test"
-              busSeats={data.model!.data}
-              className="origin-top-left scale-100"
-            />
+            <BusWrapper busId="test" busSeats={data.model!.data} />
           </SeatsDataProvider>
-        </SeatSelectorProvider>
-        <p className="w-full text-center text-xl">BUS-{data.bus?.busNumber}</p>
+        </BusPropsProvider>
+        <p className="w-full text-center text-sm sm:text-base md:text-lg lg:text-xl">
+          BUS-{data.bus?.busNumber}
+        </p>
       </div>
     </div>
   );
