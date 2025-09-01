@@ -16,7 +16,7 @@ interface SeatContextType {
 
 export const SeatContext = createContext<SeatContextType | null>(null);
 
-export function SeatProvider({ children }: { children: ReactNode }) {
+export function SeatSelectorProvider({ children }: { children: ReactNode }) {
   const [selectedSeat, setSelectedSeat] = useState<Seat | null>(null);
 
   return (

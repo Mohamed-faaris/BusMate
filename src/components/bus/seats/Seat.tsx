@@ -8,6 +8,7 @@ export default function Seat({ id,seatStatus }: SeatProps) {
   const { selectedSeat, setSelectedSeat } = useSeat();
   const seatStatusFromContext = useSeatsData()[id];
   const isSelected = selectedSeat?.id === id;
+  const scale = 110;
 
   let colorClass = "";
   if (isSelected) {
@@ -26,7 +27,7 @@ export default function Seat({ id,seatStatus }: SeatProps) {
   return (
     <div
       onClick={() => setSelectedSeat({ id, seatStatus })}
-      className={`border-accent hover:bg-secondary m-0.5 flex h-10 w-10 flex-col justify-center rounded-md border text-center ${colorClass}`}
+      className={`border-accent hover:bg-secondary m-0.5 flex h-[40px] w-[40px] flex-col justify-center rounded-md border text-center ${colorClass}`}
     >
       {id.slice(-3)}
     </div>

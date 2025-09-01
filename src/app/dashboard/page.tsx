@@ -15,6 +15,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { DashboardApiResponseSuccess } from "@/app/api/dashboard/route";
 import { motion } from "motion/react";
 import { motionConfig } from "@/lib/motion";
+import { Ticket } from "@/components/Ticket";
 
 async function fetchDashboardData(): Promise<DashboardApiResponseSuccess> {
   const res = await fetch("/api/dashboard", { cache: "no-store" });
@@ -64,7 +65,7 @@ export default function DashboardPage() {
   return (
     
       <div className="container mx-auto p-6">
-        <Card>
+        {/* <Card>
           <CardHeader className="text-center">
             <CardTitle className="text-xl">Your Dashboard</CardTitle>
             <CardDescription>Profile and booking overview</CardDescription>
@@ -126,7 +127,10 @@ export default function DashboardPage() {
               </div>
             </motion.div>
           </CardContent>
-        </Card>
+        </Card> */}
+        <div>
+          <Ticket className="origin-top-left scale-[70%]" />
+        </div>
       </div>
     
   );

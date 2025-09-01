@@ -1,13 +1,14 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import { motion } from "motion/react";
 
-interface LogoTitleProps {
+interface LogoTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
   animate?: boolean;
   duration?: number;
 }
 
-export function LogoTitle({ animate = false, duration = 0.8 }: LogoTitleProps) {
+export function LogoTitle({ animate = false, duration = 0.8, className, ...props }: LogoTitleProps) {
   return (
     <motion.h1
       initial={animate ? { opacity: 0, y: -20, scale: 0.9 } : false}
@@ -23,7 +24,7 @@ export function LogoTitle({ animate = false, duration = 0.8 }: LogoTitleProps) {
             }
           : undefined
       }
-      className="text-card-foreground text-5xl font-extrabold sm:text-[5rem]"
+      className={cn("text-card-foreground text-5xl font-extrabold sm:text-[5rem]",className)}
     >
       <motion.span
         className="text-primary"
