@@ -37,10 +37,6 @@ interface BusBP {
   arrivalTime: string;
 }
 
-interface BusesResponse {
-  buses: Bus[];
-  busBoardingPoints: BusBP[];
-}
 
 interface CreateBusInput {
   modelId: string;
@@ -137,7 +133,7 @@ const AdminBusPage = () => {
                   setForm({
                     ...form,
                     modelId: value,
-                    routeName: selectedModel?.model || "",
+                    routeName: selectedModel?.model ?? "",
                   });
                 }}
                 value={form.modelId}
@@ -145,7 +141,7 @@ const AdminBusPage = () => {
                 <SelectTrigger className="w-full">
                   <span>
                     {modelsOptions?.models.find((m) => m.id === form.modelId)
-                      ?.model || "Select Model"}
+                      ?.model ?? "Select Model"}
                   </span>
                 </SelectTrigger>
                 <SelectContent>
@@ -213,9 +209,9 @@ const AdminBusPage = () => {
                   </Label>
                   <Select
                     onValueChange={(value) => {
-                      const selectedPoint = bpOptions?.boardingPoints.find(
-                        (bp) => bp.id === value,
-                      );
+                      // const selectedPoint = bpOptions?.boardingPoints.find(
+                      //   (bp) => bp.id === value,
+                      // );
                       handleRowChange(idx, "boardingPointId", value);
                     }}
                     value={row.boardingPointId}

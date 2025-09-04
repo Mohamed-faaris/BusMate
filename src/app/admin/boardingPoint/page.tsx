@@ -33,7 +33,7 @@ export default function BoardingPointPage() {
       });
       if (!res.ok) {
         const data = await res.json();
-        throw new Error(data.error || "Error adding boarding point");
+        throw new Error(data.error ?? "Error adding boarding point");
       }
       return res.json();
     },

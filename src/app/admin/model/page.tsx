@@ -73,7 +73,7 @@ export default function Page() {
       });
       if (!res.ok) {
         const result = await res.json();
-        throw new Error(result.error || "Server error");
+        throw new Error(result.error ?? "Server error");
       }
       return res.json();
     },
