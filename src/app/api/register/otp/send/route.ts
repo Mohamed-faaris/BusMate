@@ -1,7 +1,7 @@
 import { generateOTP } from "@/lib/utils";
 import { sendOTPMail } from "@/server/mailer";
 import { setKey } from "@/server/redis/utils";
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
 export async function POST(request:NextRequest){

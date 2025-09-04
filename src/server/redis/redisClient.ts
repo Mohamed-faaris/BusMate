@@ -1,10 +1,10 @@
-import { createClient, RedisClientType } from "redis";
+import { createClient, type RedisClientType } from "redis";
 
 declare global {
   // Extend NodeJS global type
   // so TypeScript knows `global.redisClient` exists
   // and is a Redis client
-  // eslint-disable-next-line no-var
+   
   var redisClient: RedisClientType | undefined;
 }
 

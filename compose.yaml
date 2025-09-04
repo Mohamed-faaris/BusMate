@@ -8,16 +8,16 @@
 # database or a cache. For examples, see the Awesome Compose repository:
 # https://github.com/docker/awesome-compose
 services:
-  # server:
-  #   build:
-  #     context: .
-  #   environment:
-  #     NODE_ENV: production
-  #   ports:
-  #     - 3000:3000
-  #   depends_on:
-  #     postgres-container:
-  #       condition: service_healthy
+  server:
+    build:
+      context: .
+    environment:
+      NODE_ENV: production
+    ports:
+      - 3000:3000
+    depends_on:
+      postgres-container:
+        condition: service_healthy
 
   postgres-container:
     image: postgres:17.5

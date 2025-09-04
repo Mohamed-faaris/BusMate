@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { db } from "@/server/db";
 import { buses } from "@/server/db/schema/buses";
 import { models } from "@/server/db/schema/models";

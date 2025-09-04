@@ -12,7 +12,6 @@ export async function GET(
       .select()
       .from(models)
       .where(eq(models.id, params.modelId));
-
     if (!model) {
       return NextResponse.json({ error: "Model not found" }, { status: 404 });
     }

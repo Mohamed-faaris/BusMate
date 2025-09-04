@@ -4,14 +4,12 @@ import { createTable } from "./table";
 import type { UUID } from "crypto";
 import type { Seat } from "./models";
 
-interface seatsJSON{
-  [seatId: string]: {
+type seatsJSON = Record<string, {
     userId:UUID
     createdAt: Date
     updatedAt: Date
     isBooked: boolean
-  } 
-}
+  }>;
 
 // BUSES
 export const buses = createTable(

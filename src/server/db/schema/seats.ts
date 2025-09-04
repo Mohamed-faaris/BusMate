@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { index } from "drizzle-orm/pg-core";
+import { index, uniqueIndex } from "drizzle-orm/pg-core";
 import { seatStatusEnum } from "./enums";
 import { createTable } from "./table";
 import { buses } from "./buses";
@@ -13,6 +13,7 @@ export const seats = createTable(
     userId: d
       .uuid()
       .notNull()
+      .unique()
       .references(() => users.id),
     busId: d
       .uuid()
@@ -33,5 +34,6 @@ export const seats = createTable(
   (table) => [
     index("seatTbUserId_idx").on(table.userId),
     index("seatTbbusId_idx").on(table.busId),
+    uniqueIndex("unique_bus_seat").on(table.busId, table.seatId),
   ],
 );

@@ -23,6 +23,9 @@ RUN --mount=type=cache,target=/root/.local/share/pnpm/store \
 # Copy the rest of the app
 COPY . .
 
+# Copy dummy/example env for build-time variables
+COPY .env.example .env
+
 # Build Next.js app
 RUN --mount=type=cache,target=/root/.local/share/pnpm/store \
     pnpm build

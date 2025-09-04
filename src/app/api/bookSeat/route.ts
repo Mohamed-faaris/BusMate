@@ -28,7 +28,7 @@ export async function POST(req: Request) {
     }
     const session = await auth();
     console.log("Session info:", session);
-    if (!session || !session.user) {
+    if (!session?.user) {
       console.warn("Unauthorized access attempt");
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -37,14 +37,14 @@ export async function POST(req: Request) {
         .select()
         .from(users)
         .where(eq(users.id, session.user?.id || ""));
-      console.log("User lookup result:", user);
+      
       if (!user) {
         console.warn("User not found for id:", session.user?.id);
         return NextResponse.json({ error: "User not found" }, { status: 404 });
       }
       const seatStatus: SeatStatus =
         user.gender === "male" ? "bookedMale" : "bookedFemale";
-      console.log(`Booking seat with status: ${seatStatus}`);
+      
       await tx.insert(seats).values({
         busId,
         seatId,
@@ -58,9 +58,9 @@ export async function POST(req: Request) {
           seats: sql`jsonb_set(seats::jsonb, ARRAY[${seatId}]::text[], to_jsonb(${seatStatus}::text))`,
         })
         .where(eq(buses.id, busId));
-      console.log(
-        `Updated bus ${busId} seat ${seatId} to status ${seatStatus}`,
-      );
+      
+
+
     });
     console.log("Seat booking successful");
     return NextResponse.json({ message: "success" }, { status: 200 });

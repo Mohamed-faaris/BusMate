@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { registrationSchema } from "@/schemas/auth";
 import { db } from "@/server/db";
 import { users } from "@/server/db/schema/users";
@@ -130,7 +130,7 @@ export async function POST(request: NextRequest) {
           rollNo: normalizedRollNo,
           name,
           email: normalizedEmail,
-          gender: gender as "male" | "female" | "other",
+          gender: gender,
           phone,
           address,
           dateOfBirth: new Date(dateOfBirth),
