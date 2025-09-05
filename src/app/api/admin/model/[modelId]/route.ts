@@ -5,13 +5,14 @@ import { eq } from "drizzle-orm";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { modelId: string } },
+  { params }: { params: Promise<{ modelId: string }> },
 ) {
   try {
+    const { modelId } = await params;
     const [model] = await db
       .select()
       .from(models)
-      .where(eq(models.id, params.modelId));
+      .where(eq(models.id, modelId));
     if (!model) {
       return NextResponse.json({ error: "Model not found" }, { status: 404 });
     }
