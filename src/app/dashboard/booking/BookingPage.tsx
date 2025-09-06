@@ -43,7 +43,12 @@ export default function BookingPage() {
     enabled: !!session?.user?.id,
   });
 
-  const { mutate: bookSeat, isPending: isBooking, isError: isBookingError, error: bookingError } = useMutation({
+  const {
+    mutate: bookSeat,
+    isPending: isBooking,
+    isError: isBookingError,
+    error: bookingError,
+  } = useMutation({
     mutationFn: async () => {
       if (!selectedSeat || !userData?.user) return;
 
@@ -59,7 +64,7 @@ export default function BookingPage() {
         }),
       });
 
-      if (!res.ok){
+      if (!res.ok) {
         console.log("Failed");
         throw new Error((await res.json())?.error ?? "Failed to book seat");
       }
@@ -160,8 +165,11 @@ export default function BookingPage() {
                 onClick={() => bookSeat()}
                 disabled={isBooking}
               >
-                
-                {(isBookingError==false)?(isBooking ? "Booking..." : "Confirm Booking"):String(bookingError)}
+                {isBookingError == false
+                  ? isBooking
+                    ? "Booking..."
+                    : "Confirm Booking"
+                  : String(bookingError)}
               </Button>
             </DialogFooter>
           </DialogContent>
