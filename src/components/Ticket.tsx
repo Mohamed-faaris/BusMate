@@ -74,7 +74,7 @@ export function Ticket({ className, ...props }: TicketProps) {
         </div>
       </div>
       <div className="">
-        <BusPropsProvider disabled={false} scale={scale}>
+        <BusPropsProvider disabled={true} scale={scale}>
           <SeatsDataProvider
             data={{
               [`${data.seat?.seatId}`]: "bookedMale",

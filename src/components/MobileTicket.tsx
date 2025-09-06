@@ -75,7 +75,7 @@ export function MobileTicket({ className, ...props }: TicketProps) {
       <div className="flex">
 
       <div className="flex flex-col justify-center items-center">
-        <BusPropsProvider disabled={false} scale={scale}>
+        <BusPropsProvider disabled={true} scale={scale}>
           <SeatsDataProvider
             data={{
                 [`${data.seat?.seatId}`]: "bookedMale",
