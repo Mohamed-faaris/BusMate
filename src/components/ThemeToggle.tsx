@@ -7,12 +7,13 @@ import { motion, AnimatePresence } from "motion/react";
 import { motionConfig } from "@/lib/motion";
 
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
-interface ThemeToggleProps {
+interface ThemeToggleProps extends React.HTMLAttributes<HTMLDivElement> {
   animate?: boolean;
 }
 
-export function ThemeToggle({ animate = false }: ThemeToggleProps) {
+export function ThemeToggle({ animate = true ,className}: ThemeToggleProps) {
   const { setTheme, theme } = useTheme();
   const [mounted, setMounted] = React.useState(false);
 
@@ -24,7 +25,7 @@ export function ThemeToggle({ animate = false }: ThemeToggleProps) {
   if (!mounted) {
     // Return a placeholder that matches the server render
     return (
-      <Button variant="ghost" size="icon" className="relative overflow-hidden">
+      <Button variant="ghost" size="icon" className={cn("relative overflow-hidden ",className)} >
         <Sun className="h-[1.2rem] w-[1.2rem] text-yellow-500" />
         <span className="sr-only">Toggle theme</span>
       </Button>
