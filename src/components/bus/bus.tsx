@@ -28,7 +28,7 @@ export default function Bus({ busId }: { busId: string }) {
       //TODO : fix add different loader
       return <Loader />;
     }
-    console.log(busSeats.data.model);
+    // console.log(busSeats.data.model);
     return (
       <SeatsDataProvider data={busSeats.data.bus.seats}>
         <BusWrapper busId={busId} busSeats={busSeats.data.model.data} />
