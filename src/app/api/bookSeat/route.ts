@@ -37,14 +37,14 @@ export async function POST(req: Request) {
         .select()
         .from(users)
         .where(eq(users.id, session.user?.id || ""));
-      
+
       if (!user) {
         console.warn("User not found for id:", session.user?.id);
         return NextResponse.json({ error: "User not found" }, { status: 404 });
       }
       const seatStatus: SeatStatus =
         user.gender === "male" ? "bookedMale" : "bookedFemale";
-      
+
       await tx.insert(seats).values({
         busId,
         seatId,
@@ -58,17 +58,22 @@ export async function POST(req: Request) {
           seats: sql`jsonb_set(seats::jsonb, ARRAY[${seatId}]::text[], to_jsonb(${seatStatus}::text))`,
         })
         .where(eq(buses.id, busId));
-      
-
-
     });
     console.log("Seat booking successful");
     return NextResponse.json({ message: "success" }, { status: 200 });
-  } catch (error) {
-    console.error("Error updating seat status:", error);
+  } catch (error: any) {
+    // Handle unique constraint violation (already booked)
+    if (
+      error?.code === "23505" &&
+      error?.constraint_name === "BusMate_seat_userId_unique"
+    ) {
+      console.warn("User has already booked a seat:", error.detail);
+      return NextResponse.json({ error: "already booked" }, { status: 406 });
+    }
+    console.error("Error updating seat status:", error.constraint_name);
     return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 },
+      { error: "Failed to Book" },
+      { status: 400 },
     );
   }
 }
