@@ -31,9 +31,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="absolute top-5 right-5">
+          {/* <div className="absolute top-5 right-5">
             <ThemeToggle animate={true} />
-          </div>
+          </div> */}
           <NextAuthProvider>
             <ReactQueryProvider>
               <div className="bg-background min-h-screen h-full">{children}</div>

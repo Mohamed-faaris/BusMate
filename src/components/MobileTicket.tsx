@@ -30,7 +30,7 @@ export function MobileTicket({ className, ...props }: TicketProps) {
   });
   let scale = 0.9;
   if (width) {
-    if (width< 320) {
+    if (width < 320) {
       scale = 0.7;
     }
   }
@@ -39,19 +39,17 @@ export function MobileTicket({ className, ...props }: TicketProps) {
   if (data.seat == null) {
     return (
       <div
-        className={cn("h-full flex flex-col justify-between",
-          className,
-        )}
+        className={cn("flex h-full flex-col justify-between", className)}
         {...props}
       >
-        <div className="flex flex-col l">
+        <div className="text-3xl font-light flex flex-col">
           <p className="capitalize">{data.user.name}</p>
           <p className="uppercase">{data.user.rollNo}</p>
           <p className="capitalize">{data.boardingPoint?.name}</p>
         </div>
         <div className="flex-grow"></div>
-        <Link href="dashboard/booking" >
-            <Button className="w-full">Book Now</Button>
+        <Link href="dashboard/booking">
+          <Button className="w-full">Book Now</Button>
         </Link>
       </div>
     );
@@ -59,35 +57,32 @@ export function MobileTicket({ className, ...props }: TicketProps) {
   return (
     <div
       className={cn(
-        `flex flex-col justify-between  p-4 pb-4 items-center`,
+        `flex flex-col items-center justify-between p-4 pb-4`,
         className,
       )}
       {...props}
     >
-      <div className="mb-4 flex flex-col justify-between sm:mb-6 md:mb-8 lg:mb-10">
-        <div className="flex flex-col gap-1 text-2xl sm:gap-2 lg:text-4xl">
-          <p className="capitalize">{data.user.name}</p>
-          <p className="uppercase">{data.user.rollNo}</p>
-          <p className="uppercase">{`BUS-${data.bus?.busNumber}-${data.seat?.seatId}`}</p>
-          <p className="capitalize">{data.boardingPoint?.name}</p>
+      <div className="flex">
+        <div className="flex flex-col items-center justify-center">
+          <BusPropsProvider disabled={true} scale={scale}>
+            <SeatsDataProvider
+              data={{
+                [`${data.seat?.seatId}`]: "bookedMale",
+              }}
+            >
+              <BusWrapper busId="test" busSeats={data.model!.data} />
+            </SeatsDataProvider>
+          </BusPropsProvider>
+          <p className="w-full text-center text-sm sm:text-base md:text-lg lg:text-xl">
+            BUS-{data.bus?.busNumber}
+          </p>
         </div>
       </div>
-      <div className="flex">
-
-      <div className="flex flex-col justify-center items-center">
-        <BusPropsProvider disabled={true} scale={scale}>
-          <SeatsDataProvider
-            data={{
-                [`${data.seat?.seatId}`]: "bookedMale",
-            }}
-          >
-            <BusWrapper busId="test" busSeats={data.model!.data} />
-          </SeatsDataProvider>
-        </BusPropsProvider>
-        <p className="w-full text-center text-sm sm:text-base md:text-lg lg:text-xl">
-          BUS-{data.bus?.busNumber}
-        </p>
-            </div>
+      <div className="flex flex-col mt-4 w-[250px] gap-1 text-2xl sm:gap-2 lg:text-4xl">
+        <p className="capitalize">{data.user.name}</p>
+        <p className="uppercase">{data.user.rollNo}</p>
+        <p className="uppercase">{`BUS-${data.bus?.busNumber}-${data.seat?.seatId}`}</p>
+        <p className="capitalize">{data.boardingPoint?.name}</p>
       </div>
     </div>
   );

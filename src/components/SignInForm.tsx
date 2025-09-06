@@ -18,7 +18,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { signInSchema } from "@/schemas/auth";
 
 export function SignInForm({
@@ -26,6 +26,10 @@ export function SignInForm({
   ...props
 }: React.ComponentProps<"div">) {
   const router = useRouter();
+  const session = useSession();
+  if(session.status === "authenticated"){
+    router.push("/dashboard");
+  }
   const [formData, setFormData] = useState({
     email: "",
     password: "",

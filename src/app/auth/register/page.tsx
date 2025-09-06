@@ -13,7 +13,7 @@ export default async function LoginPage() {
       <div className="bg-muted flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
         <div className="flex w-full max-w-sm flex-col gap-6">
           <div className="flex items-center gap-2 self-center font-medium">
-            <LogoTitle />
+            <LogoTitle animate={true}/>
           </div>
           <RegisterForm boardingPoints={boardingPoints} />
         </div>
@@ -26,10 +26,12 @@ export default async function LoginPage() {
       <div className="bg-muted flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
         <div className="flex w-full max-w-sm flex-col gap-6">
           <div className="flex items-center gap-2 self-center font-medium">
-            <LogoTitle />
+            <LogoTitle animate={true} />
           </div>
-          <p className="text-red-500">Failed to load boarding points. Please try again later.</p>
-          <p>{}</p>
+          <p className="text-red-500">
+            Failed to load boarding points. Please try again later.
+          </p>
+          <p>{error.message}</p>
         </div>
       </div>
     );

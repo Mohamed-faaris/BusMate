@@ -24,7 +24,7 @@ export function LogoTitle({ animate = false, duration = 0.8, className, ...props
             }
           : undefined
       }
-      className={cn("text-card-foreground text-5xl font-extrabold sm:text-[5rem]",className)}
+      className={cn("text-card-foreground text-6xl font-extrabold",className)}
     >
       <motion.span
         className="text-primary"

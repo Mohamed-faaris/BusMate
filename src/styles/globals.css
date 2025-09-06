@@ -57,8 +57,8 @@
   --spacing: 0.25rem;
 
   --femaleBooked: oklch(61.706% 0.18345 24.228);
-  --maleBooked: oklch(50.765% 0.29345 286.696);
-  --selected: oklch(0.3729 0.0306 259.7328);
+  --maleBooked: oklch(60.593% 0.22887 298.376);
+  --selected: oklch(58.354% 0.03068 260.311);
   --reserved: oklch(0.3984 0.1773 277.3662);
 }
 

@@ -53,6 +53,7 @@ import {
   step4Schema,
 } from "@/schemas/auth";
 import { useMutation } from "@tanstack/react-query";
+import { signIn, useSession } from "next-auth/react";
 
 export function RegisterForm({
   boardingPoints,
@@ -62,6 +63,10 @@ export function RegisterForm({
   boardingPoints: BoardingPoint[];
 } & React.ComponentProps<"div">) {
   const router = useRouter();
+  const session = useSession();
+  if (session.status === "authenticated") {
+    router.push("/dashboard");
+  }
   const [step, setStep] = useState(1);
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
@@ -681,10 +686,20 @@ export function RegisterForm({
                             )}
                             {verifyOtpMutation.isSuccess &&
                               (() => {
-                                setTimeout(() => {
-                                  router.push("/auth/signIn");
-                                }, 1500);
-                                return "Success! Redirecting to sign in...";
+                                signIn("credentials", {
+                                  email: formData.email,
+                                  password: formData.password,
+                                  redirect: false,
+                                })
+                                  .then((res) => {
+                                    if (res?.ok) {
+                                      router.push("/dashboard");
+                                    }
+                                  })
+                                  .catch(() => {
+                                    router.push("/auth/signIn");
+                                  });
+                                return "Success! Redirecting to dashboard...";
                               })()}
                             {verifyOtpMutation.isError &&
                               ((verifyOtpMutation.error as any)?.data
