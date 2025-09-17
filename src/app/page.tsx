@@ -24,7 +24,7 @@ export default function HomePage() {
       );
     } else if (session.status === "unauthenticated") {
       return (
-        <Link href="/auth/signin">
+        <Link href="/auth/signIn">
           <Button>Login</Button>
         </Link>
       );
