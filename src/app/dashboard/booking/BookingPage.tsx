@@ -12,7 +12,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useEffect, useState } from "react";
-import Bus from "@/components/bus/Bus";
+import Bus from "@/components/bus/bus";
 import { useSession } from "next-auth/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSeat } from "@/contexts/BusPropsContext";
