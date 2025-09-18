@@ -4,6 +4,7 @@ import { users } from "@/server/db/schema/users";
 import { buses } from "@/server/db/schema/buses";
 import { boardingPoints } from "@/server/db/schema/boardingPoints";
 import { eq } from "drizzle-orm";
+import { auth } from "@/server/auth";
 
 export async function GET(
   request: NextRequest,
@@ -68,7 +69,14 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ userId: string }> },
 ) {
+  const user = await auth();
+  if (!user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
   const { userId } = await params;
+  if (user.user?.id !== userId) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
   try {
     const body = await request.json();
     const { name, email, phone } = body;
