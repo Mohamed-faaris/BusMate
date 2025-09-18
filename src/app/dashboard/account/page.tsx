@@ -37,34 +37,37 @@ export default function AccountPage() {
   const { data: session, status } = useSession();
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  
+
   // Form state for editable fields
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    phone: ""
+    phone: "",
   });
 
   // Fetch user data from dashboard API
-  const { data: dashboardData, isLoading: isDashboardLoading, refetch } =
-    useQuery<DashboardApiResponseSuccess>({
-      queryKey: ["dashboard", session?.user?.id],
-      queryFn: fetchDashboardData,
-      enabled: !!session?.user?.id,
-      onSuccess: (data) => {
-        // Initialize form data when data is loaded
-        setFormData({
-          name: data.user.name,
-          email: data.user.email,
-          phone: data.user.phone || ""
-        });
-      }
-    });
+  const {
+    data: dashboardData,
+    isLoading: isDashboardLoading,
+    refetch,
+  } = useQuery<DashboardApiResponseSuccess>({
+    queryKey: ["dashboard", session?.user?.id],
+    queryFn: fetchDashboardData,
+    enabled: !!session?.user?.id,
+    onSuccess: (data) => {
+      // Initialize form data when data is loaded
+      setFormData({
+        name: data.user.name,
+        email: data.user.email,
+        phone: data.user.phone || "",
+      });
+    },
+  });
 
   // Handle save changes
   const handleSave = async () => {
     if (!session?.user?.id) return;
-    
+
     setIsLoading(true);
     try {
       const response = await fetch(`/api/user/${session.user.id}`, {
@@ -75,7 +78,7 @@ export default function AccountPage() {
         body: JSON.stringify({
           name: formData.name,
           email: formData.email,
-          phone: formData.phone
+          phone: formData.phone,
         }),
       });
 
@@ -86,10 +89,9 @@ export default function AccountPage() {
       // Refresh the data and exit edit mode
       await refetch();
       setIsEditing(false);
-      
+
       // Show success message (you can add toast notification here)
       console.log("User data updated successfully");
-      
     } catch (error) {
       console.error("Error updating user data:", error);
       // Handle error (you can add error toast notification here)
@@ -100,9 +102,9 @@ export default function AccountPage() {
 
   // Handle input changes
   const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [field]: value
+      [field]: value,
     }));
   };
 
@@ -237,7 +239,9 @@ export default function AccountPage() {
                     {isEditing ? (
                       <Input
                         value={formData.name}
-                        onChange={(e) => handleInputChange("name", e.target.value)}
+                        onChange={(e) =>
+                          handleInputChange("name", e.target.value)
+                        }
                         className="border-slate-200 bg-white dark:border-slate-600 dark:bg-slate-700"
                       />
                     ) : (
@@ -270,7 +274,9 @@ export default function AccountPage() {
                       <Input
                         type="email"
                         value={formData.email}
-                        onChange={(e) => handleInputChange('email', e.target.value)}
+                        onChange={(e) =>
+                          handleInputChange("email", e.target.value)
+                        }
                         className="border-slate-200 bg-white dark:border-slate-600 dark:bg-slate-700"
                       />
                     ) : (
@@ -291,7 +297,9 @@ export default function AccountPage() {
                       <Input
                         type="tel"
                         value={formData.phone}
-                        onChange={(e) => handleInputChange('phone', e.target.value)}
+                        onChange={(e) =>
+                          handleInputChange("phone", e.target.value)
+                        }
                         placeholder="Enter phone number"
                         className="border-slate-200 bg-white dark:border-slate-600 dark:bg-slate-700"
                       />
