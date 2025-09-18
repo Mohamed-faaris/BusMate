@@ -19,7 +19,7 @@ export default function BusWrapper({ busId, busSeats, className, ...props }: Bus
   return (
     <Card
       id="bus"
-      className={cn("gap-0 rounded-lg p-4 h-min", className)}
+      className={cn("h-min gap-0 rounded-lg p-4", className)}
       {...props}
     >
       <div className="flex">
@@ -51,6 +51,7 @@ export default function BusWrapper({ busId, busSeats, className, ...props }: Bus
             seatGroups={busSeats.rightSeatColumns.seatsRows}
             maxSeatsInRow={busSeats.rightSeatColumns.seatsPerRow || 3}
             height={busSeats?.rightSeatColumns?.height}
+            reversed={true}
           />
           {/* <RightSeatColumns /> */}
         </div>

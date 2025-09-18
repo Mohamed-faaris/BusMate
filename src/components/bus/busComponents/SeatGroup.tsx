@@ -4,7 +4,7 @@ import SeatsRow from "../seats/SeatsRow";
 
 interface SeatColumnsProps extends React.HTMLAttributes<HTMLDivElement> {
   seatGroups: SeatRows[];
-  reverse?: boolean;
+  reversed?: boolean;
   maxSeatsInRow: number;
   height?: number;
 }
@@ -12,7 +12,7 @@ interface SeatColumnsProps extends React.HTMLAttributes<HTMLDivElement> {
 export default function SeatGroup({
   seatGroups,
   className,
-  reverse,
+  reversed = false,
   maxSeatsInRow,
   height,
   ...divProps
@@ -27,7 +27,7 @@ export default function SeatGroup({
         <div key={rowIndex} className="flex">
           <SeatsRow
             seatRow={seatRow}
-            reversed={reverse || false}
+            reversed={reversed}
             maxSeatsInRow={maxSeatsInRow}
           />
         </div>
