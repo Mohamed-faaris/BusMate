@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { z } from "zod";
 import { motion, AnimatePresence } from "motion/react";
 import { motionConfig } from "@/lib/motion";
@@ -27,9 +27,13 @@ export function SignInForm({
 }: React.ComponentProps<"div">) {
   const router = useRouter();
   const session = useSession();
-  if(session.status === "authenticated"){
-    router.push("/dashboard");
-  }
+
+  useEffect(() => {
+    if (session.status === "authenticated") {
+      router.push("/dashboard");
+    }
+  }, [session.status, router]);
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",

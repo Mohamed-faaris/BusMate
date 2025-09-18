@@ -320,14 +320,14 @@ export default function AdminPage() {
             </div>
 
             <div className="mt-6 text-center">
-              <Button
+              {/* <Button
                 variant="outline"
                 className="border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600"
                 disabled={isLoading}
               >
                 <BarChart3 className="mr-2 h-4 w-4" />
                 {isLoading ? "Loading..." : "View Full Activity Log"}
-              </Button>
+              </Button> */}
             </div>
           </div>
         </Card>
