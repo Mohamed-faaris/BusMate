@@ -24,7 +24,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${geist.variable}`} suppressHydrationWarning>
-      <body>
+      <body className="no-scrollbar bg-background">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -36,7 +36,9 @@ export default function RootLayout({
           </div> */}
           <NextAuthProvider>
             <ReactQueryProvider>
-              <div className="bg-background min-h-screen h-full">{children}</div>
+              <div className="bg-background no-scrollbar h-full min-h-screen">
+                {children}
+              </div>
             </ReactQueryProvider>
           </NextAuthProvider>
         </ThemeProvider>

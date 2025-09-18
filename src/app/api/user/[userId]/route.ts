@@ -63,3 +63,42 @@ export async function GET(
     );
   }
 }
+
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: Promise<{ userId: string }> },
+) {
+  const { userId } = await params;
+  try {
+    const body = await request.json();
+    const { name, email, phone } = body;
+
+    // Update user details
+    const result = await db
+      .update(users)
+      .set({
+        name,
+        email,
+        phone,
+        updatedAt: new Date(),
+      })
+      .where(eq(users.id, userId))
+      .returning();
+
+    if (result.length === 0) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ 
+      success: true, 
+      message: "Profile updated successfully",
+      user: result[0] 
+    }, { status: 200 });
+  } catch (error) {
+    console.error("User update error:", error);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 },
+    );
+  }
+}
