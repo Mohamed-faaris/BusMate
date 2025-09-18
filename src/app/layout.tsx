@@ -24,7 +24,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${geist.variable}`} suppressHydrationWarning>
-      <body className="no-scrollbar bg-[#0f172a]">
+      <body className="no-scrollbar bg-background">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
