@@ -12,7 +12,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useEffect, useState } from "react";
-import Bus from "@/components/bus/bus";
+import { Bus } from "@/components/bus/Bus";
 import { useSession } from "next-auth/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSeat } from "@/contexts/BusPropsContext";
@@ -20,7 +20,7 @@ import { Spinner } from "@/components/ui/shadcn-io/spinner";
 import { Card } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
 
-interface Bus {
+interface BusType {
   id: string;
   name: string;
 }
@@ -89,7 +89,7 @@ export default function BookingPage() {
     enabled: !!boardingPointId,
   });
 
-  const buses: Bus[] = busesData || [];
+  const buses: BusType[] = busesData || [];
 
   useEffect(() => {
     if (buses.length > 0 && !selectedBus && buses[0]) {

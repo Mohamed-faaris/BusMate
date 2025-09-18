@@ -18,7 +18,7 @@ export const fallbackBusSeats = {
   backSeats: { seatsRows: generateSeatColumns(1, 7) },
 };
 
-export default function Bus({ busId }: { busId: string }) {
+export function Bus({ busId }: { busId: string }) {
   const { data: busSeats, isLoading } = useQuery({
     queryKey: ["busSeats", busId],
     queryFn: () => fetch(`/api/bus/${busId}`).then((res) => res.json()),
