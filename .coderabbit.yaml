@@ -1,0 +1,42 @@
+# CodeRabbit Configuration
+# This file configures CodeRabbit's code review behavior for the BusMate project
+
+language: typescript
+
+# Paths to include in code reviews
+paths:
+  - src/
+  - drizzle/
+  - public/
+
+# Paths to exclude from code reviews
+exclude:
+  - node_modules/
+  - .next/
+  - dist/
+  - .git/
+  - pnpm-lock.yaml
+  - package-lock.json
+  - yarn.lock
+
+# Review settings
+reviews:
+  # Request changes for critical issues
+  request_changes_workflow: true
+
+  # High-level summary of changes
+  high_level_summary: true
+
+  # Review comments on specific files
+  review_status: true
+
+# Code style preferences
+code_style:
+  # Prefer TypeScript
+  typescript: true
+
+  # Use ESLint configuration
+  eslint: true
+
+  # Use Prettier for formatting
+  prettier: true
