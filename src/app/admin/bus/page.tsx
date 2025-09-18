@@ -291,13 +291,13 @@ const AdminBusPage = () => {
                             >
                               <SelectTrigger className="w-full border-slate-200 bg-white dark:border-slate-500 dark:bg-slate-600">
                                 <span>
-                                  {bpOptions?.boardingPoints.find(
+                                  {bpOptions?.boardingPoints?.find(
                                     (bp) => bp.id === row.boardingPointId,
                                   )?.name || "Select boarding point"}
                                 </span>
                               </SelectTrigger>
                               <SelectContent>
-                                {bpOptions?.boardingPoints.map((bp) => (
+                                {bpOptions?.boardingPoints?.map((bp) => (
                                   <SelectItem key={bp.id} value={bp.id}>
                                     {bp.name}
                                   </SelectItem>
@@ -483,7 +483,7 @@ const AdminBusPage = () => {
                                       >
                                         <div className="h-2 w-2 rounded-full bg-green-500"></div>
                                         <span className="font-medium text-slate-700 dark:text-slate-300">
-                                          {bpOptions?.boardingPoints.find(
+                                          {bpOptions?.boardingPoints?.find(
                                             (bp) => bp.id === p.boardingPointId,
                                           )?.name || p.boardingPointId}
                                         </span>

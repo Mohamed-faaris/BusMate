@@ -133,7 +133,7 @@ export default function AdminPage() {
             Manage your bus transportation system
             {!isLoading && !error && (
               <span className="ml-2 inline-flex items-center gap-1 rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-800 dark:bg-green-900/30 dark:text-green-400">
-                <div className="h-1.5 w-1.5 rounded-full bg-green-500"></div>
+                <span className="h-1.5 w-1.5 rounded-full bg-green-500"></span>
                 Live Data
               </span>
             )}
