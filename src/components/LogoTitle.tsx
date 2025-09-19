@@ -35,7 +35,7 @@ export function LogoTitle({ animate = false, duration = 0.8, showLogo = true, cl
           className="flex-shrink-0"
         >
           <Image
-            src="/logo.PNG"
+            src="/logo.png"
             alt="K. Ramakrishnan College of Engineering"
             width={80}
             height={80}
