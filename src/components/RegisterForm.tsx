@@ -307,23 +307,30 @@ export function RegisterForm({
                         )}
                       </AnimatePresence>
                     </div>
+
                     <div className="grid gap-2">
                       <Label htmlFor="college">College</Label>
                       <Select
-                        id="college"
+                        required
                         value={formData.college}
-                        onChange={handleChange}
+                        onValueChange={(value) =>
+                          handleSelectChange("college", value)
+                        }
                       >
-                        <option value="">Select college...</option>
-                        <option value="KRCE">KRCE</option>
-                        <option value="KRCT">KRCT</option>
+                        <SelectTrigger id="college" className="w-full">
+                          <SelectValue placeholder="Select college..." />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="KRCE">KRCE</SelectItem>
+                          <SelectItem value="KRCT">KRCT</SelectItem>
+                        </SelectContent>
                       </Select>
                       <AnimatePresence>
                         {errors.college && (
                           <motion.p
                             initial={{ opacity: 0, y: -10 }}
                             animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: 10 }}
+                            exit={{ opacity: 0, y: -10 }}
                             className="text-sm text-red-500"
                           >
                             {errors.college}
