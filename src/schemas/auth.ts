@@ -5,6 +5,9 @@ export const registrationSchema = z.object({
   rollNo: z.string().min(1, "Roll No is required"),
   name: z.string().min(1, "Name is required"),
   email: z.string().email("Invalid email address"),
+  college: z.enum(["KRCE", "KRCT"], {
+    errorMap: () => ({ message: "College is required" }),
+  }),
   boardingPoint: z.string().min(1, "Boarding point is required"),
   gender: z.enum(["male", "female", "other"], {
     errorMap: () => ({ message: "Gender is required" }),

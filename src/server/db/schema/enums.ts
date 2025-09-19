@@ -8,3 +8,8 @@ export const seatStatusEnum = pgEnum("seatStatus", [
   "bookedFemale",
   "reserved",
 ]);
+
+export const collegeEnum = pgEnum("college", [
+  "KRCE",
+  "KRCT",
+]);

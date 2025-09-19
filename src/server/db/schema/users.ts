@@ -1,6 +1,6 @@
 import { sql } from "drizzle-orm";
 import { index } from "drizzle-orm/pg-core";
-import { genderEnum } from "./enums";
+import { collegeEnum, genderEnum } from "./enums";
 import { boardingPoints } from "./boardingPoints";
 import { buses } from "./buses";
 import { createTable } from "./table";
@@ -21,6 +21,7 @@ export const users = createTable(
     phone: d.varchar({ length: 15 }).notNull(),
     address: d.varchar({ length: 255 }).notNull(),
     dateOfBirth: d.timestamp({ mode: "date", withTimezone: true }).notNull(),
+    college: collegeEnum("college").notNull(),
 
     busId: d
       .uuid()

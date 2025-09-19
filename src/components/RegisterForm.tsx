@@ -75,6 +75,7 @@ export function RegisterForm({
     rollNo: "",
     name: "",
     email: "",
+    college: "",
     boardingPoint: "",
     gender: "",
     phone: "",
@@ -302,6 +303,30 @@ export function RegisterForm({
                             className="text-sm text-red-500"
                           >
                             {errors.email}
+                          </motion.p>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                    <div className="grid gap-2">
+                      <Label htmlFor="college">College</Label>
+                      <Select
+                        id="college"
+                        value={formData.college}
+                        onChange={handleChange}
+                      >
+                        <option value="">Select college...</option>
+                        <option value="KRCE">KRCE</option>
+                        <option value="KRCT">KRCT</option>
+                      </Select>
+                      <AnimatePresence>
+                        {errors.college && (
+                          <motion.p
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 10 }}
+                            className="text-sm text-red-500"
+                          >
+                            {errors.college}
                           </motion.p>
                         )}
                       </AnimatePresence>
