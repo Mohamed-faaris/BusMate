@@ -14,10 +14,7 @@ export const env = createEnv({
     AUTH_URL: z.string().url(),
     DATABASE_URL: z.string().url(),
 
-    REDIS_HOST: z.string(),
-    REDIS_PORT: z.string().optional(),
-    REDIS_USER: z.string().optional(),
-    REDIS_PASSWORD: z.string().optional(),
+    REDIS_URL: z.string().url(),
 
     GMAIL_USER: z.string().email(),
     GMAIL_PASS: z.string().length(16),
@@ -49,10 +46,7 @@ export const env = createEnv({
     DATABASE_URL: process.env.DATABASE_URL,
     NODE_ENV: process.env.NODE_ENV,
 
-    REDIS_HOST: process.env.REDIS_HOST,
-    REDIS_PORT: process.env.REDIS_PORT,
-    REDIS_USER: process.env.REDIS_USER,
-    REDIS_PASSWORD: process.env.REDIS_PASSWORD,
+    REDIS_URL:process.env.REDIS_URL,
     
     GMAIL_USER: process.env.GMAIL_USER,
     GMAIL_PASS: process.env.GMAIL_PASS,

@@ -4,7 +4,6 @@ declare global {
   // Extend NodeJS global type
   // so TypeScript knows `global.redisClient` exists
   // and is a Redis client
-   
   var redisClient: RedisClientType | undefined;
 }
 
@@ -12,18 +11,16 @@ let redisClient: RedisClientType;
 
 if (!global.redisClient) {
   global.redisClient = createClient({
-    socket: {
-      host: process.env.REDIS_HOST,
-      port: process.env.REDIS_PORT ? Number(process.env.REDIS_PORT) : undefined,
-      username: process.env.REDIS_USER || undefined,
-    },
-    password: process.env.REDIS_PASSWORD || undefined,
+    url: process.env.REDIS_URL,
   });
 
   global.redisClient.on("error", (err: Error) =>
     console.error("Redis error:", err),
   );
-  global.redisClient.connect().catch(console.error);
+
+  global.redisClient.connect().catch((err) => {
+    console.error("Failed to connect to Redis:", err);
+  });
 }
 
 redisClient = global.redisClient;
