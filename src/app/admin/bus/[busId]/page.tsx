@@ -30,14 +30,14 @@ type AdminBusDetailResponse = {
         routeName: string;
         driverName: string;
         driverPhone: string;
-        seats: Record<string, any>;
+        seats: Record<string, unknown>;
         createdAt: string;
         updatedAt: string;
       };
       model: {
         id: string;
         model: string;
-        data: any;
+        data: Record<string, unknown>;
         createdAt: string;
         updatedAt: string;
       };

@@ -63,12 +63,12 @@ const AdminBusPage = () => {
     queryFn: () => fetch("/api/admin/model").then((res) => res.json()),
   });
 
-  const { data } = useQuery<AdminBusResponse>({
+  const { data } = useQuery<{ buses: AdminBusResponse }>({
     queryKey: ["buses"],
     queryFn: () => fetch("/api/admin/addBus").then((res) => res.json()),
   });
 
-  const createBus = useMutation<any, Error, CreateBusInput>({
+  const createBus = useMutation<{ success: boolean; bus: any; boardingPoints: any[] }, Error, CreateBusInput>({
     mutationFn: (newBus) =>
       fetch("/api/admin/addBus", {
         method: "POST",
