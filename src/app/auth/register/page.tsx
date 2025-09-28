@@ -24,7 +24,9 @@ export default function LoginPage() {
           <div className="flex items-center gap-2 self-center font-medium">
             <LogoTitle animate={true} />
           </div>
-          <p><Loader /></p>
+          <div className="flex justify-center">
+            <Loader />
+          </div>
         </div>
       </div>
     );
