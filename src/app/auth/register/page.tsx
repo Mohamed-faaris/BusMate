@@ -11,7 +11,7 @@ export default function LoginPage() {
   const { data, isLoading, error } = useQuery({
     queryKey: ["boardingPoints"],
     queryFn: async () => {
-      const res = await fetch(`${clientEnv.NEXT_PUBLIC_BASE_URL}/api/busRoutes`);
+      const res = await fetch(`/api/busRoutes`);
       const { boardingPoints }: { boardingPoints: BoardingPoint[] } = await res.json();
       return boardingPoints;
     },
