@@ -1,18 +1,7 @@
 import { sql } from "drizzle-orm";
 import { index } from "drizzle-orm/pg-core";
 import { createTable } from "./table";
-import type { UUID } from "crypto";
 import type { Seat } from "./models";
-
-type seatsJSON = Record<
-  string,
-  {
-    userId: UUID;
-    createdAt: Date;
-    updatedAt: Date;
-    isBooked: boolean;
-  }
->;
 
 // BUSES
 export const buses = createTable(

@@ -7,7 +7,7 @@ import {
   seats,
   boardingPoints,
 } from "@/server/db/schema";
-import { eq, sql, and, gte } from "drizzle-orm";
+import { eq, sql, gte } from "drizzle-orm";
 
 export async function GET() {
   try {
@@ -15,19 +15,19 @@ export async function GET() {
     const totalBusesResult = await db
       .select({ count: sql<number>`count(*)` })
       .from(buses);
-    const totalBuses = totalBusesResult[0]?.count || 0;
+    const totalBuses = totalBusesResult[0]?.count ?? 0;
 
     // Get active routes (boarding points) count
     const activeBoardingPointsResult = await db
       .select({ count: sql<number>`count(*)` })
       .from(boardingPoints);
-    const activeRoutes = activeBoardingPointsResult[0]?.count || 0;
+    const activeRoutes = activeBoardingPointsResult[0]?.count ?? 0;
 
     // Get total passengers (registered users)
     const totalPassengersResult = await db
       .select({ count: sql<number>`count(*)` })
       .from(users);
-    const totalPassengers = totalPassengersResult[0]?.count || 0;
+    const totalPassengers = totalPassengersResult[0]?.count ?? 0;
 
     // Get today's bookings (seats booked today)
     const today = new Date();
@@ -37,13 +37,13 @@ export async function GET() {
       .select({ count: sql<number>`count(*)` })
       .from(seats)
       .where(gte(seats.createdAt, today));
-    const todayBookings = todayBookingsResult[0]?.count || 0;
+    const todayBookings = todayBookingsResult[0]?.count ?? 0;
 
     // Get bus models count
     const busModelsResult = await db
       .select({ count: sql<number>`count(*)` })
       .from(models);
-    const busModels = busModelsResult[0]?.count || 0;
+    const busModels = busModelsResult[0]?.count ?? 0;
 
     // Get recent activities (last 10 actions)
     const recentUsers = await db

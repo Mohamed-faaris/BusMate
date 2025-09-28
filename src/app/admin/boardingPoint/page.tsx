@@ -21,6 +21,7 @@ import type {
   BoardingPoint,
   BoardingPointGet,
 } from "@/app/api/busRoutes/route";
+import { type boardingPoints } from "@/server/db/schema";
 
 export default function BoardingPointPage() {
   const queryClient = useQueryClient();
@@ -34,7 +35,7 @@ export default function BoardingPointPage() {
   });
 
   const addMutation = useMutation<
-    unknown,
+    { success: boolean; boardingPoint: typeof boardingPoints.$inferSelect },
     Error,
     { name: string; latitude?: number; longitude?: number }
   >({
@@ -45,13 +46,16 @@ export default function BoardingPointPage() {
         body: JSON.stringify(newPoint),
       });
       if (!res.ok) {
-        const data = await res.json();
+        const data = (await res.json()) as { error?: string };
         throw new Error(data.error ?? "Error adding boarding point");
       }
-      return res.json();
+      return res.json() as Promise<{
+        success: boolean;
+        boardingPoint: typeof boardingPoints.$inferSelect;
+      }>;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["boardingPoints"] });
+      void queryClient.invalidateQueries({ queryKey: ["boardingPoints"] });
       setName("");
       setLatitude("");
       setLongitude("");
@@ -95,7 +99,7 @@ export default function BoardingPointPage() {
   const filteredPoints =
     data?.filter((point) =>
       point.name.toLowerCase().includes(searchTerm.toLowerCase()),
-    ) || [];
+    ) ?? [];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
@@ -269,7 +273,7 @@ export default function BoardingPointPage() {
                     Existing Locations
                   </h2>
                   <span className="rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
-                    {data?.length || 0} Points
+                    {data?.length ?? 0} Points
                   </span>
                 </div>
               </div>
@@ -366,13 +370,13 @@ export default function BoardingPointPage() {
                             <div className="flex items-center gap-1">
                               <span className="font-medium">Lat:</span>
                               <span className="rounded bg-slate-200 px-2 py-1 font-mono dark:bg-slate-800">
-                                {point.latitude || "Not set"}
+                                {point.latitude ?? "Not set"}
                               </span>
                             </div>
                             <div className="flex items-center gap-1">
                               <span className="font-medium">Lng:</span>
                               <span className="rounded bg-slate-200 px-2 py-1 font-mono dark:bg-slate-800">
-                                {point.longitude || "Not set"}
+                                {point.longitude ?? "Not set"}
                               </span>
                             </div>
                           </div>

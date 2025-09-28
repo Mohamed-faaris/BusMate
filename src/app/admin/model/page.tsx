@@ -6,13 +6,14 @@ import {
   seatsArrayToMap,
 } from "@/lib/utils";
 import BusWrapper from "@/components/bus/BusWrapper";
-import type { BusModelProperties, Seat } from "@/server/db/schema";
+import type { BusModelProperties } from "@/server/db/schema";
 import { BusPropsProvider } from "@/contexts/BusPropsContext";
 import { SeatsDataProvider } from "@/contexts/seatsDataContext";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useMutation } from "@tanstack/react-query";
+import { type models } from "@/server/db/schema";
 import { Label } from "@radix-ui/react-label";
 
 //TODO : do not use Form
@@ -64,7 +65,11 @@ export default function Page() {
     },
   };
 
-  const mutation = useMutation({
+  const mutation = useMutation<
+    { success: boolean; model: typeof models.$inferSelect },
+    Error,
+    void
+  >({
     mutationFn: async () => {
       const res = await fetch("/api/admin/model", {
         method: "POST",
@@ -72,10 +77,13 @@ export default function Page() {
         body: JSON.stringify({ model: modelName, data: busSeats }),
       });
       if (!res.ok) {
-        const result = await res.json();
+        const result = (await res.json()) as { error?: string };
         throw new Error(result.error ?? "Server error");
       }
-      return res.json();
+      return res.json() as Promise<{
+        success: boolean;
+        model: typeof models.$inferSelect;
+      }>;
     },
     onSuccess: () => {
       setModelName("");
@@ -280,10 +288,10 @@ export default function Page() {
             </div>
             <Button
               type="submit"
-              disabled={mutation.isLoading}
+              disabled={mutation.isPending}
               className="w-full rounded bg-blue-600 py-2 text-white"
             >
-              {mutation.isLoading ? "Adding..." : "Add Model"}
+              {mutation.isPending ? "Adding..." : "Add Model"}
             </Button>
           </form>
         </Card>

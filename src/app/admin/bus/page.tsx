@@ -13,29 +13,12 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import type { AdminBusResponse } from "@/app/api/admin/addBus/route";
+import { type buses, type busBoardingPoints } from "@/server/db/schema";
 import { Trash2, Eye } from "lucide-react";
 
 interface BoardingPointOption {
   id: string;
   name: string;
-}
-
-interface Bus {
-  id: string;
-  model: string;
-  busNumber: string;
-  routeName?: string;
-  driverName: string;
-  driverPhone: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface BusBP {
-  id: number;
-  busId: string;
-  boardingPointId: string;
-  arrivalTime: string;
 }
 
 interface CreateBusInput {
@@ -81,12 +64,20 @@ const AdminBusPage = () => {
     queryFn: () => fetch("/api/admin/model").then((res) => res.json()),
   });
 
-  const { data } = useQuery<AdminBusResponse>({
+  const { data } = useQuery<{ buses: AdminBusResponse }>({
     queryKey: ["buses"],
     queryFn: () => fetch("/api/admin/addBus").then((res) => res.json()),
   });
 
-  const createBus = useMutation<any, Error, CreateBusInput>({
+  const createBus = useMutation<
+    {
+      success: boolean;
+      bus: typeof buses.$inferSelect;
+      boardingPoints: (typeof busBoardingPoints.$inferSelect)[];
+    },
+    Error,
+    CreateBusInput
+  >({
     mutationFn: (newBus) =>
       fetch("/api/admin/addBus", {
         method: "POST",
@@ -94,7 +85,7 @@ const AdminBusPage = () => {
         body: JSON.stringify(newBus),
       }).then((res) => res.json()),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["buses"] });
+      void queryClient.invalidateQueries({ queryKey: ["buses"] });
     },
   });
 
@@ -104,7 +95,7 @@ const AdminBusPage = () => {
 
   const handleRowChange = (index: number, field: string, value: string) => {
     const rows = [...bpRows];
-    // @ts-ignore
+    // @ts-expect-error - Dynamic property access on boarding point row object
     rows[index][field] = value;
     setBpRows(rows);
   };
@@ -293,7 +284,7 @@ const AdminBusPage = () => {
                                 <span>
                                   {bpOptions?.boardingPoints?.find(
                                     (bp) => bp.id === row.boardingPointId,
-                                  )?.name || "Select boarding point"}
+                                  )?.name ?? "Select boarding point"}
                                 </span>
                               </SelectTrigger>
                               <SelectContent>
@@ -374,7 +365,7 @@ const AdminBusPage = () => {
                 </h2>
                 <div className="ml-auto">
                   <span className="rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
-                    {data?.buses?.length || 0} Buses
+                    {data?.buses?.length ?? 0} Buses
                   </span>
                 </div>
               </div>
@@ -457,11 +448,11 @@ const AdminBusPage = () => {
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap">
                                 <span className="rounded bg-purple-100 px-2 py-1 text-sm font-medium text-purple-800 dark:bg-purple-900/30 dark:text-purple-300">
-                                  {model?.model || "N/A"}
+                                  {model?.model ?? "N/A"}
                                 </span>
                               </td>
                               <td className="px-6 py-4 text-sm whitespace-nowrap text-slate-600 dark:text-slate-400">
-                                {bus.routeName || (
+                                {bus.routeName ?? (
                                   <span className="text-slate-400 italic dark:text-slate-500">
                                     No route assigned
                                   </span>
@@ -485,7 +476,7 @@ const AdminBusPage = () => {
                                         <span className="font-medium text-slate-700 dark:text-slate-300">
                                           {bpOptions?.boardingPoints?.find(
                                             (bp) => bp.id === p.boardingPointId,
-                                          )?.name || p.boardingPointId}
+                                          )?.name ?? p.boardingPointId}
                                         </span>
                                         <span className="text-slate-500 dark:text-slate-400">
                                           @ {p.arrivalTime}

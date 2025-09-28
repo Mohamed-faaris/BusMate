@@ -25,7 +25,7 @@ export default function AdminSeat({
   bookingInfo,
 }: AdminSeatProps) {
   const [showTooltip, setShowTooltip] = useState(false);
-  const { scale } = useSeat();
+  useSeat();
 
   let colorClass = "bg-available";
 
@@ -71,7 +71,7 @@ export default function AdminSeat({
       )}
 
       {/* Simple Available Tooltip */}
-      {showTooltip && (!bookingInfo?.userId) && (
+      {showTooltip && !bookingInfo?.userId && (
         <div className="bg-card border-border absolute bottom-full left-1/2 z-10 mb-2 w-24 -translate-x-1/2 transform rounded border p-1 text-center text-xs shadow-lg">
           <div className="text-card-foreground">{id} - Available</div>
           <div className="border-t-card absolute top-full left-1/2 h-0 w-0 -translate-x-1/2 transform border-t-4 border-r-4 border-l-4 border-r-transparent border-l-transparent"></div>

@@ -1,5 +1,5 @@
 "use client";
-import type { BusModelProperties } from "@/server/db/schema";
+import type { BusModelProperties, SeatGroups } from "@/server/db/schema";
 import { Card } from "@/components/ui/card";
 import Door from "@/components/bus/busComponents/Door";
 import Driver from "@/components/bus/busComponents/Driver";
@@ -32,31 +32,32 @@ type AdminBusWrapperProps = {
 function AdminSeatGroup({
   seatGroups,
   maxSeatsInRow,
-  height,
+  height: _height,
   seatBookings,
   busSeatStatuses,
 }: {
-  seatGroups: any[];
+  seatGroups: SeatGroups[];
   maxSeatsInRow: number;
   height?: number;
   seatBookings: SeatBookingInfo[];
   busSeatStatuses: Record<string, string>;
 }) {
-  const { scale } = useSeat();
+  useSeat();
 
   return (
     <div className="flex flex-col">
+      {/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access */}
       {seatGroups.map((seatRow, rowIndex) => (
         <div key={rowIndex} className="flex">
           {Array.from({ length: maxSeatsInRow }).map((_, seatIndex) => {
-            const seat = seatRow[seatIndex];
+            const seat = (seatRow as Seat[])[seatIndex];
             if (!seat) {
               return <div key={seatIndex} className="m-0.5 h-10 w-10" />;
             }
 
             // Get seat status from bus data and booking info
             const actualSeatStatus =
-              busSeatStatuses[seat.id] || seat.seatStatus;
+              busSeatStatuses[seat.id] ?? seat.seatStatus;
             const bookingInfo = seatBookings.find(
               (booking) => booking.seatId === seat.id,
             );
@@ -72,19 +73,20 @@ function AdminSeatGroup({
           })}
         </div>
       ))}
+      {/* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access */}
     </div>
   );
 }
 
 export default function AdminBusWrapper({
-  busId,
+  busId: _busId,
   busSeats,
   seatBookings,
   busSeatStatuses,
   className,
   ...props
 }: AdminBusWrapperProps) {
-  const { scale } = useSeat();
+  useSeat();
 
   return (
     <Card

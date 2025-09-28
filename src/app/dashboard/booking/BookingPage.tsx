@@ -17,13 +17,44 @@ import { useSession } from "next-auth/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSeat } from "@/contexts/BusPropsContext";
 import { Spinner } from "@/components/ui/shadcn-io/spinner";
-import { Card } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
 
 interface BusType {
   id: string;
   name: string;
 }
+
+type UserData = {
+  id: string;
+  rollNo: string | null;
+  name: string | null;
+  email: string | null;
+  gender: string | null;
+  phone: string | null;
+  address: string | null;
+  dateOfBirth: Date | null;
+  receiptId: string | null;
+  isVerified: boolean;
+  isAdmin: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  bus: {
+    id: string;
+    modelID: string | null;
+    busNumber: string;
+    routeName: string | null;
+    driverName: string;
+    driverPhone: string;
+    createdAt: Date;
+    updatedAt: Date;
+  } | null;
+  boardingPoint: {
+    id: string;
+    name: string;
+    latitude: number | null;
+    longitude: number | null;
+  } | null;
+};
 
 export default function BookingPage() {
   const [selectedBus, setSelectedBus] = useState("");
@@ -32,13 +63,16 @@ export default function BookingPage() {
   const queryClient = useQueryClient();
   const router = useRouter();
 
-  const { data: userData, isLoading: isUserLoading } = useQuery({
+  const { data: userData, isLoading: isUserLoading } = useQuery<{
+    success: boolean;
+    user: UserData;
+  } | null>({
     queryKey: ["user", session?.user?.id],
     queryFn: async () => {
       if (!session?.user?.id) return null;
       const res = await fetch(`/api/user/${session.user.id}`);
       if (!res.ok) throw new Error("Failed to fetch user");
-      return res.json();
+      return (await res.json()) as { success: boolean; user: UserData };
     },
     enabled: !!session?.user?.id,
   });
@@ -52,9 +86,6 @@ export default function BookingPage() {
     mutationFn: async () => {
       if (!selectedSeat || !userData?.user) return;
 
-      const newStatus =
-        userData.user.gender === "male" ? "bookedMale" : "bookedFemale";
-
       const res = await fetch("/api/bookSeat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -66,12 +97,15 @@ export default function BookingPage() {
 
       if (!res.ok) {
         console.log("Failed");
-        throw new Error((await res.json())?.error ?? "Failed to book seat");
+        const errorData = (await res.json()) as { error?: string };
+        throw new Error(errorData?.error ?? "Failed to book seat");
       }
-      return res.json();
+      return (await res.json()) as { success: boolean };
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["busSeats", selectedBus] });
+      void queryClient.invalidateQueries({
+        queryKey: ["busSeats", selectedBus],
+      });
       setSelectedSeat(null);
       router.push("/dashboard");
     },
@@ -84,18 +118,18 @@ export default function BookingPage() {
       if (!boardingPointId) return [];
       const res = await fetch(`/api/bus/byBoardingPoint/${boardingPointId}`);
       if (!res.ok) throw new Error("Failed to fetch buses");
-      return res.json();
+      return (await res.json()) as BusType[];
     },
     enabled: !!boardingPointId,
   });
 
-  const buses: BusType[] = busesData || [];
+  const buses: BusType[] = busesData ?? [];
 
   useEffect(() => {
-    if (buses.length > 0 && !selectedBus && buses[0]) {
-      setSelectedBus(buses[0].id);
+    if (busesData && busesData.length > 0 && !selectedBus && busesData[0]) {
+      setSelectedBus(busesData[0].id);
     }
-  }, [buses, selectedBus]);
+  }, [busesData, selectedBus]);
 
   return (
     <div className="flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">

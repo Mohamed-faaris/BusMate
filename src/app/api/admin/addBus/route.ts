@@ -3,7 +3,7 @@ import { z } from "zod";
 import { db } from "@/server/db";
 import { buses } from "@/server/db/schema/buses";
 import { busBoardingPoints } from "@/server/db/schema/busBoardingPoints";
-import { models, type BusModelProperties } from "@/server/db/schema";
+import { models } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 import { flattenBusSeats, seatsArrayToMap } from "@/lib/utils";
 
@@ -49,7 +49,7 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    const body: unknown = await request.json();
     // console.log("Received body:", body);
     const parseResult = createBusSchema.safeParse(body);
     if (!parseResult.success) {

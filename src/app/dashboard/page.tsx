@@ -16,7 +16,6 @@ import {
   MapPin,
   Bus,
   Calendar,
-  Clock,
   Ticket as TicketIcon,
   CheckCircle2,
   AlertCircle,
@@ -25,7 +24,6 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import type { DashboardApiResponseSuccess } from "@/app/api/dashboard/route";
 import { motion } from "motion/react";
-import { motionConfig } from "@/lib/motion";
 import { Ticket } from "@/components/Ticket";
 import { useWindowSize } from "@/hooks/use-window-size";
 import { MobileTicket } from "@/components/MobileTicket";
@@ -33,7 +31,7 @@ import { MobileTicket } from "@/components/MobileTicket";
 async function fetchDashboardData(): Promise<DashboardApiResponseSuccess> {
   const res = await fetch("/api/dashboard", { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to fetch dashboard data");
-  return res.json();
+  return (await res.json()) as DashboardApiResponseSuccess;
 }
 
 export default function DashboardPage() {
@@ -274,7 +272,7 @@ export default function DashboardPage() {
                   Welcome to BusMate, {user.name}!
                 </h1>
                 <p className="text-xl text-slate-600 dark:text-slate-400">
-                  You don't have any active bookings yet
+                  You don&apos;t have any active bookings yet
                 </p>
               </div>
 
@@ -311,7 +309,7 @@ export default function DashboardPage() {
                           Boarding Point
                         </p>
                         <p className="font-semibold text-slate-900 capitalize dark:text-slate-100">
-                          {boardingPoint?.name || "Not selected"}
+                          {boardingPoint?.name ?? "Not selected"}
                         </p>
                       </div>
                     </div>

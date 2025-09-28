@@ -1,4 +1,4 @@
-import type { NextRequest, NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 import type { BoardingPoint } from "../busRoutes/route";
 import { db } from "@/server/db";
 import { buses } from "@/server/db/schema";
@@ -9,7 +9,7 @@ export async function GET(
 ) {
   // Example implementation: return the boardingPoints param if present
   if (params.boardingPoints) {
-    const result = await db.select().from(buses);
+    await db.select().from(buses);
     return Response.json({ boardingPoints: params.boardingPoints });
   }
   return Response.json(

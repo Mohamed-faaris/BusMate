@@ -1,5 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
+import { NextResponse } from "next/server";
 import { db } from "@/server/db";
 import { boardingPoints } from "@/server/db/schema/boardingPoints";
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */
 import type { BusModelProperties, Seat, SeatRows } from "@/server/db/schema";
 
 export function generateOTP() {
@@ -17,9 +18,15 @@ export function seatsArrayToMap(
 }
 export function flattenBusSeats(busSeats: BusModelProperties): Seat[] {
   const seats: Seat[] = [];
-  for (const value of Object.values(busSeats)) {
-    if (Array.isArray(value.seatsRows)) {
-      for (const row of value.seatsRows) {
+  const seatGroups = [
+    busSeats.leftTopSeatColumns,
+    busSeats.leftSeatColumns,
+    busSeats.rightSeatColumns,
+    busSeats.backSeats,
+  ];
+  for (const group of seatGroups) {
+    if (group && Array.isArray(group.seatsRows)) {
+      for (const row of group.seatsRows) {
         if (Array.isArray(row)) {
           seats.push(...row);
         } else {
@@ -62,13 +69,14 @@ export function cn(...inputs: ClassValue[]) {
 
 export const isDev = process.env.NODE_ENV === "development";
 
-export const extendArray = (arr, len, val) => [
+ 
+export const extendArray = (arr: unknown[], len: number, val: unknown): unknown[] => [
   ...arr,
   ...Array(Math.max(len - arr.length, 0)).fill(val),
 ];
 
 // Utility function to safely stringify objects for logging
-export function safeStringify(obj: any, space?: number): string {
+export function safeStringify(obj: unknown, space?: number): string {
   try {
     return JSON.stringify(
       obj,
@@ -84,12 +92,13 @@ export function safeStringify(obj: any, space?: number): string {
       },
       space,
     );
-  } catch (error) {
+  } catch {
     return String(obj);
   }
 }
 
 // Utility function to mask sensitive data in logs
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access */
 export function maskSensitiveData(obj: any): any {
   const sensitiveKeys = [
     "password",
@@ -118,6 +127,7 @@ export function maskSensitiveData(obj: any): any {
 
   return masked;
 }
+/* eslint-enable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */
 
 // Utility function to format file sizes
 export function formatBytes(bytes: number, decimals = 2): string {

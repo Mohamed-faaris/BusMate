@@ -4,7 +4,6 @@ import { type Metadata } from "next";
 import { Geist } from "next/font/google";
 
 import { ThemeProvider } from "@/providers/ThemeProvider";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import { ReactQueryProvider } from "@/providers/ReactQueryProvider";
 import { NextAuthProvider } from "@/providers/NextAuthProvider";
 

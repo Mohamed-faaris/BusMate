@@ -5,8 +5,6 @@ import { eq } from "drizzle-orm";
 import { db } from "@/server/db";
 import { accounts, users } from "@/server/db/schema";
 import bcrypt from "bcryptjs";
-import type { JWT } from "next-auth/jwt";
-import { env } from "@/env";
 
 export const authConfig = {
   trustHost: true, // Add this to trust the host

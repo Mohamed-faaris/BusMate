@@ -11,9 +11,6 @@ import {
   Phone,
   Calendar,
   MapPin,
-  Shield,
-  Bell,
-  Key,
   Edit3,
   Save,
   X,
@@ -21,7 +18,6 @@ import {
   AlertCircle,
   Loader2,
   Camera,
-  Settings,
 } from "lucide-react";
 import { motion } from "motion/react";
 import { useQuery } from "@tanstack/react-query";
@@ -30,7 +26,7 @@ import type { DashboardApiResponseSuccess } from "@/app/api/dashboard/route";
 async function fetchDashboardData(): Promise<DashboardApiResponseSuccess> {
   const res = await fetch("/api/dashboard", { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to fetch dashboard data");
-  return res.json();
+  return res.json() as Promise<DashboardApiResponseSuccess>;
 }
 
 export default function AccountPage() {
@@ -54,13 +50,15 @@ export default function AccountPage() {
     queryKey: ["dashboard", session?.user?.id],
     queryFn: fetchDashboardData,
     enabled: !!session?.user?.id,
-    onSuccess: (data) => {
+    onSuccess: (data: DashboardApiResponseSuccess) => {
       // Initialize form data when data is loaded
-      setFormData({
-        name: data.user.name,
-        email: data.user.email,
-        phone: data.user.phone || "",
-      });
+      if (data?.user) {
+        setFormData({
+          name: (data.user as { name?: string }).name ?? "",
+          email: (data.user as { email?: string }).email ?? "",
+          phone: (data.user as { phone?: string }).phone ?? "",
+        });
+      }
     },
   });
 
@@ -149,6 +147,20 @@ export default function AccountPage() {
 
   const { user, boardingPoint, seat, bus } = dashboardData;
 
+  if (!user) {
+    return <div>User data not found</div>;
+  }
+
+  // Type assertion for user properties
+  const userData = user as {
+    name?: string;
+    rollNo?: string;
+    email?: string;
+    phone?: string;
+  };
+  const busData = bus as { busNumber?: string } | null;
+  const seatData = seat as { seatId: string };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
       <div className="container mx-auto px-4 py-8">
@@ -215,7 +227,7 @@ export default function AccountPage() {
                   </div>
                   <div>
                     <h3 className="text-2xl font-semibold text-slate-900 capitalize dark:text-slate-100">
-                      {user.name}
+                      {userData.name}
                     </h3>
                     <p className="text-slate-600 dark:text-slate-400">
                       Student
@@ -247,7 +259,7 @@ export default function AccountPage() {
                     ) : (
                       <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 dark:border-slate-600 dark:bg-slate-700/50">
                         <span className="text-slate-900 capitalize dark:text-slate-100">
-                          {user.name}
+                          {userData.name}
                         </span>
                       </div>
                     )}
@@ -260,7 +272,7 @@ export default function AccountPage() {
                     </Label>
                     <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 dark:border-slate-600 dark:bg-slate-700/50">
                       <span className="font-mono text-slate-900 uppercase dark:text-slate-100">
-                        {user.rollNo}
+                        {userData.rollNo}
                       </span>
                     </div>
                   </div>
@@ -282,7 +294,7 @@ export default function AccountPage() {
                     ) : (
                       <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 dark:border-slate-600 dark:bg-slate-700/50">
                         <span className="text-slate-900 dark:text-slate-100">
-                          {user.email}
+                          {userData.email}
                         </span>
                       </div>
                     )}
@@ -306,7 +318,7 @@ export default function AccountPage() {
                     ) : (
                       <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 dark:border-slate-600 dark:bg-slate-700/50">
                         <span className="text-slate-900 dark:text-slate-100">
-                          {user.phone || "Not provided"}
+                          {userData.phone ?? "Not provided"}
                         </span>
                       </div>
                     )}
@@ -319,7 +331,8 @@ export default function AccountPage() {
                     </Label>
                     <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 dark:border-slate-600 dark:bg-slate-700/50">
                       <span className="text-slate-900 capitalize dark:text-slate-100">
-                        {boardingPoint?.name || "Not selected"}
+                        {(boardingPoint as { name?: string } | null)?.name ??
+                          "Not selected"}
                       </span>
                     </div>
                   </div>
@@ -373,7 +386,7 @@ export default function AccountPage() {
                             Bus:
                           </span>
                           <span className="font-medium text-slate-900 dark:text-slate-100">
-                            {bus?.busNumber}
+                            {busData?.busNumber}
                           </span>
                         </div>
                         <div className="flex justify-between">
@@ -381,7 +394,7 @@ export default function AccountPage() {
                             Seat:
                           </span>
                           <span className="font-medium text-slate-900 dark:text-slate-100">
-                            {seat.seatId}
+                            {seatData.seatId}
                           </span>
                         </div>
                         <div className="flex justify-between">

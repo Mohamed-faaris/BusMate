@@ -1,8 +1,7 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Link from "next/link";
-import { Bus, MapPin, Settings, Users, BarChart3, Clock } from "lucide-react";
+import { Bus, MapPin, Settings, Users, Clock } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 
 interface DashboardStats {
@@ -41,7 +40,7 @@ export default function AdminPage() {
   });
 
   const stats = dashboardData?.data?.stats;
-  const recentActivities = dashboardData?.data?.recentActivities || [];
+  const recentActivities = dashboardData?.data?.recentActivities ?? [];
 
   const dashboardCards = [
     {
@@ -93,29 +92,29 @@ export default function AdminPage() {
   const quickStats = [
     {
       label: "Total Buses",
-      value: stats?.totalBuses?.toString() || "0",
+      value: stats?.totalBuses?.toString() ?? "0",
       change: "", // You could calculate this from historical data
       changeType: "positive" as const,
       icon: Bus,
     },
     {
       label: "Active Routes",
-      value: stats?.activeRoutes?.toString() || "0",
+      value: stats?.activeRoutes?.toString() ?? "0",
       change: "",
       changeType: "positive" as const,
       icon: MapPin,
     },
     {
       label: "Total Passengers",
-      value: stats?.totalPassengers?.toString() || "0",
+      value: stats?.totalPassengers?.toString() ?? "0",
       change: " ",
       changeType: "positive" as const,
       icon: Users,
     },
     {
       label: "Today's Bookings",
-      value: stats?.todayBookings?.toString() || "0",
-      change: `+${stats?.todayBookings || 0}`,
+      value: stats?.todayBookings?.toString() ?? "0",
+      change: `+${stats?.todayBookings ?? 0}`,
       changeType: "positive" as const,
       icon: Clock,
     },

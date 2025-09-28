@@ -1,8 +1,7 @@
 "use client";
 import { BusPropsProvider } from "@/contexts/BusPropsContext";
 import { SeatsDataProvider } from "@/contexts/seatsDataContext";
-import { seatsArrayToMap, flattenBusSeats, cn } from "@/lib/utils";
-import Bus, { fallbackBusSeats } from "./bus/Bus";
+import { cn } from "@/lib/utils";
 import BusWrapper from "./bus/BusWrapper";
 import { LogoTitle } from "./LogoTitle";
 import { useQuery } from "@tanstack/react-query";
@@ -12,28 +11,24 @@ import { useWindowSize } from "@/hooks/use-window-size";
 import { Button } from "./ui/button";
 import Link from "next/link";
 
-interface TicketProps extends React.HTMLProps<HTMLDivElement> {}
-
 async function fetchDashboardData(): Promise<DashboardApiResponseSuccess> {
   const res = await fetch("/api/dashboard", { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to fetch dashboard data");
-  return res.json();
+  return res.json() as Promise<DashboardApiResponseSuccess>;
 }
 
-export function Ticket({ className, ...props }: TicketProps) {
-  const { data: session, status } = useSession();
+export function Ticket({
+  className,
+  ...props
+}: React.HTMLProps<HTMLDivElement>) {
+  const { data: session } = useSession();
   const { width } = useWindowSize();
   const { data, isLoading } = useQuery<DashboardApiResponseSuccess>({
     queryKey: ["dashboard", session?.user?.id],
     queryFn: fetchDashboardData,
     enabled: !!session?.user?.id,
   });
-  let scale = 1;
-  if (width) {
-    if (1440 > width) {
-      scale = 1.1;
-    }
-  }
+  const scale = width && 1440 > width ? 1.1 : 1;
   if (isLoading) return <div>Loading...</div>;
   if (!data) return <div>No data</div>;
   if (data.seat == null) {

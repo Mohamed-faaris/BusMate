@@ -10,7 +10,7 @@ interface LoaderProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
 }
 export const Loader: React.FC<LoaderProps> = ({
-  size = 32,
+  size: _size = 32,
   className,
   ...props
 }: LoaderProps) => (

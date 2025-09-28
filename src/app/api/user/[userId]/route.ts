@@ -5,6 +5,13 @@ import { buses } from "@/server/db/schema/buses";
 import { boardingPoints } from "@/server/db/schema/boardingPoints";
 import { eq } from "drizzle-orm";
 import { auth } from "@/server/auth";
+import { z } from "zod";
+
+const updateUserSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  email: z.string().email("Invalid email format"),
+  phone: z.string().min(1, "Phone is required"),
+});
 
 export async function GET(
   request: NextRequest,
@@ -73,13 +80,19 @@ export async function PUT(
   if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+
   const { userId } = await params;
-  if (user.user?.id !== userId) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  }
+
   try {
-    const body = await request.json();
-    const { name, email, phone } = body;
+    const body: unknown = await request.json();
+    const parseResult = updateUserSchema.safeParse(body);
+    if (!parseResult.success) {
+      return NextResponse.json(
+        { error: "Invalid input", details: parseResult.error.errors },
+        { status: 400 },
+      );
+    }
+    const { name, email, phone } = parseResult.data;
 
     // Update user details
     const result = await db

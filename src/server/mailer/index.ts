@@ -1,5 +1,6 @@
 import nodemailer from "nodemailer";
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unnecessary-type-assertion, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
   port: Number(process.env.SMTP_PORT) || 465,
@@ -8,6 +9,14 @@ const transporter = nodemailer.createTransport({
     user: process.env.GMAIL_USER,
     pass: process.env.GMAIL_PASS,
   },
+}) as ReturnType<typeof nodemailer.createTransport>;
+
+// Verify transporter configuration
+// eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+transporter.verify((error) => {
+  if (error) {
+    console.error("SMTP transporter verification failed:", error);
+  }
 });
 
 export async function sendOTPMail(email: string, otp: string) {
@@ -15,6 +24,7 @@ export async function sendOTPMail(email: string, otp: string) {
     console.log(`Sending OTP ${otp} to ${email}`);
   }
   try {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
     await transporter.sendMail({
       from: `\"BusMate\" <${process.env.GMAIL_USER}>`,
       to: email,

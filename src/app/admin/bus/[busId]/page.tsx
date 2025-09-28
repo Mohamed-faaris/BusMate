@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft, Users, MapPin, Phone, User } from "lucide-react";
+import { ArrowLeft, Users } from "lucide-react";
 import { BusPropsProvider } from "@/contexts/BusPropsContext";
 import AdminBusWrapper from "@/components/bus/AdminBusWrapper";
 import { Loader } from "@/components/Loader";
@@ -30,14 +30,14 @@ type AdminBusDetailResponse = {
         routeName: string;
         driverName: string;
         driverPhone: string;
-        seats: Record<string, any>;
+        seats: Record<string, unknown>;
         createdAt: string;
         updatedAt: string;
       };
       model: {
         id: string;
         model: string;
-        data: any;
+        data: Record<string, unknown>;
         createdAt: string;
         updatedAt: string;
       };
@@ -123,7 +123,7 @@ export default function AdminBusDetailPage() {
   const allPassengers = [
     ...seatBookings.filter((booking) => booking.userId),
     ...passengers.map((passenger) => ({
-      seatId: passenger.seatId || "Unknown",
+      seatId: passenger.seatId ?? "Unknown",
       status: "unknown",
       userId: passenger.userId,
       userName: passenger.userName,
@@ -305,7 +305,7 @@ export default function AdminBusDetailPage() {
             <Users className="text-muted-foreground mx-auto mb-3 h-12 w-12" />
             <h3 className="mb-1 text-lg font-semibold">No Passengers Yet</h3>
             <p className="text-muted-foreground text-sm">
-              This bus hasn't been booked by any passengers yet.
+              This bus hasn&apos;t been booked by any passengers yet.
             </p>
           </div>
         </Card>

@@ -4,10 +4,15 @@ import BusWrapper from "./BusWrapper";
 
 import { generateSeatColumns } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
-import { is } from "drizzle-orm";
 import { Loader } from "lucide-react";
-import { BusPropsProvider } from "@/contexts/BusPropsContext";
 import { SeatsDataProvider } from "@/contexts/seatsDataContext";
+
+import type { SeatStatus, BusModelProperties } from "@/server/db/schema/models";
+
+type BusData = {
+  bus: { seats: Record<string, SeatStatus | undefined> };
+  model: { data: BusModelProperties };
+};
 
 export const fallbackBusSeats = {
   leftTopSeatColumns: { seatsRows: generateSeatColumns(3, 4) },
@@ -21,7 +26,10 @@ export const fallbackBusSeats = {
 export function Bus({ busId }: { busId: string }) {
   const { data: busSeats, isLoading } = useQuery({
     queryKey: ["busSeats", busId],
-    queryFn: () => fetch(`/api/bus/${busId}`).then((res) => res.json()),
+    queryFn: () =>
+      fetch(`/api/bus/${busId}`).then(
+        (res) => res.json() as Promise<{ success: boolean; data: BusData }>,
+      ),
   });
   try {
     if (isLoading) {
@@ -29,6 +37,9 @@ export function Bus({ busId }: { busId: string }) {
       return <Loader />;
     }
     // console.log(busSeats.data.model);
+    if (!busSeats?.data) {
+      return <div>Bus data not found</div>;
+    }
     return (
       <SeatsDataProvider data={busSeats.data.bus.seats}>
         <BusWrapper busId={busId} busSeats={busSeats.data.model.data} />
