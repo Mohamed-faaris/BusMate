@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useMutation } from "@tanstack/react-query";
+import { models } from "@/server/db/schema";
 import { Label } from "@radix-ui/react-label";
 
 //TODO : do not use Form
@@ -64,7 +65,7 @@ export default function Page() {
     },
   };
 
-  const mutation = useMutation({
+  const mutation = useMutation<{ success: boolean; model: typeof models.$inferSelect }, Error, void>({
     mutationFn: async () => {
       const res = await fetch("/api/admin/model", {
         method: "POST",
@@ -280,10 +281,10 @@ export default function Page() {
             </div>
             <Button
               type="submit"
-              disabled={mutation.isLoading}
+              disabled={mutation.isPending}
               className="w-full rounded bg-blue-600 py-2 text-white"
             >
-              {mutation.isLoading ? "Adding..." : "Add Model"}
+              {mutation.isPending ? "Adding..." : "Add Model"}
             </Button>
           </form>
         </Card>

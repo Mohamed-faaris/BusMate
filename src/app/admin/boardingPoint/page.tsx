@@ -21,6 +21,7 @@ import type {
   BoardingPoint,
   BoardingPointGet,
 } from "@/app/api/busRoutes/route";
+import { boardingPoints } from "@/server/db/schema";
 
 export default function BoardingPointPage() {
   const queryClient = useQueryClient();
@@ -34,7 +35,7 @@ export default function BoardingPointPage() {
   });
 
   const addMutation = useMutation<
-    unknown,
+    { success: boolean; boardingPoint: typeof boardingPoints.$inferSelect },
     Error,
     { name: string; latitude?: number; longitude?: number }
   >({

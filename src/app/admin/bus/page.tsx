@@ -13,6 +13,7 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import type { AdminBusResponse } from "@/app/api/admin/addBus/route";
+import { buses, busBoardingPoints } from "@/server/db/schema";
 import { Trash2, Eye } from "lucide-react";
 
 interface BoardingPointOption {
@@ -68,7 +69,7 @@ const AdminBusPage = () => {
     queryFn: () => fetch("/api/admin/addBus").then((res) => res.json()),
   });
 
-  const createBus = useMutation<{ success: boolean; bus: any; boardingPoints: any[] }, Error, CreateBusInput>({
+  const createBus = useMutation<{ success: boolean; bus: typeof buses.$inferSelect; boardingPoints: (typeof busBoardingPoints.$inferSelect)[] }, Error, CreateBusInput>({
     mutationFn: (newBus) =>
       fetch("/api/admin/addBus", {
         method: "POST",
