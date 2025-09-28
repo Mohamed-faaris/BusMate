@@ -56,6 +56,15 @@ export type TableProviderProps<TData, TValue> = {
   className?: string;
 };
 
+/**
+ * Provides table context and renders a configured react-table instance with shared sorting state.
+ *
+ * @param columns - Column definitions used to build the table.
+ * @param data - Row data for the table.
+ * @param children - React nodes rendered inside the table wrapper.
+ * @param className - Optional CSS class applied to the outer Table element.
+ * @returns The Table context provider wrapping a Table element populated with the given children.
+ */
 export function TableProvider<TData, TValue>({
   columns,
   data,

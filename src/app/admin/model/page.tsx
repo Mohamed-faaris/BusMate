@@ -16,7 +16,15 @@ import { useMutation } from "@tanstack/react-query";
 import { type models } from "@/server/db/schema";
 import { Label } from "@radix-ui/react-label";
 
-//TODO : do not use Form
+/**
+ * Render the bus model configuration page with a live preview and form submission.
+ *
+ * The component provides inputs and sliders to configure seat groups and component heights,
+ * constructs a BusModelProperties object for preview, and submits the model to the server;
+ * on successful submission it resets inputs and shows a success alert, and on error it alerts the error message.
+ *
+ * @returns A React element containing the configuration form, live bus preview, and submission handling.
+ */
 export default function Page() {
   const [modelName, setModelName] = useState("");
   const [leftTopCols, setLeftTopCols] = useState(2);

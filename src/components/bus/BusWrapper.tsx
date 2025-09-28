@@ -14,6 +14,14 @@ type BusWrapperProps = {
   className?: string;
 } & HTMLAttributes<HTMLDivElement>;
 
+/**
+ * Renders a bus layout Card composed of seat groups, driver, door, and an aisle label based on `busSeats`.
+ *
+ * @param busId - Identifier for the bus; accepted but not used by the component.
+ * @param busSeats - Layout and sizing properties describing seat groups, door, driver, and back seats.
+ * @param className - Additional CSS class names applied to the outer Card container.
+ * @returns The JSX element representing the bus interior layout.
+ */
 export default function BusWrapper({
   busId: _busId,
   busSeats,

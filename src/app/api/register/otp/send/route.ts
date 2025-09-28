@@ -8,6 +8,15 @@ const sendOTPSchema = z.object({
   email: z.string().email("Invalid email format"),
 });
 
+/**
+ * Handle POST requests to generate, store, and email a one-time password (OTP) for a validated email address.
+ *
+ * Validates the request body for an email, normalizes and re-validates the email format, stores the generated OTP under `otp:<email>` with a 7-minute TTL, and sends the OTP to the email address.
+ *
+ * @returns A JSON NextResponse:
+ * - Success: `{ message: "OTP sent successfully" }` with HTTP status 200.
+ * - Validation or input errors: an error object with details and HTTP status 400.
+ */
 export async function POST(request: NextRequest) {
   const body: unknown = await request.json();
   const parseResult = sendOTPSchema.safeParse(body);

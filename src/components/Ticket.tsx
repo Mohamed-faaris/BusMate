@@ -11,12 +11,25 @@ import { useWindowSize } from "@/hooks/use-window-size";
 import { Button } from "./ui/button";
 import Link from "next/link";
 
+/**
+ * Fetches the latest dashboard data from the server.
+ *
+ * @returns The parsed `DashboardApiResponseSuccess` payload from the dashboard API.
+ * @throws Error if the HTTP response is not OK.
+ */
 async function fetchDashboardData(): Promise<DashboardApiResponseSuccess> {
   const res = await fetch("/api/dashboard", { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to fetch dashboard data");
   return res.json() as Promise<DashboardApiResponseSuccess>;
 }
 
+/**
+ * Render a user's bus ticket UI or a booking call-to-action based on dashboard data.
+ *
+ * Renders one of: a loading placeholder, a no-data message, a booking prompt when no seat is assigned, or the assigned ticket view showing user info, boarding point, and bus/seat details with a visual bus layout.
+ *
+ * @returns A React element displaying the appropriate ticket state (loading, no-data, booking CTA, or assigned ticket view).
+ */
 export function Ticket({
   className,
   ...props

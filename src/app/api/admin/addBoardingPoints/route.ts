@@ -9,6 +9,18 @@ const createBoardingPointSchema = z.object({
   longitude: z.number().optional(),
 });
 
+/**
+ * Handle POST requests to create a new boarding point.
+ *
+ * Expects the request body to be JSON matching the createBoardingPointSchema:
+ * `{ name: string (required), latitude?: number, longitude?: number }`.
+ *
+ * @param request - Incoming HTTP request whose JSON body contains the boarding point data
+ * @returns A NextResponse containing:
+ * - On success (status 201): `{ success: true, boardingPoint }` with the newly inserted record
+ * - On validation failure (status 400): `{ error: "Invalid input", details }` with schema errors
+ * - On server error (status 500): `{ error: "Server error while adding boarding point" }`
+ */
 export async function POST(request: NextRequest) {
   try {
     const body: unknown = await request.json();

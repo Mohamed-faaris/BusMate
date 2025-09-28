@@ -4,6 +4,15 @@ import { buses } from "@/server/db/schema/buses";
 import { models } from "@/server/db/schema/models";
 import { eq } from "drizzle-orm";
 
+/**
+ * Retrieve details for a bus by ID, including its model information.
+ *
+ * @param params - A promise that resolves to route parameters; must include `busId` (the bus identifier).
+ * @returns A NextResponse carrying JSON:
+ *  - On success: `{ success: true, data }` with the bus record (including joined model) and HTTP status 200.
+ *  - If not found: `{ error: "Bus not found" }` with HTTP status 404.
+ *  - On error: `{ error: "Error fetching bus details" }` with HTTP status 500.
+ */
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ busId: string }> },

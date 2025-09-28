@@ -15,6 +15,14 @@ const bookSeatSchema = z.object({
   busId: z.string().min(1, "Bus ID is required"),
 });
 
+/**
+ * Handle a seat booking request for a bus and return a JSON HTTP response.
+ *
+ * Validates the request body, authenticates the user, records the seat booking,
+ * and updates the bus's seat status. Responses cover validation errors, auth
+ * failures, not-found conditions, duplicate bookings, and general failures.
+ *
+ * @returns A JSON HTTP response: on success `{ message: "success" }` with status `200`; on invalid input `{ error: "Invalid input", details }` or other failures `{ error: string }` with status `400`; `401` for unauthorized; `404` if the user is not found; `406` if the user has already booked a seat.
 export async function POST(req: Request) {
   try {
     const body: unknown = await req.json();

@@ -7,6 +7,11 @@ import Link from "next/link";
 import React from "react";
 import { Bus, MapPin, Users, Calendar, Shield, Smartphone } from "lucide-react";
 
+/**
+ * Renders the landing page for the Smart Bus Seat Booking application, including the hero section, feature tiles, and an authentication-aware call-to-action.
+ *
+ * @returns The homepage React element containing the hero, feature grids, and a CTA that adapts to the user's session status.
+ */
 export default function HomePage() {
   const session = useSession();
 

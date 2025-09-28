@@ -6,6 +6,13 @@ import { LogoTitle } from "@/components/LogoTitle";
 import type { BoardingPoint } from "@/app/api/busRoutes/route";
 import { Loader } from "@/components/Loader";
 
+/**
+ * Render the login page and populate the registration form with boarding points fetched from the server.
+ *
+ * Displays a centered loading state while boarding points are being fetched, an error message if fetching fails, and the main layout with LogoTitle and RegisterForm when boarding points are available.
+ *
+ * @returns A React element representing the login page with loading, error, and success states; on success the RegisterForm receives the fetched boarding points.
+ */
 export default function LoginPage() {
   const { data, isLoading, error } = useQuery({
     queryKey: ["boardingPoints"],

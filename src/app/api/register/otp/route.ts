@@ -4,6 +4,15 @@ import { db } from "@/server/db";
 import { users } from "@/server/db/schema/users";
 import { eq, or } from "drizzle-orm";
 
+/**
+ * Validate a POST payload containing `email` and `rollNo`, check for existing users, and respond with JSON indicating validation errors, conflicts, or success.
+ *
+ * @returns A NextResponse containing JSON:
+ * - 400: when input validation fails — `{ error: "Invalid input data", details, buttonMessage: "Fix input data" }`
+ * - 409: when an existing user is found — `{ error: "User already exists", message, field, buttonMessage }`
+ * - 200: when `email` and `rollNo` are valid and available — `{ success: true, message, email: normalizedEmail, rollNo: normalizedRollNo, buttonMessage: "Continue" }`
+ * - 400: for unexpected errors — `{ error: "Invalid request format", buttonMessage: "Invalid request" }`
+ */
 export async function POST(request: NextRequest) {
   try {
     // Parse the request body to get email and rollNo

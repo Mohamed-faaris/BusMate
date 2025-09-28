@@ -23,6 +23,14 @@ import type {
 } from "@/app/api/busRoutes/route";
 import { type boardingPoints } from "@/server/db/schema";
 
+/**
+ * Render the boarding points management interface with add, search, list, and location utilities.
+ *
+ * Renders a two-column layout containing a form to add new boarding points (including GPS autofill),
+ * and a searchable list of existing boarding points with status and actions.
+ *
+ * @returns The component's JSX element for the boarding points management UI.
+ */
 export default function BoardingPointPage() {
   const queryClient = useQueryClient();
   const { data, isLoading, error } = useQuery<BoardingPoint[], Error>({
