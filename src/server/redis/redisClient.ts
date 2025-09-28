@@ -7,7 +7,7 @@ declare global {
   var redisClient: RedisClientType | undefined;
 }
 
-const redisClient: RedisClientType;
+let redisClient: RedisClientType;
 
 if (!global.redisClient) {
   global.redisClient = createClient({
