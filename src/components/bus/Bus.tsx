@@ -7,11 +7,11 @@ import { useQuery } from "@tanstack/react-query";
 import { Loader } from "lucide-react";
 import { SeatsDataProvider } from "@/contexts/seatsDataContext";
 
-import type { SeatStatus } from "@/server/db/schema/models";
+import type { SeatStatus, BusModelProperties } from "@/server/db/schema/models";
 
 type BusData = {
   bus: { seats: Record<string, SeatStatus | undefined> };
-  model: { data: any };
+  model: { data: BusModelProperties };
 };
 
 export const fallbackBusSeats = {

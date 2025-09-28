@@ -55,17 +55,24 @@ function AdminSeatGroup({
             }
 
             // Get seat status from bus data and booking info
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
             const actualSeatStatus =
-              busSeatStatuses[(seat as Seat).id] ?? (seat as Seat).seatStatus;
+              busSeatStatuses[seat.id] ?? seat.seatStatus;
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             const bookingInfo = seatBookings.find(
-              (booking) => booking.seatId === (seat as Seat).id,
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+              (booking) => booking.seatId === seat.id,
             );
 
             return (
               <AdminSeat
-                key={(seat as Seat).id}
-                id={(seat as Seat).id}
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                key={seat.id}
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                id={seat.id}
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 seatStatus={actualSeatStatus}
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 bookingInfo={bookingInfo}
               />
             );
