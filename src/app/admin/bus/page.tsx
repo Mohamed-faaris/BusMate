@@ -86,7 +86,7 @@ const AdminBusPage = () => {
 
   const handleRowChange = (index: number, field: string, value: string) => {
     const rows = [...bpRows];
-    // @ts-expect-error
+    // @ts-expect-error - Dynamic property access on boarding point row object
     rows[index][field] = value;
     setBpRows(rows);
   };

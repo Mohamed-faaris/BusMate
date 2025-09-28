@@ -51,7 +51,7 @@ export default function BoardingPointPage() {
       return res.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["boardingPoints"] });
+      void queryClient.invalidateQueries({ queryKey: ["boardingPoints"] });
       setName("");
       setLatitude("");
       setLongitude("");

@@ -46,11 +46,7 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { useMediaQuery } from "@/hooks/use-media-query";
-import {
-  step1Schema,
-  step2Schema,
-  step3Schema,
-} from "@/schemas/auth";
+import { step1Schema, step2Schema, step3Schema } from "@/schemas/auth";
 import { useMutation } from "@tanstack/react-query";
 import { signIn, useSession } from "next-auth/react";
 

@@ -10,7 +10,10 @@ import { useWindowSize } from "@/hooks/use-window-size";
 import { Button } from "./ui/button";
 import Link from "next/link";
 
-export function MobileTicket({ className, ...props }: React.HTMLProps<HTMLDivElement>) {
+export function MobileTicket({
+  className,
+  ...props
+}: React.HTMLProps<HTMLDivElement>) {
   const { data: session } = useSession();
   const { width } = useWindowSize();
   const { data, isLoading } = useQuery<DashboardApiResponseSuccess>({
