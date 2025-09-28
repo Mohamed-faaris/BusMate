@@ -7,7 +7,7 @@ import { eq, or } from "drizzle-orm";
 export async function POST(request: NextRequest) {
   try {
     // Parse the request body to get email and rollNo
-    const body = await request.json();
+    const body: unknown = await request.json();
 
     // Validate the input
     const validationResult = sendSchema.safeParse(body);

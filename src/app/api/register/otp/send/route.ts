@@ -5,7 +5,8 @@ import { type NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
 export async function POST(request: NextRequest) {
-  const { email } = await request.json();
+  const body: { email: string } = await request.json();
+  const { email } = body;
   const normalizedEmail = email.toLowerCase();
 
   if (!normalizedEmail) {

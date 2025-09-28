@@ -12,7 +12,7 @@ import { getValue } from "@/server/redis/utils";
 export async function POST(request: NextRequest) {
   try {
     // Parse the request body
-    const body = await request.json();
+    const body: unknown = await request.json();
 
     // Validate the input
     const validationResult = registrationSchema.safeParse(body);
