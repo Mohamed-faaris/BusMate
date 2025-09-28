@@ -63,13 +63,16 @@ export default function BookingPage() {
   const queryClient = useQueryClient();
   const router = useRouter();
 
-  const { data: userData, isLoading: isUserLoading } = useQuery<{ success: boolean; user: UserData } | null>({
+  const { data: userData, isLoading: isUserLoading } = useQuery<{
+    success: boolean;
+    user: UserData;
+  } | null>({
     queryKey: ["user", session?.user?.id],
     queryFn: async () => {
       if (!session?.user?.id) return null;
       const res = await fetch(`/api/user/${session.user.id}`);
       if (!res.ok) throw new Error("Failed to fetch user");
-      return await res.json() as { success: boolean; user: UserData };
+      return (await res.json()) as { success: boolean; user: UserData };
     },
     enabled: !!session?.user?.id,
   });
@@ -97,7 +100,7 @@ export default function BookingPage() {
         const errorData = (await res.json()) as { error?: string };
         throw new Error(errorData?.error ?? "Failed to book seat");
       }
-      return await res.json() as { success: boolean };
+      return (await res.json()) as { success: boolean };
     },
     onSuccess: () => {
       void queryClient.invalidateQueries({
@@ -115,7 +118,7 @@ export default function BookingPage() {
       if (!boardingPointId) return [];
       const res = await fetch(`/api/bus/byBoardingPoint/${boardingPointId}`);
       if (!res.ok) throw new Error("Failed to fetch buses");
-      return await res.json() as BusType[];
+      return (await res.json()) as BusType[];
     },
     enabled: !!boardingPointId,
   });
@@ -177,12 +180,12 @@ export default function BookingPage() {
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-4 items-center gap-4">
                 <p className="text-right font-semibold">Name</p>
-                <p className="col-span-3">{userData!.user!.name}</p>
+                <p className="col-span-3">{userData?.user?.name}</p>
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
                 <p className="text-right font-semibold">Boarding Point</p>
                 <p className="col-span-3">
-                  {userData!.user!.boardingPoint?.name}
+                  {userData?.user?.boardingPoint?.name}
                 </p>
               </div>
               <div className="grid grid-cols-4 items-center gap-4">

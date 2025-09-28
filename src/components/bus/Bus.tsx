@@ -7,6 +7,13 @@ import { useQuery } from "@tanstack/react-query";
 import { Loader } from "lucide-react";
 import { SeatsDataProvider } from "@/contexts/seatsDataContext";
 
+import type { SeatStatus } from "@/server/db/schema/models";
+
+type BusData = {
+  bus: { seats: Record<string, SeatStatus | undefined> };
+  model: { data: any };
+};
+
 export const fallbackBusSeats = {
   leftTopSeatColumns: { seatsRows: generateSeatColumns(3, 4) },
   door: {},
@@ -19,7 +26,10 @@ export const fallbackBusSeats = {
 export function Bus({ busId }: { busId: string }) {
   const { data: busSeats, isLoading } = useQuery({
     queryKey: ["busSeats", busId],
-    queryFn: () => fetch(`/api/bus/${busId}`).then((res) => res.json() as Promise<{ success: boolean; data: any }>),
+    queryFn: () =>
+      fetch(`/api/bus/${busId}`).then(
+        (res) => res.json() as Promise<{ success: boolean; data: BusData }>,
+      ),
   });
   try {
     if (isLoading) {

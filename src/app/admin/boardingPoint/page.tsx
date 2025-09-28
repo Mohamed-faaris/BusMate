@@ -46,7 +46,7 @@ export default function BoardingPointPage() {
         body: JSON.stringify(newPoint),
       });
       if (!res.ok) {
-        const data = await res.json() as { error?: string };
+        const data = (await res.json()) as { error?: string };
         throw new Error(data.error ?? "Error adding boarding point");
       }
       return res.json() as Promise<{
