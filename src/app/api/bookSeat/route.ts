@@ -4,7 +4,6 @@ import {
   buses,
   seats,
   users,
-  type BusModelProperties,
   type SeatStatus,
 } from "@/server/db/schema";
 import { eq, sql } from "drizzle-orm";
@@ -36,7 +35,7 @@ export async function POST(req: Request) {
       const [user] = await tx
         .select()
         .from(users)
-        .where(eq(users.id, session.user?.id || ""));
+        .where(eq(users.id, session.user?.id ?? ""));
 
       if (!user) {
         console.warn("User not found for id:", session.user?.id);

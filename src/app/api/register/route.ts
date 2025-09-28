@@ -4,7 +4,6 @@ import { db } from "@/server/db";
 import { users } from "@/server/db/schema/users";
 import { accounts } from "@/server/db/schema/accounts";
 import { boardingPoints } from "@/server/db/schema/boardingPoints";
-import { buses } from "@/server/db/schema/buses";
 import { eq } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 import { isDev } from "@/lib/utils";
@@ -98,22 +97,21 @@ export async function POST(request: NextRequest) {
     }
 
     // Find boarding point by name
-    const boardingPointResult = await db
+    const [boardingPointRecord] = await db
       .select()
       .from(boardingPoints)
       .where(eq(boardingPoints.name, boardingPoint))
       .limit(1);
 
-    // if (boardingPointResult.length === 0) {
-    //   return NextResponse.json(
-    //     {
-    //       error: "Invalid boarding point",
-    //       message: "The selected boarding point does not exist",
-    //       buttonMessage: "Invalid stop selected",
-    //     },
-    //     { status: 400 },
-    //   );
-    // }
+    if (!boardingPointRecord) {
+      return NextResponse.json(
+        {
+          error: "Invalid boarding point",
+          message: "The selected boarding point does not exist",
+        },
+        { status: 400 },
+      );
+    }
 
     // For now, we'll assign the first available bus
     // In a real application, this would be based on boarding point and other criteria
@@ -134,7 +132,7 @@ export async function POST(request: NextRequest) {
           phone,
           address,
           dateOfBirth: new Date(dateOfBirth),
-          boardingPointId: boardingPoint,
+          boardingPointId: boardingPointRecord.id,
           busId: null,
           receiptId: null, // Generate a simple receipt ID
         })
