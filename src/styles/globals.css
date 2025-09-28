@@ -104,7 +104,7 @@
   --sidebar-accent-foreground: oklch(0.8717 0.0093 258.3382);
   --sidebar-border: oklch(0.4461 0.0263 256.8018);
   --sidebar-ring: oklch(0.6801 0.1583 276.9349);
-  --font-sans: Inter, sans-serif;
+  --font-sans: "Geist","Geist Fallback", Inter, sans-serif;
   --font-serif: Merriweather, serif;
   --font-mono: JetBrains Mono, monospace;
   --radius: 0.5rem;
