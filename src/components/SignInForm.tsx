@@ -76,7 +76,7 @@ export function SignInForm({
 
       console.log(res);
       if (!res || res.error) {
-        throw new Error(res?.error || "Sign in failed");
+        throw new Error(res?.error ?? "Sign in failed");
       }
       // Handle successful submission here
       setButtonState("success");
@@ -136,17 +136,6 @@ export function SignInForm({
         );
       default:
         return "Login";
-    }
-  };
-
-  const getButtonVariant = () => {
-    switch (buttonState) {
-      case "success":
-        return "default"; // or create a success variant
-      case "error":
-        return "destructive";
-      default:
-        return "default";
     }
   };
 
