@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */
 import type { BusModelProperties, Seat, SeatRows } from "@/server/db/schema";
 
 export function generateOTP() {
@@ -68,7 +69,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export const isDev = process.env.NODE_ENV === "development";
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+ 
 export const extendArray = (arr: unknown[], len: number, val: unknown): unknown[] => [
   ...arr,
   ...Array(Math.max(len - arr.length, 0)).fill(val),
@@ -82,7 +83,6 @@ export function safeStringify(obj: unknown, space?: number): string {
       (key, value) => {
         // Handle circular references
         if (typeof value === "object" && value !== null) {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           if (value.constructor === Object || Array.isArray(value)) {
             return value;
           }
@@ -93,13 +93,12 @@ export function safeStringify(obj: unknown, space?: number): string {
       space,
     );
   } catch {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return String(obj);
   }
 }
 
 // Utility function to mask sensitive data in logs
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access */
 export function maskSensitiveData(obj: any): any {
   const sensitiveKeys = [
     "password",
@@ -111,29 +110,24 @@ export function maskSensitiveData(obj: any): any {
   ];
 
   if (typeof obj !== "object" || obj === null) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return obj;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const masked = { ...obj };
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   for (const key in masked) {
     if (
       sensitiveKeys.some((sensitive) => key.toLowerCase().includes(sensitive))
     ) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
       masked[key] = "***MASKED***";
     } else if (typeof masked[key] === "object") {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
       masked[key] = maskSensitiveData(masked[key]);
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return masked;
 }
+/* eslint-enable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */
 
 // Utility function to format file sizes
 export function formatBytes(bytes: number, decimals = 2): string {

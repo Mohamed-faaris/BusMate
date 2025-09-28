@@ -46,39 +46,34 @@ function AdminSeatGroup({
 
   return (
     <div className="flex flex-col">
+      {/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access */}
       {seatGroups.map((seatRow, rowIndex) => (
         <div key={rowIndex} className="flex">
           {Array.from({ length: maxSeatsInRow }).map((_, seatIndex) => {
-            const seat = seatRow[seatIndex];
+            const seat = (seatRow as Seat[])[seatIndex];
             if (!seat) {
               return <div key={seatIndex} className="m-0.5 h-10 w-10" />;
             }
 
             // Get seat status from bus data and booking info
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
             const actualSeatStatus =
               busSeatStatuses[seat.id] ?? seat.seatStatus;
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             const bookingInfo = seatBookings.find(
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
               (booking) => booking.seatId === seat.id,
             );
 
             return (
               <AdminSeat
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
                 key={seat.id}
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
                 id={seat.id}
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 seatStatus={actualSeatStatus}
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 bookingInfo={bookingInfo}
               />
             );
           })}
         </div>
       ))}
+      {/* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access */}
     </div>
   );
 }

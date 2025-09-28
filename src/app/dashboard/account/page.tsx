@@ -331,7 +331,8 @@ export default function AccountPage() {
                     </Label>
                     <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 dark:border-slate-600 dark:bg-slate-700/50">
                       <span className="text-slate-900 capitalize dark:text-slate-100">
-                        {(boardingPoint as { name?: string } | null)?.name ?? "Not selected"}
+                        {(boardingPoint as { name?: string } | null)?.name ??
+                          "Not selected"}
                       </span>
                     </div>
                   </div>
