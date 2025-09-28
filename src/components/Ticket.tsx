@@ -45,7 +45,7 @@ export function Ticket({ className, ...props }: TicketProps) {
         )}
         {...props}
       >
-        <div className="flex flex-col gap- text-2xl sm:gap-2 lg:text-4xl">
+        <div className="gap- flex flex-col text-2xl sm:gap-2 lg:text-4xl">
           <p className="capitalize">{data.user.name}</p>
           <p className="uppercase">{data.user.rollNo}</p>
           <p className="capitalize">{data.boardingPoint?.name}</p>

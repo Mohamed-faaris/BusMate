@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
       dateOfBirth,
       otp,
       password,
-      college
+      college,
     } = validationResult.data;
 
     // Normalize fields to lowercase

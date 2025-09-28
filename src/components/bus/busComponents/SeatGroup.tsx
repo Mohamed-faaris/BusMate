@@ -21,7 +21,7 @@ export default function SeatGroup({
     <div
       className={cn("flex flex-grow flex-col justify-around", className)}
       {...divProps}
-      style={{ minHeight:height }}
+      style={{ minHeight: height }}
     >
       {seatGroups.map((seatRow: SeatRows, rowIndex: number) => (
         <div key={rowIndex} className="flex">

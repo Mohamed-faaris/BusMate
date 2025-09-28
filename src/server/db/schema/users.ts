@@ -23,13 +23,9 @@ export const users = createTable(
     dateOfBirth: d.timestamp({ mode: "date", withTimezone: true }).notNull(),
     college: collegeEnum("college").notNull(),
 
-    busId: d
-      .uuid()
-      .references(() => buses.id),
+    busId: d.uuid().references(() => buses.id),
 
-    boardingPointId: d
-      .uuid()
-      .references(() => boardingPoints.id),
+    boardingPointId: d.uuid().references(() => boardingPoints.id),
     receiptId: d.varchar({ length: 255 }),
 
     isVerified: d.boolean().notNull().default(false),
@@ -48,6 +44,5 @@ export const users = createTable(
     index("rollNo_idx").on(table.rollNo),
     index("email_idx").on(table.email),
     index("busId_idx").on(table.busId),
-    
   ],
 );

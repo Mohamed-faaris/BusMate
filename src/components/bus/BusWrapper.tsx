@@ -14,7 +14,12 @@ type BusWrapperProps = {
   className?: string;
 } & HTMLAttributes<HTMLDivElement>;
 
-export default function BusWrapper({ busId, busSeats, className, ...props }: BusWrapperProps) {
+export default function BusWrapper({
+  busId,
+  busSeats,
+  className,
+  ...props
+}: BusWrapperProps) {
   const { scale } = useSeat();
   return (
     <Card

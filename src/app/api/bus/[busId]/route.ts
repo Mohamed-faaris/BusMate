@@ -13,24 +13,26 @@ export async function GET(
   try {
     // Fetch bus details with left join on model table
     const busId = (await params).busId;
-    console.log(busId)
-    
-    const  result = await db
-          .select()
-          .from(buses)
-          .leftJoin(models, eq(models.id, buses.modelId))
-          .where(eq(buses.id, busId))
-          .limit(1);
-    
-      // .from(users)
-      //.leftJoin(models, eq(buses.modelId, models.id))
+    console.log(busId);
 
+    const result = await db
+      .select()
+      .from(buses)
+      .leftJoin(models, eq(models.id, buses.modelId))
+      .where(eq(buses.id, busId))
+      .limit(1);
+
+    // .from(users)
+    //.leftJoin(models, eq(buses.modelId, models.id))
 
     if (!result || result.length === 0) {
       return NextResponse.json({ error: "Bus not found" }, { status: 404 });
     }
     // Send bus details along with model details
-    return NextResponse.json({ success: true, data: result[0] }, { status: 200 });
+    return NextResponse.json(
+      { success: true, data: result[0] },
+      { status: 200 },
+    );
   } catch (error) {
     console.error("Error fetching bus details:", error);
     return NextResponse.json(

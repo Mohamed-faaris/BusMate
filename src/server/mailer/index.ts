@@ -11,7 +11,7 @@ const transporter = nodemailer.createTransport({
 });
 
 export async function sendOTPMail(email: string, otp: string) {
-  if(process.env.NODE_ENV === "development"){
+  if (process.env.NODE_ENV === "development") {
     console.log(`Sending OTP ${otp} to ${email}`);
   }
   try {
@@ -40,5 +40,3 @@ export async function sendOTPMail(email: string, otp: string) {
     console.error("Error sending email:", error);
   }
 }
-
-

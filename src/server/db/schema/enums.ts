@@ -9,7 +9,4 @@ export const seatStatusEnum = pgEnum("seatStatus", [
   "reserved",
 ]);
 
-export const collegeEnum = pgEnum("college", [
-  "KRCE",
-  "KRCT",
-]);
+export const collegeEnum = pgEnum("college", ["KRCE", "KRCT"]);

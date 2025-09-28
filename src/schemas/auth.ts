@@ -25,7 +25,6 @@ export const sendSchema = z.object({
   rollNo: z.string().min(1, "Roll No is required"),
 });
 
-
 export const signInSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
   password: z.string().min(6, "Password must be at least 6 characters long"),
@@ -51,7 +50,7 @@ export const step2Schema = z.object({
 });
 
 export const step3Schema = z
-.object({
+  .object({
     password: z.string().min(8, "Password must be at least 8 characters"),
     confirmPassword: z.string(),
   })
@@ -60,6 +59,6 @@ export const step3Schema = z
     path: ["confirmPassword"],
   });
 
-  export const step4Schema = z.object({
-    otp: z.string().length(6, "OTP must be 6 digits"),
-  });
+export const step4Schema = z.object({
+  otp: z.string().length(6, "OTP must be 6 digits"),
+});

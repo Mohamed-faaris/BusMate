@@ -3,7 +3,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { RegisterForm } from "@/components/RegisterForm";
 import { LogoTitle } from "@/components/LogoTitle";
-import { clientEnv } from "@/env";
 import type { BoardingPoint } from "@/app/api/busRoutes/route";
 import { Loader } from "@/components/Loader";
 
@@ -12,7 +11,8 @@ export default function LoginPage() {
     queryKey: ["boardingPoints"],
     queryFn: async () => {
       const res = await fetch(`/api/busRoutes`);
-      const { boardingPoints }: { boardingPoints: BoardingPoint[] } = await res.json();
+      const { boardingPoints }: { boardingPoints: BoardingPoint[] } =
+        await res.json();
       return boardingPoints;
     },
   });

@@ -11,7 +11,7 @@ export async function GET(
   const busList = await db
     .select({
       id: buses.id,
-      name: buses.busNumber
+      name: buses.busNumber,
     })
     .from(busBoardingPoints)
     .where(eq(busBoardingPoints.boardingPointId, boardingPointId))

@@ -1,6 +1,10 @@
 import redisClient from "./redisClient";
 
-export async function setKey(key: string, value: string, expirySeconds: number) {
+export async function setKey(
+  key: string,
+  value: string,
+  expirySeconds: number,
+) {
   if (expirySeconds > 0) {
     await redisClient.set(key, value, { EX: expirySeconds });
   } else {

@@ -71,9 +71,6 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "already booked" }, { status: 406 });
     }
     console.error("Error updating seat status:", error.constraint_name);
-    return NextResponse.json(
-      { error: "Failed to Book" },
-      { status: 400 },
-    );
+    return NextResponse.json({ error: "Failed to Book" }, { status: 400 });
   }
 }

@@ -24,11 +24,11 @@ const createBusSchema = z.object({
 });
 
 const busListQuery = db
-      .select()
-      .from(buses)
-      .orderBy(buses.createdAt)
-      .leftJoin(models, eq(buses.modelId, models.id))
-      .leftJoin(busBoardingPoints, eq(buses.id, busBoardingPoints.busId));
+  .select()
+  .from(buses)
+  .orderBy(buses.createdAt)
+  .leftJoin(models, eq(buses.modelId, models.id))
+  .leftJoin(busBoardingPoints, eq(buses.id, busBoardingPoints.busId));
 
 export type AdminBusResponse = Awaited<typeof busListQuery>;
 export async function GET() {

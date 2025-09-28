@@ -1,6 +1,12 @@
 import { NextResponse } from "next/server";
 import { db } from "@/server/db";
-import { buses, models, users, seats, boardingPoints } from "@/server/db/schema";
+import {
+  buses,
+  models,
+  users,
+  seats,
+  boardingPoints,
+} from "@/server/db/schema";
 import { eq, sql, and, gte } from "drizzle-orm";
 
 export async function GET() {
@@ -26,7 +32,7 @@ export async function GET() {
     // Get today's bookings (seats booked today)
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    
+
     const todayBookingsResult = await db
       .select({ count: sql<number>`count(*)` })
       .from(seats)
@@ -73,25 +79,27 @@ export async function GET() {
 
     // Format recent activities
     const recentActivities = [
-      ...recentBuses.map(bus => ({
+      ...recentBuses.map((bus) => ({
         action: "New bus added",
         details: `${bus.busNumber} (Driver: ${bus.driverName}) was added to the fleet`,
         time: formatTimeAgo(bus.createdAt),
         type: "success" as const,
       })),
-      ...recentUsers.slice(0, 3).map(user => ({
+      ...recentUsers.slice(0, 3).map((user) => ({
         action: "New registration",
         details: `${user.name} registered for bus service`,
         time: formatTimeAgo(user.createdAt),
         type: "info" as const,
       })),
-      ...recentSeats.slice(0, 2).map(seat => ({
+      ...recentSeats.slice(0, 2).map((seat) => ({
         action: "Seat booked",
         details: `Seat ${seat.seatId} was booked`,
         time: formatTimeAgo(seat.createdAt),
         type: "success" as const,
       })),
-    ].sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime()).slice(0, 8);
+    ]
+      .sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime())
+      .slice(0, 8);
 
     return NextResponse.json({
       success: true,
@@ -119,11 +127,11 @@ function formatTimeAgo(date: Date | string): string {
   const now = new Date();
   const past = new Date(date);
   const diffMs = now.getTime() - past.getTime();
-  
+
   const diffMinutes = Math.floor(diffMs / (1000 * 60));
   const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
   const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-  
+
   if (diffMinutes < 60) {
     return diffMinutes <= 1 ? "Just now" : `${diffMinutes} minutes ago`;
   } else if (diffHours < 24) {

@@ -42,7 +42,7 @@ export function MobileTicket({ className, ...props }: TicketProps) {
         className={cn("flex h-full flex-col justify-between", className)}
         {...props}
       >
-        <div className="text-3xl font-light flex flex-col">
+        <div className="flex flex-col text-3xl font-light">
           <p className="capitalize">{data.user.name}</p>
           <p className="uppercase">{data.user.rollNo}</p>
           <p className="capitalize">{data.boardingPoint?.name}</p>
@@ -78,7 +78,7 @@ export function MobileTicket({ className, ...props }: TicketProps) {
           </p>
         </div>
       </div>
-      <div className="flex flex-col mt-4 w-[250px] gap-1 text-2xl sm:gap-2 lg:text-4xl">
+      <div className="mt-4 flex w-[250px] flex-col gap-1 text-2xl sm:gap-2 lg:text-4xl">
         <p className="capitalize">{data.user.name}</p>
         <p className="uppercase">{data.user.rollNo}</p>
         <p className="uppercase">{`BUS-${data.bus?.busNumber}-${data.seat?.seatId}`}</p>

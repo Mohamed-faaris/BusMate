@@ -2,7 +2,12 @@ import { sql } from "drizzle-orm";
 import { index } from "drizzle-orm/pg-core";
 import { createTable } from "./table";
 
-export type SeatStatus = "available" | "bookedMale" | "bookedFemale" | "reserved" | "unavailable";
+export type SeatStatus =
+  | "available"
+  | "bookedMale"
+  | "bookedFemale"
+  | "reserved"
+  | "unavailable";
 export interface Seat {
   id: string;
   seatStatus?: SeatStatus;

@@ -97,11 +97,14 @@ export async function PUT(
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    return NextResponse.json({ 
-      success: true, 
-      message: "Profile updated successfully",
-      user: result[0] 
-    }, { status: 200 });
+    return NextResponse.json(
+      {
+        success: true,
+        message: "Profile updated successfully",
+        user: result[0],
+      },
+      { status: 200 },
+    );
   } catch (error) {
     console.error("User update error:", error);
     return NextResponse.json(

@@ -9,7 +9,7 @@ export async function GET(
 ) {
   try {
     const busId = (await params).busId;
-    
+
     // Get bus details with model
     const busResult = await db
       .select()
@@ -54,15 +54,17 @@ export async function GET(
       .leftJoin(users, eq(seats.userId, users.id))
       .where(eq(seats.busId, busId));
 
-    return NextResponse.json({
-      success: true,
-      data: {
-        bus: busResult[0],
-        passengers: passengers,
-        seatBookings: seatBookings,
-      }
-    }, { status: 200 });
-
+    return NextResponse.json(
+      {
+        success: true,
+        data: {
+          bus: busResult[0],
+          passengers: passengers,
+          seatBookings: seatBookings,
+        },
+      },
+      { status: 200 },
+    );
   } catch (error) {
     console.error("Error fetching seat details:", error);
     return NextResponse.json(

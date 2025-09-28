@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { Loader } from "@/components/Loader";
 import Navbar from "@/components/Navbar";
 import { useSession } from "next-auth/react";
@@ -14,7 +14,7 @@ export default function DashboardLayout({
   if (session.status === "unauthenticated") {
     // Redirect to sign-in page
     router.push("/auth/signIn");
-  }else if (session.status === "loading") {
+  } else if (session.status === "loading") {
     return <Loader />;
   }
   return (

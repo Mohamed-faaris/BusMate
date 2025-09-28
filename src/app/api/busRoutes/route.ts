@@ -10,10 +10,9 @@ export interface BoardingPoint {
   longitude?: number;
 }
 
-export interface BoardingPointGet{
+export interface BoardingPointGet {
   boardingPoints: BoardingPoint[];
 }
-
 
 export async function GET() {
   try {
@@ -21,7 +20,7 @@ export async function GET() {
       .select()
       .from(boardingPoints)
       .orderBy(boardingPoints.name);
-    return NextResponse.json({boardingPoints:points});
+    return NextResponse.json({ boardingPoints: points });
   } catch (error) {
     console.error("Error fetching boarding points:", error);
     return NextResponse.json(

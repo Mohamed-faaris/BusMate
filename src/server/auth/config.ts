@@ -3,7 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { eq } from "drizzle-orm";
 
 import { db } from "@/server/db";
-import { accounts, users}  from "@/server/db/schema";
+import { accounts, users } from "@/server/db/schema";
 import bcrypt from "bcryptjs";
 import type { JWT } from "next-auth/jwt";
 import { env } from "@/env";
@@ -41,7 +41,7 @@ export const authConfig = {
         return {
           id: user.user.id,
           email: user.user.email,
-          name: user.user.name
+          name: user.user.name,
         };
       },
     }),

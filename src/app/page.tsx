@@ -8,81 +8,84 @@ import React, { useState } from "react";
 import { Bus, MapPin, Users, Calendar, Shield, Smartphone } from "lucide-react";
 
 export default function HomePage() {
- const session = useSession();
+  const session = useSession();
 
   return (
-    <main className="bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-slate-900 dark:to-slate-800 min-h-screen">
+    <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-slate-900 dark:to-slate-800">
       <div className="container mx-auto px-4 py-16">
         {/* Hero Section */}
-        <div className="text-center mb-16">
+        <div className="mb-16 text-center">
           <div className="mb-12 flex justify-center">
             <div className="scale-150 transform">
               <LogoTitle animate={true} />
             </div>
           </div>
 
-          <h1 className="text-4xl md:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-6">
+          <h1 className="mb-6 text-4xl font-bold text-slate-900 md:text-6xl dark:text-slate-100">
             Smart Bus Seat Booking
           </h1>
 
-          <p className="text-xl md:text-2xl text-slate-600 dark:text-slate-300 mb-8 max-w-3xl mx-auto leading-relaxed">
-            Modern bus transportation management for campuses and routes.
-            Book seats, track buses, and manage your fleet with ease.
+          <p className="mx-auto mb-8 max-w-3xl text-xl leading-relaxed text-slate-600 md:text-2xl dark:text-slate-300">
+            Modern bus transportation management for campuses and routes. Book
+            seats, track buses, and manage your fleet with ease.
           </p>
 
           {/* Key Features Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 max-w-4xl mx-auto">
-            <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-xl p-6 shadow-lg">
-              <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mb-4 mx-auto">
-                <Bus className="w-6 h-6 text-white" />
+          <div className="mx-auto mb-12 grid max-w-4xl grid-cols-1 gap-8 md:grid-cols-3">
+            <div className="rounded-xl bg-white/80 p-6 shadow-lg backdrop-blur-sm dark:bg-slate-800/80">
+              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-blue-500">
+                <Bus className="h-6 w-6 text-white" />
               </div>
-              <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">
+              <h3 className="mb-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
                 Real-time Booking
               </h3>
-              <p className="text-slate-600 dark:text-slate-300 text-sm">
-                Book seats instantly with live availability and visual seat selection
+              <p className="text-sm text-slate-600 dark:text-slate-300">
+                Book seats instantly with live availability and visual seat
+                selection
               </p>
             </div>
 
-            <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-xl p-6 shadow-lg">
-              <div className="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center mb-4 mx-auto">
-                <MapPin className="w-6 h-6 text-white" />
+            <div className="rounded-xl bg-white/80 p-6 shadow-lg backdrop-blur-sm dark:bg-slate-800/80">
+              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-green-500">
+                <MapPin className="h-6 w-6 text-white" />
               </div>
-              <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">
+              <h3 className="mb-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
                 Route Management
               </h3>
-              <p className="text-slate-600 dark:text-slate-300 text-sm">
-                Filter buses by boarding points and track routes with arrival times
+              <p className="text-sm text-slate-600 dark:text-slate-300">
+                Filter buses by boarding points and track routes with arrival
+                times
               </p>
             </div>
 
-            <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-xl p-6 shadow-lg">
-              <div className="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center mb-4 mx-auto">
-                <Users className="w-6 h-6 text-white" />
+            <div className="rounded-xl bg-white/80 p-6 shadow-lg backdrop-blur-sm dark:bg-slate-800/80">
+              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-purple-500">
+                <Users className="h-6 w-6 text-white" />
               </div>
-              <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">
+              <h3 className="mb-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
                 Admin Control
               </h3>
-              <p className="text-slate-600 dark:text-slate-300 text-sm">
+              <p className="text-sm text-slate-600 dark:text-slate-300">
                 Comprehensive admin panel for managing buses, routes, and users
               </p>
             </div>
           </div>
 
           {/* CTA Section */}
-          <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-2xl p-8 shadow-xl max-w-md mx-auto">
-            <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4">
+          <div className="mx-auto max-w-md rounded-2xl bg-white/90 p-8 shadow-xl backdrop-blur-sm dark:bg-slate-800/90">
+            <h2 className="mb-4 text-2xl font-bold text-slate-900 dark:text-slate-100">
               Get Started
             </h2>
-            <p className="text-slate-600 dark:text-slate-300 mb-6">
-              Join thousands of students and commuters using BusMate for hassle-free travel
+            <p className="mb-6 text-slate-600 dark:text-slate-300">
+              Join thousands of students and commuters using BusMate for
+              hassle-free travel
             </p>
 
             {(() => {
               if (session.status === "authenticated") {
                 return (
                   <Link href="/dashboard" className="block">
-                    <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 text-lg">
+                    <Button className="w-full bg-blue-600 py-3 text-lg text-white hover:bg-blue-700">
                       Go to Dashboard
                     </Button>
                   </Link>
@@ -91,7 +94,7 @@ export default function HomePage() {
                 return (
                   <div className="space-y-3">
                     <Link href="/auth/signIn" className="block">
-                      <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 text-lg">
+                      <Button className="w-full bg-blue-600 py-3 text-lg text-white hover:bg-blue-700">
                         Sign In
                       </Button>
                     </Link>
@@ -114,29 +117,45 @@ export default function HomePage() {
         </div>
 
         {/* Additional Features */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-          <div className="bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm rounded-lg p-4 text-center">
-            <Calendar className="w-8 h-8 text-indigo-500 mx-auto mb-2" />
-            <h4 className="font-semibold text-slate-900 dark:text-slate-100">Easy Scheduling</h4>
-            <p className="text-sm text-slate-600 dark:text-slate-300">Plan your trips with flexible booking options</p>
+        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <div className="rounded-lg bg-white/60 p-4 text-center backdrop-blur-sm dark:bg-slate-800/60">
+            <Calendar className="mx-auto mb-2 h-8 w-8 text-indigo-500" />
+            <h4 className="font-semibold text-slate-900 dark:text-slate-100">
+              Easy Scheduling
+            </h4>
+            <p className="text-sm text-slate-600 dark:text-slate-300">
+              Plan your trips with flexible booking options
+            </p>
           </div>
 
-          <div className="bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm rounded-lg p-4 text-center">
-            <Shield className="w-8 h-8 text-green-500 mx-auto mb-2" />
-            <h4 className="font-semibold text-slate-900 dark:text-slate-100">Secure & Safe</h4>
-            <p className="text-sm text-slate-600 dark:text-slate-300">Verified users and secure payment processing</p>
+          <div className="rounded-lg bg-white/60 p-4 text-center backdrop-blur-sm dark:bg-slate-800/60">
+            <Shield className="mx-auto mb-2 h-8 w-8 text-green-500" />
+            <h4 className="font-semibold text-slate-900 dark:text-slate-100">
+              Secure & Safe
+            </h4>
+            <p className="text-sm text-slate-600 dark:text-slate-300">
+              Verified users and secure payment processing
+            </p>
           </div>
 
-          <div className="bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm rounded-lg p-4 text-center">
-            <Smartphone className="w-8 h-8 text-purple-500 mx-auto mb-2" />
-            <h4 className="font-semibold text-slate-900 dark:text-slate-100">Mobile Friendly</h4>
-            <p className="text-sm text-slate-600 dark:text-slate-300">Book from anywhere with our responsive design</p>
+          <div className="rounded-lg bg-white/60 p-4 text-center backdrop-blur-sm dark:bg-slate-800/60">
+            <Smartphone className="mx-auto mb-2 h-8 w-8 text-purple-500" />
+            <h4 className="font-semibold text-slate-900 dark:text-slate-100">
+              Mobile Friendly
+            </h4>
+            <p className="text-sm text-slate-600 dark:text-slate-300">
+              Book from anywhere with our responsive design
+            </p>
           </div>
 
-          <div className="bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm rounded-lg p-4 text-center">
-            <Bus className="w-8 h-8 text-blue-500 mx-auto mb-2" />
-            <h4 className="font-semibold text-slate-900 dark:text-slate-100">Live Tracking</h4>
-            <p className="text-sm text-slate-600 dark:text-slate-300">Real-time bus location and arrival updates</p>
+          <div className="rounded-lg bg-white/60 p-4 text-center backdrop-blur-sm dark:bg-slate-800/60">
+            <Bus className="mx-auto mb-2 h-8 w-8 text-blue-500" />
+            <h4 className="font-semibold text-slate-900 dark:text-slate-100">
+              Live Tracking
+            </h4>
+            <p className="text-sm text-slate-600 dark:text-slate-300">
+              Real-time bus location and arrival updates
+            </p>
           </div>
         </div>
       </div>

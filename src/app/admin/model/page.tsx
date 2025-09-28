@@ -292,7 +292,7 @@ export default function Page() {
             <BusWrapper
               busId="test"
               busSeats={busSeats}
-              className=" origin-top-left scale-[120%]"
+              className="origin-top-left scale-[120%]"
             />
           </SeatsDataProvider>
         </BusPropsProvider>

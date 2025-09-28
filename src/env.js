@@ -46,8 +46,8 @@ export const env = createEnv({
     DATABASE_URL: process.env.DATABASE_URL,
     NODE_ENV: process.env.NODE_ENV,
 
-    REDIS_URL:process.env.REDIS_URL,
-    
+    REDIS_URL: process.env.REDIS_URL,
+
     GMAIL_USER: process.env.GMAIL_USER,
     GMAIL_PASS: process.env.GMAIL_PASS,
     SMTP_HOST: process.env.SMTP_HOST,
