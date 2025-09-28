@@ -24,6 +24,10 @@ interface DashboardData {
   recentActivities: RecentActivity[];
 }
 
+/**
+ * Render the admin dashboard UI showing live-updating statistics, management tools, and recent activity.
+ *
+ * @returns The React element for the Admin Dashboard, including header, quick stats, management cards, and a recent activity feed with appropriate loading and error states. */
 export default function AdminPage() {
   // Fetch real-time dashboard data
   const {

@@ -28,12 +28,25 @@ import { Ticket } from "@/components/Ticket";
 import { useWindowSize } from "@/hooks/use-window-size";
 import { MobileTicket } from "@/components/MobileTicket";
 
+/**
+ * Fetches the dashboard payload from the server's /api/dashboard endpoint.
+ *
+ * @returns The parsed DashboardApiResponseSuccess returned by the API.
+ * @throws Error if the HTTP response has a non-OK status.
+ */
 async function fetchDashboardData(): Promise<DashboardApiResponseSuccess> {
   const res = await fetch("/api/dashboard", { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to fetch dashboard data");
   return (await res.json()) as DashboardApiResponseSuccess;
 }
 
+/**
+ * Renders the user dashboard page with responsive layouts and booking state.
+ *
+ * Displays a full-screen loading view while session or data is loading, shows an error card when dashboard data fails to load, and otherwise renders either a ticket view (when a booking exists) or a welcome/booking prompt. Layouts adapt for mobile and desktop breakpoints and use session, fetched dashboard data (user, seat, boardingPoint, bus), and window width to determine what to show.
+ *
+ * @returns The dashboard page as a JSX element
+ */
 export default function DashboardPage() {
   const { data: session, status } = useSession();
   const { width } = useWindowSize();

@@ -19,6 +19,15 @@ transporter.verify((error) => {
   }
 });
 
+/**
+ * Send a one-time password (OTP) email to the specified recipient using the configured SMTP transporter.
+ *
+ * In development mode the OTP and recipient email are logged to the console. Errors encountered while sending
+ * are caught and logged; the function does not throw.
+ *
+ * @param email - Recipient email address
+ * @param otp - OTP code to include in the message
+ */
 export async function sendOTPMail(email: string, otp: string) {
   if (process.env.NODE_ENV === "development") {
     console.log(`Sending OTP ${otp} to ${email}`);

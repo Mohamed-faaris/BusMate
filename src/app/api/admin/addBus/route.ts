@@ -47,6 +47,17 @@ export async function GET() {
   }
 }
 
+/**
+ * Create a new bus record (and optional boarding points) from the request body.
+ *
+ * Validates the request against the createBusSchema, looks up the referenced bus model,
+ * inserts the bus with derived seats, and inserts any provided boarding points.
+ *
+ * @returns On success: a 201 response with `{ success: true, bus, boardingPoints }`.
+ * On validation failure: a 400 response with `{ error: "Invalid input", details }`.
+ * If the referenced model is not found: a 404 response with `{ error: "Bus model not found" }`.
+ * On server error: a 500 response with `{ error: "Server error while adding bus" }`.
+ */
 export async function POST(request: NextRequest) {
   try {
     const body: unknown = await request.json();

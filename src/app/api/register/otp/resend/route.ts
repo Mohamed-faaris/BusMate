@@ -8,6 +8,17 @@ const resendOTPSchema = z.object({
   email: z.string().email("Invalid email format"),
 });
 
+/**
+ * Handle POST requests to resend a one-time password (OTP) to a validated email address.
+ *
+ * Validates and normalizes the request body, ensures the email is properly formatted, generates
+ * an OTP, stores it keyed by `otp:{email}` with a 7-minute expiry, and sends the OTP to the email.
+ *
+ * @returns On success, a JSON response with `{ message: "OTP sent successfully" }`.
+ *          On invalid input, a 400 JSON response with `{ error: "Invalid input", details: [...] }`.
+ *          If the email is missing, a 400 JSON response with `{ error: "Email is required" }`.
+ *          If the email format is invalid, a 400 JSON response with `{ error: "Invalid email" }`.
+ */
 export async function POST(request: NextRequest) {
   const body: unknown = await request.json();
   const parseResult = resendOTPSchema.safeParse(body);

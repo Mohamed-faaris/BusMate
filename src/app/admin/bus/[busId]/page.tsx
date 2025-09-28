@@ -56,6 +56,14 @@ type AdminBusDetailResponse = {
   };
 };
 
+/**
+ * Renders the admin bus detail page showing bus metadata, seat layout, and passenger listing.
+ *
+ * Displays loading and error states, computes seat statistics (occupancy, available, reserved),
+ * merges seat booking and passenger data for display, and provides a visual seat layout with a passenger table.
+ *
+ * @returns The page's React element containing the bus detail UI.
+ */
 export default function AdminBusDetailPage() {
   const params = useParams();
   const router = useRouter();

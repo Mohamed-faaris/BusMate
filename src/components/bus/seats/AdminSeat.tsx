@@ -19,6 +19,16 @@ type AdminSeatProps = Seat & {
   bookingInfo?: SeatBookingInfo;
 };
 
+/**
+ * Renders a seat tile with a status-based color and an optional hover tooltip showing booking details.
+ *
+ * When `seatStatus` is "unavailable", the component renders a small empty placeholder and does not render a tooltip.
+ *
+ * @param id - Unique seat identifier; the last three characters are shown on the tile
+ * @param seatStatus - One of the seat status values ("available", "bookedMale", "bookedFemale", "reserved", "unavailable") that determines the tile color and rendering behavior
+ * @param bookingInfo - Optional booking metadata; when present and contains `userId`, a compact tooltip with user details is shown on hover
+ * @returns A JSX element representing the seat tile; when hovered, it may show either a compact booking tooltip or a simple "Available" tooltip
+ */
 export default function AdminSeat({
   id,
   seatStatus,

@@ -60,7 +60,14 @@ export async function GET() {
   }
 }
 
-// POST: Add a new bus model
+/**
+ * Creates a new bus model from the request JSON and stores it in the database.
+ *
+ * Validates the request body against the expected model schema and returns the newly created model on success.
+ *
+ * @param request - Incoming NextRequest whose JSON body must match `createModelSchema` (contains `model` and `data`).
+ * @returns On success: `{ success: true, model }` with HTTP 201. On validation failure: `{ error: "Invalid input", details }` with HTTP 400. On server error: `{ error: "Server error while adding model" }` with HTTP 500.
+ */
 export async function POST(request: NextRequest) {
   try {
     const body: unknown = await request.json();

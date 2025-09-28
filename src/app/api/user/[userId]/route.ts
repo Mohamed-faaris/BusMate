@@ -13,6 +13,12 @@ const updateUserSchema = z.object({
   phone: z.string().min(1, "Phone is required"),
 });
 
+/**
+ * Retrieve a user's detailed record by userId, including associated bus and boarding point data.
+ *
+ * @param params - An object (resolved from route params) containing `userId`, the ID of the user to fetch
+ * @returns A NextResponse with `{ success: true, user }` and status 200 when the user is found; a 404 response with `{ error: "User not found" }` when no user matches; or a 500 response with `{ error: "Internal server error" }` on unexpected errors
+ */
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ userId: string }> },
@@ -72,6 +78,16 @@ export async function GET(
   }
 }
 
+/**
+ * Updates a user's profile (name, email, phone) for the specified `userId` after authenticating the caller.
+ *
+ * @returns A JSON HTTP response with one of the following shapes:
+ * - Success (200): `{ success: true, message: "Profile updated successfully", user }` where `user` is the updated user record.
+ * - Validation error (400): `{ error: "Invalid input", details }` with Zod validation details.
+ * - Unauthorized (401): `{ error: "Unauthorized" }` when authentication fails.
+ * - Not found (404): `{ error: "User not found" }` when no user matches `userId`.
+ * - Server error (500): `{ error: "Internal server error" }` on unexpected failures.
+ */
 export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ userId: string }> },

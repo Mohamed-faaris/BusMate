@@ -8,6 +8,19 @@ import { eq } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 import { isDev } from "@/lib/utils";
 
+/**
+ * Handle user registration requests and create a new user and associated account.
+ *
+ * Validates the request body against the registration schema, verifies a one-time password,
+ * ensures email and roll number uniqueness, resolves the boarding point, hashes the password,
+ * and creates the user and account within a database transaction.
+ *
+ * @param request - The incoming request whose JSON body must conform to the registration schema:
+ *   `{ rollNo, name, email, boardingPoint, gender, phone, address, dateOfBirth, otp, password }`
+ * @returns On success, a JSON response with status 201 containing `{ success: true, message: string, user: { id, rollNo, name, email, receiptId } }`.
+ *          On client errors, a JSON response with status 400 or 409 describing validation, OTP, uniqueness, or boarding point issues.
+ *          On unexpected failures, a JSON response with status 500 and a generic error message.
+ */
 export async function POST(request: NextRequest) {
   try {
     // Parse the request body

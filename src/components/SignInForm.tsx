@@ -21,6 +21,16 @@ import Link from "next/link";
 import { signIn, useSession } from "next-auth/react";
 import { signInSchema } from "@/schemas/auth";
 
+/**
+ * Render a sign-in form that authenticates users and navigates to the dashboard on success.
+ *
+ * The component handles input state, Zod validation errors, credential sign-in, and transient
+ * button states for loading, success, and error. If the session is already authenticated it
+ * immediately navigates to "/dashboard". Field-specific and general errors are displayed inline.
+ *
+ * @param props - Standard HTML div props (e.g., `className`) are forwarded to the outer container.
+ * @returns The sign-in form React element.
+ */
 export function SignInForm({
   className,
   ...props

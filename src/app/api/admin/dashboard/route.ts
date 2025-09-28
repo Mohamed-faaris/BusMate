@@ -9,6 +9,14 @@ import {
 } from "@/server/db/schema";
 import { eq, sql, gte } from "drizzle-orm";
 
+/**
+ * Fetches aggregated dashboard statistics and a list of recent activities.
+ *
+ * @returns A JSON response containing `success: true` and a `data` object with:
+ * - `stats`: aggregated counts (`totalBuses`, `activeRoutes`, `totalPassengers`, `todayBookings`, `busModels`)
+ * - `recentActivities`: an array of recent activity entries (action, details, time, type).
+ * On failure returns a JSON error message with HTTP status 500.
+ */
 export async function GET() {
   try {
     // Get total buses count

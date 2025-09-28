@@ -10,12 +10,28 @@ import { useWindowSize } from "@/hooks/use-window-size";
 import { Button } from "./ui/button";
 import Link from "next/link";
 
+/**
+ * Fetches the dashboard API and returns the parsed success response.
+ *
+ * @returns The parsed `DashboardApiResponseSuccess` from the `/api/dashboard` endpoint.
+ * @throws Error when the response has a non-ok HTTP status.
+ */
 async function fetchDashboardData(): Promise<DashboardApiResponseSuccess> {
   const res = await fetch("/api/dashboard", { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to fetch dashboard data");
   return res.json() as Promise<DashboardApiResponseSuccess>;
 }
 
+/**
+ * Renders a mobile ticket view for the current user based on dashboard data.
+ *
+ * Displays a loading state while fetching dashboard data and a "No data" message when no data is available.
+ * If the user has no assigned seat, shows user and boarding information with a "Book Now" CTA.
+ * If the user has a seat, displays a scaled bus visualization with the booked seat highlighted and a compact info block
+ * containing the user's name, roll number, bus-seat identifier, and boarding point.
+ *
+ * @returns The rendered ticket UI as a React element.
+ */
 export function MobileTicket({
   className,
   ...props

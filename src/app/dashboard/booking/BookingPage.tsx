@@ -56,6 +56,13 @@ type UserData = {
   } | null;
 };
 
+/**
+ * Renders the booking page UI where a user can view their boarding point, select a bus and seat, and confirm a booking.
+ *
+ * The component loads the current user and available buses for the user's boarding point, maintains selected bus and seat state, and performs the booking mutation which invalidates relevant cache, clears the selection, and navigates to the dashboard on success.
+ *
+ * @returns The BookingPage React element.
+ */
 export default function BookingPage() {
   const [selectedBus, setSelectedBus] = useState("");
   const { data: session } = useSession();

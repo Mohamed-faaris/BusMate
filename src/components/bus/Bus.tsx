@@ -23,6 +23,18 @@ export const fallbackBusSeats = {
   backSeats: { seatsRows: generateSeatColumns(1, 7) },
 };
 
+/**
+ * Render the bus seating interface for the provided bus identifier.
+ *
+ * Fetches bus seat state and model data, and renders one of:
+ * - a loader while data is loading,
+ * - a "Bus data not found" message when no data is returned,
+ * - the seating UI wrapped with seat data provider when data is available,
+ * - an error message if fetching fails.
+ *
+ * @param busId - The identifier of the bus to load seating data for
+ * @returns A React element that displays the loader, an error message, a not-found message, or the bus seating UI populated with fetched data
+ */
 export function Bus({ busId }: { busId: string }) {
   const { data: busSeats, isLoading } = useQuery({
     queryKey: ["busSeats", busId],

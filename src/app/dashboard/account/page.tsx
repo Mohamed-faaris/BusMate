@@ -23,12 +23,27 @@ import { motion } from "motion/react";
 import { useQuery } from "@tanstack/react-query";
 import type { DashboardApiResponseSuccess } from "@/app/api/dashboard/route";
 
+/**
+ * Fetches dashboard data from the server's /api/dashboard endpoint.
+ *
+ * @returns The parsed `DashboardApiResponseSuccess` object from the API response.
+ * @throws Error if the HTTP response is not OK.
+ */
 async function fetchDashboardData(): Promise<DashboardApiResponseSuccess> {
   const res = await fetch("/api/dashboard", { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to fetch dashboard data");
   return res.json() as Promise<DashboardApiResponseSuccess>;
 }
 
+/**
+ * Renders the Account Settings page where a signed-in user can view profile and booking information and edit their profile.
+ *
+ * The component fetches dashboard data for the current session user, initializes editable form fields (name, email, phone),
+ * and provides an edit mode that allows updating those fields. Saving sends a PATCH request to `/api/user/:id`, refreshes
+ * the dashboard data on success, and shows loading and access-control UI states (loading, access denied, user not found).
+ *
+ * @returns The JSX element for the account settings UI including profile information, boarding point, booking status, and edit/save controls.
+ */
 export default function AccountPage() {
   const { data: session, status } = useSession();
   const [isEditing, setIsEditing] = useState(false);

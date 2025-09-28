@@ -50,6 +50,17 @@ import { step1Schema, step2Schema, step3Schema } from "@/schemas/auth";
 import { useMutation } from "@tanstack/react-query";
 import { signIn, useSession } from "next-auth/react";
 
+/**
+ * Renders a multi-step registration form that collects user details, performs per-step validation,
+ * sends and verifies an OTP for account creation, and signs the user in on successful verification.
+ *
+ * The component advances through personal, demographic, and security steps, requests an OTP before
+ * verification, displays per-field validation errors, and adapts boarding point selection UI for
+ * desktop (popover) and mobile (drawer). If the user is already authenticated, it redirects to the dashboard.
+ *
+ * @param boardingPoints - Array of available boarding points used by the boarding point combobox
+ * @returns A React element containing the multi-step registration UI with OTP handling and navigation
+ */
 export function RegisterForm({
   boardingPoints,
   className,

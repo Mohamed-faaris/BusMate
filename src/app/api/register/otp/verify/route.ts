@@ -9,6 +9,13 @@ import bcrypt from "bcryptjs";
 import { isDev } from "@/lib/utils";
 import { getValue } from "@/server/redis/utils";
 
+/**
+ * Handle a registration request: validate input, verify OTP, ensure uniqueness, create a user and account, and return the created user's public fields.
+ *
+ * Performs input validation, OTP verification, checks for existing email and roll number, validates the boarding point, hashes the password, and creates the user and associated account within a database transaction.
+ *
+ * @returns A NextResponse containing a JSON payload. On success (201) the payload includes `success: true`, `message`, and a `user` object with `id`, `rollNo`, `name`, `email`, and `receiptId`. On failure the payload contains an `error`, a human-readable `message`, and a `buttonMessage`, with an appropriate HTTP status (400, 409, or 500).
+ */
 export async function POST(request: NextRequest) {
   try {
     // Parse the request body

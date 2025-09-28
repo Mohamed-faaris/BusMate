@@ -28,7 +28,16 @@ type AdminBusWrapperProps = {
   className?: string;
 } & HTMLAttributes<HTMLDivElement>;
 
-// Helper component to render seat groups with booking info
+/**
+ * Render a vertical stack of seat rows that map seats to AdminSeat components with booking and status data.
+ *
+ * @param seatGroups - Array of seat rows to render; each row contains seat entries for layout.
+ * @param maxSeatsInRow - Number of seat positions to reserve per row (empty positions render placeholders).
+ * @param height - Optional fixed height for the group (when provided by parent layout).
+ * @param seatBookings - Booking records used to attach booking information to matching seats.
+ * @param busSeatStatuses - Map of seatId to status string used to override a seat's default status.
+ * @returns A JSX element containing the arranged seat rows and placeholders as the seat group layout.
+ */
 function AdminSeatGroup({
   seatGroups,
   maxSeatsInRow,
@@ -78,6 +87,16 @@ function AdminSeatGroup({
   );
 }
 
+/**
+ * Render an administrative bus layout including seat groups, driver, door, and aisle label.
+ *
+ * @param busId - The bus identifier (renamed to `_busId` in the component props and unused at render time)
+ * @param busSeats - Configuration describing seat groups, counts per row, and component heights for the bus layout
+ * @param seatBookings - Array of booking information keyed by seat id, used to annotate seats with booking data
+ * @param busSeatStatuses - Map of seat id to status string that overrides each seat's default status when present
+ * @param className - Additional CSS class names applied to the root Card container
+ * @returns A React element that visually composes the admin bus interface with seats, door, driver, and back-seat rows
+ */
 export default function AdminBusWrapper({
   busId: _busId,
   busSeats,
