@@ -1,4 +1,5 @@
-import { GalleryVerticalEnd } from "lucide-react";
+export const dynamic = "force-dynamic";
+
 import { RegisterForm } from "@/components/RegisterForm";
 import { LogoTitle } from "@/components/LogoTitle";
 import { clientEnv } from "@/env";
