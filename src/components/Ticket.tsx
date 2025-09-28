@@ -11,6 +11,12 @@ import { useWindowSize } from "@/hooks/use-window-size";
 import { Button } from "./ui/button";
 import Link from "next/link";
 
+async function fetchDashboardData(): Promise<DashboardApiResponseSuccess> {
+  const res = await fetch("/api/dashboard", { cache: "no-store" });
+  if (!res.ok) throw new Error("Failed to fetch dashboard data");
+  return res.json();
+}
+
 export function Ticket({
   className,
   ...props

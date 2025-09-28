@@ -10,6 +10,13 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+// Verify transporter configuration
+transporter.verify((error) => {
+  if (error) {
+    console.error("SMTP transporter verification failed:", error);
+  }
+});
+
 export async function sendOTPMail(email: string, otp: string) {
   if (process.env.NODE_ENV === "development") {
     console.log(`Sending OTP ${otp} to ${email}`);
