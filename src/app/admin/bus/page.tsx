@@ -20,17 +20,6 @@ interface BoardingPointOption {
   name: string;
 }
 
-interface Bus {
-  id: string;
-  model: string;
-  busNumber: string;
-  routeName?: string;
-  driverName: string;
-  driverPhone: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
 interface BusBP {
   id: number;
   busId: string;
@@ -293,7 +282,7 @@ const AdminBusPage = () => {
                                 <span>
                                   {bpOptions?.boardingPoints?.find(
                                     (bp) => bp.id === row.boardingPointId,
-                                  )?.name || "Select boarding point"}
+                                  )?.name ?? "Select boarding point"}
                                 </span>
                               </SelectTrigger>
                               <SelectContent>
@@ -374,7 +363,7 @@ const AdminBusPage = () => {
                 </h2>
                 <div className="ml-auto">
                   <span className="rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
-                    {data?.buses?.length || 0} Buses
+                    {data?.buses?.length ?? 0} Buses
                   </span>
                 </div>
               </div>
@@ -457,11 +446,11 @@ const AdminBusPage = () => {
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap">
                                 <span className="rounded bg-purple-100 px-2 py-1 text-sm font-medium text-purple-800 dark:bg-purple-900/30 dark:text-purple-300">
-                                  {model?.model || "N/A"}
+                                  {model?.model ?? "N/A"}
                                 </span>
                               </td>
                               <td className="px-6 py-4 text-sm whitespace-nowrap text-slate-600 dark:text-slate-400">
-                                {bus.routeName || (
+                                {bus.routeName ?? (
                                   <span className="text-slate-400 italic dark:text-slate-500">
                                     No route assigned
                                   </span>
@@ -485,7 +474,7 @@ const AdminBusPage = () => {
                                         <span className="font-medium text-slate-700 dark:text-slate-300">
                                           {bpOptions?.boardingPoints?.find(
                                             (bp) => bp.id === p.boardingPointId,
-                                          )?.name || p.boardingPointId}
+                                          )?.name ?? p.boardingPointId}
                                         </span>
                                         <span className="text-slate-500 dark:text-slate-400">
                                           @ {p.arrivalTime}
