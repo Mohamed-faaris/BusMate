@@ -4,9 +4,20 @@ import { setKey } from "@/server/redis/utils";
 import { type NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
+const sendOTPSchema = z.object({
+  email: z.string().email("Invalid email format"),
+});
+
 export async function POST(request: NextRequest) {
-  const body: { email: string } = await request.json();
-  const { email } = body;
+  const body: unknown = await request.json();
+  const parseResult = sendOTPSchema.safeParse(body);
+  if (!parseResult.success) {
+    return NextResponse.json(
+      { error: "Invalid input", details: parseResult.error.errors },
+      { status: 400 },
+    );
+  }
+  const { email } = parseResult.data;
   const normalizedEmail = email.toLowerCase();
 
   if (!normalizedEmail) {

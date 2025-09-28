@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useMutation } from "@tanstack/react-query";
-import { models } from "@/server/db/schema";
+import { type models } from "@/server/db/schema";
 import { Label } from "@radix-ui/react-label";
 
 //TODO : do not use Form
@@ -76,7 +76,7 @@ export default function Page() {
         const result = await res.json();
         throw new Error(result.error ?? "Server error");
       }
-      return res.json();
+      return res.json() as Promise<{ success: boolean; model: typeof models.$inferSelect }>;
     },
     onSuccess: () => {
       setModelName("");

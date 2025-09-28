@@ -8,11 +8,24 @@ import {
 } from "@/server/db/schema";
 import { eq, sql } from "drizzle-orm";
 import { NextResponse } from "next/server";
+import { z } from "zod";
+
+const bookSeatSchema = z.object({
+  seatId: z.string().min(1, "Seat ID is required"),
+  busId: z.string().min(1, "Bus ID is required"),
+});
 
 export async function POST(req: Request) {
   try {
-    const body: { seatId: string; busId: string } = await req.json();
-    const { seatId, busId } = body;
+    const body: unknown = await req.json();
+    const parseResult = bookSeatSchema.safeParse(body);
+    if (!parseResult.success) {
+      return NextResponse.json(
+        { error: "Invalid input", details: parseResult.error.errors },
+        { status: 400 },
+      );
+    }
+    const { seatId, busId } = parseResult.data;
     console.log("Received booking request", { seatId, busId });
 
     if (!seatId) {
@@ -49,7 +62,7 @@ export async function POST(req: Request) {
         busId,
         seatId,
         userId: user.id,
-        seatStatus,
+        status: seatStatus,
       });
 
       await tx
@@ -61,16 +74,20 @@ export async function POST(req: Request) {
     });
     console.log("Seat booking successful");
     return NextResponse.json({ message: "success" }, { status: 200 });
-  } catch (error: any) {
+  } catch (error: unknown) {
     // Handle unique constraint violation (already booked)
     if (
-      error?.code === "23505" &&
-      error?.constraint_name === "BusMate_seat_userId_unique"
+      error &&
+      typeof error === "object" &&
+      "code" in error &&
+      "constraint_name" in error &&
+      error.code === "23505" &&
+      error.constraint_name === "BusMate_seat_userId_unique"
     ) {
-      console.warn("User has already booked a seat:", error.detail);
+      console.warn("User has already booked a seat:", (error as any).detail);
       return NextResponse.json({ error: "already booked" }, { status: 406 });
     }
-    console.error("Error updating seat status:", error.constraint_name);
+    console.error("Error updating seat status:", error);
     return NextResponse.json({ error: "Failed to Book" }, { status: 400 });
   }
 }

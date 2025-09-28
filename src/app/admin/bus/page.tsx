@@ -13,7 +13,7 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import type { AdminBusResponse } from "@/app/api/admin/addBus/route";
-import { buses, busBoardingPoints } from "@/server/db/schema";
+import { type buses, type busBoardingPoints } from "@/server/db/schema";
 import { Trash2, Eye } from "lucide-react";
 
 interface BoardingPointOption {

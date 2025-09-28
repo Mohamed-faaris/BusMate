@@ -21,7 +21,7 @@ import type {
   BoardingPoint,
   BoardingPointGet,
 } from "@/app/api/busRoutes/route";
-import { boardingPoints } from "@/server/db/schema";
+import { type boardingPoints } from "@/server/db/schema";
 
 export default function BoardingPointPage() {
   const queryClient = useQueryClient();
@@ -49,7 +49,7 @@ export default function BoardingPointPage() {
         const data = await res.json();
         throw new Error(data.error ?? "Error adding boarding point");
       }
-      return res.json();
+      return res.json() as Promise<{ success: boolean; boardingPoint: typeof boardingPoints.$inferSelect }>;
     },
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["boardingPoints"] });
