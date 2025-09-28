@@ -1,7 +1,7 @@
 //TODO : use zod and custom models to verify
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { motionConfig } from "@/lib/motion";
 import { Check, ChevronsUpDown, Loader2 } from "lucide-react";
@@ -50,7 +50,6 @@ import {
   step1Schema,
   step2Schema,
   step3Schema,
-  step4Schema,
 } from "@/schemas/auth";
 import { useMutation } from "@tanstack/react-query";
 import { signIn, useSession } from "next-auth/react";
@@ -102,7 +101,7 @@ export function RegisterForm({
         const data = await res.json();
         if (!res.ok) {
           // Throw the entire data object to preserve buttonMessage
-          const error = new Error(data.error || "Failed to send OTP");
+          const error = new Error(data.error ?? "Failed to send OTP");
           (error as any).data = data;
           throw error;
         }
@@ -116,13 +115,13 @@ export function RegisterForm({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(
-          (({ confirmPassword, ...rest }) => rest)(formData),
+          (({ confirmPassword: _confirmPassword, ...rest }) => rest)(formData),
         ),
       }).then(async (res) => {
         const data = await res.json();
         if (!res.ok) {
           // Throw the entire data object to preserve buttonMessage
-          const error = new Error(data.error || "Invalid OTP");
+          const error = new Error(data.error ?? "Invalid OTP");
           (error as any).data = data;
           throw error;
         }
@@ -625,7 +624,7 @@ export function RegisterForm({
                         )}
                         {resendOtpMutation.isError &&
                           ((resendOtpMutation.error as any)?.data
-                            ?.buttonMessage ||
+                            ?.buttonMessage ??
                             "Error")}
                         {resendOtpMutation.isSuccess && "OTP Sent"}
                         {!resendOtpMutation.isPending &&
@@ -735,7 +734,7 @@ export function RegisterForm({
                               })()}
                             {verifyOtpMutation.isError &&
                               ((verifyOtpMutation.error as any)?.data
-                                ?.buttonMessage ||
+                                ?.buttonMessage ??
                                 "Error! Try Again")}
                           </motion.span>
                         </AnimatePresence>
