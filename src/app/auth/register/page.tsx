@@ -6,7 +6,9 @@ import type { BoardingPoint } from "@/app/api/busRoutes/route";
 
 export default async function LoginPage() {
   try{
-    const res = await fetch(`${clientEnv.NEXT_PUBLIC_BASE_URL}/api/busRoutes`);
+    const res = await fetch(`${clientEnv.NEXT_PUBLIC_BASE_URL}/api/busRoutes`,{
+      cache: "no-store",
+    });
     const { boardingPoints }: { boardingPoints: BoardingPoint[] } =
       await res.json();
     return (
