@@ -13,7 +13,7 @@ import Link from "next/link";
 async function fetchDashboardData(): Promise<DashboardApiResponseSuccess> {
   const res = await fetch("/api/dashboard", { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to fetch dashboard data");
-  return res.json();
+  return res.json() as Promise<DashboardApiResponseSuccess>;
 }
 
 export function MobileTicket({

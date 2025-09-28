@@ -80,7 +80,7 @@ export function RegisterForm({
     password: "",
     confirmPassword: "",
   });
-  const [errors, setErrors] = useState<any>({});
+  const [errors, setErrors] = useState<Record<string, string | string[]>>({});
 
   // Zod validation will run on each step change
   // React Query mutations for OTP verify and resend via API routes
@@ -94,11 +94,11 @@ export function RegisterForm({
           rollNo: formData.rollNo,
         }),
       }).then(async (res) => {
-        const data = await res.json();
+        const data = await res.json() as { error?: string; [key: string]: unknown };
         if (!res.ok) {
           // Throw the entire data object to preserve buttonMessage
           const error = new Error(data.error ?? "Failed to send OTP");
-          (error as any).data = data;
+          (error as Error & { data: typeof data }).data = data;
           throw error;
         }
         return data;
@@ -114,11 +114,11 @@ export function RegisterForm({
           (({ confirmPassword: _confirmPassword, ...rest }) => rest)(formData),
         ),
       }).then(async (res) => {
-        const data = await res.json();
+        const data = await res.json() as { error?: string; [key: string]: unknown };
         if (!res.ok) {
           // Throw the entire data object to preserve buttonMessage
           const error = new Error(data.error ?? "Invalid OTP");
-          (error as any).data = data;
+          (error as Error & { data: typeof data }).data = data;
           throw error;
         }
         return data;
@@ -135,7 +135,13 @@ export function RegisterForm({
     if (schema) {
       const result = schema.safeParse(formData);
       if (!result.success) {
-        setErrors(result.error.formErrors.fieldErrors);
+        const fieldErrors: Record<string, string | string[]> = {};
+        for (const [key, value] of Object.entries(result.error.formErrors.fieldErrors)) {
+          if (value && value.length > 0) {
+            fieldErrors[key] = value.length === 1 ? value[0] : value;
+          }
+        }
+        setErrors(fieldErrors);
         return;
       }
     }
@@ -619,8 +625,8 @@ export function RegisterForm({
                           </>
                         )}
                         {resendOtpMutation.isError &&
-                          ((resendOtpMutation.error as any)?.data
-                            ?.buttonMessage ??
+                          (((resendOtpMutation.error as Error & { data?: { buttonMessage?: string } })?.data
+                            ?.buttonMessage) ??
                             "Error")}
                         {resendOtpMutation.isSuccess && "OTP Sent"}
                         {!resendOtpMutation.isPending &&
@@ -729,8 +735,8 @@ export function RegisterForm({
                                 return "Success! Redirecting to dashboard...";
                               })()}
                             {verifyOtpMutation.isError &&
-                              ((verifyOtpMutation.error as any)?.data
-                                ?.buttonMessage ??
+                              (((verifyOtpMutation.error as Error & { data?: { buttonMessage?: string } })?.data
+                                ?.buttonMessage) ??
                                 "Error! Try Again")}
                           </motion.span>
                         </AnimatePresence>
