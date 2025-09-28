@@ -24,6 +24,38 @@ interface BusType {
   name: string;
 }
 
+type UserData = {
+  id: string;
+  rollNo: string | null;
+  name: string | null;
+  email: string | null;
+  gender: string | null;
+  phone: string | null;
+  address: string | null;
+  dateOfBirth: Date | null;
+  receiptId: string | null;
+  isVerified: boolean;
+  isAdmin: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  bus: {
+    id: string;
+    modelID: string | null;
+    busNumber: string;
+    routeName: string | null;
+    driverName: string;
+    driverPhone: string;
+    createdAt: Date;
+    updatedAt: Date;
+  } | null;
+  boardingPoint: {
+    id: string;
+    name: string;
+    latitude: number | null;
+    longitude: number | null;
+  } | null;
+};
+
 export default function BookingPage() {
   const [selectedBus, setSelectedBus] = useState("");
   const { data: session } = useSession();
@@ -31,13 +63,13 @@ export default function BookingPage() {
   const queryClient = useQueryClient();
   const router = useRouter();
 
-  const { data: userData, isLoading: isUserLoading } = useQuery({
+  const { data: userData, isLoading: isUserLoading } = useQuery<{ success: boolean; user: UserData } | null>({
     queryKey: ["user", session?.user?.id],
     queryFn: async () => {
       if (!session?.user?.id) return null;
       const res = await fetch(`/api/user/${session.user.id}`);
       if (!res.ok) throw new Error("Failed to fetch user");
-      return res.json() as Promise<{ success: boolean; user: any }>;
+      return await res.json() as { success: boolean; user: UserData };
     },
     enabled: !!session?.user?.id,
   });
@@ -65,7 +97,7 @@ export default function BookingPage() {
         const errorData = (await res.json()) as { error?: string };
         throw new Error(errorData?.error ?? "Failed to book seat");
       }
-      return res.json();
+      return await res.json();
     },
     onSuccess: () => {
       void queryClient.invalidateQueries({
@@ -83,7 +115,7 @@ export default function BookingPage() {
       if (!boardingPointId) return [];
       const res = await fetch(`/api/bus/byBoardingPoint/${boardingPointId}`);
       if (!res.ok) throw new Error("Failed to fetch buses");
-      return res.json();
+      return await res.json() as BusType[];
     },
     enabled: !!boardingPointId,
   });
@@ -94,7 +126,7 @@ export default function BookingPage() {
     if (buses.length > 0 && !selectedBus && buses[0]) {
       setSelectedBus(buses[0].id);
     }
-  }, [buses, selectedBus]);
+  }, [busesData, selectedBus]);
 
   return (
     <div className="flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
@@ -145,12 +177,12 @@ export default function BookingPage() {
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-4 items-center gap-4">
                 <p className="text-right font-semibold">Name</p>
-                <p className="col-span-3">{userData?.user?.name}</p>
+                <p className="col-span-3">{(userData?.user as UserData)?.name}</p>
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
                 <p className="text-right font-semibold">Boarding Point</p>
                 <p className="col-span-3">
-                  {userData?.user?.boardingPoint?.name}
+                  {(userData?.user as UserData)?.boardingPoint?.name}
                 </p>
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
