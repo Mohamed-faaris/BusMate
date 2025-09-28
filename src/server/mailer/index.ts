@@ -8,7 +8,7 @@ const transporter = nodemailer.createTransport({
     user: process.env.GMAIL_USER,
     pass: process.env.GMAIL_PASS,
   },
-});
+}) as ReturnType<typeof nodemailer.createTransport>;
 
 // Verify transporter configuration
 transporter.verify((error) => {

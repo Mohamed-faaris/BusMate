@@ -19,7 +19,7 @@ export const fallbackBusSeats = {
 export function Bus({ busId }: { busId: string }) {
   const { data: busSeats, isLoading } = useQuery({
     queryKey: ["busSeats", busId],
-    queryFn: () => fetch(`/api/bus/${busId}`).then((res) => res.json()),
+    queryFn: () => fetch(`/api/bus/${busId}`).then((res) => res.json() as Promise<{ success: boolean; data: any }>),
   });
   try {
     if (isLoading) {
@@ -27,6 +27,9 @@ export function Bus({ busId }: { busId: string }) {
       return <Loader />;
     }
     // console.log(busSeats.data.model);
+    if (!busSeats?.data) {
+      return <div>Bus data not found</div>;
+    }
     return (
       <SeatsDataProvider data={busSeats.data.bus.seats}>
         <BusWrapper busId={busId} busSeats={busSeats.data.model.data} />

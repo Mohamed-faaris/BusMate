@@ -31,7 +31,7 @@ import { MobileTicket } from "@/components/MobileTicket";
 async function fetchDashboardData(): Promise<DashboardApiResponseSuccess> {
   const res = await fetch("/api/dashboard", { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to fetch dashboard data");
-  return res.json();
+  return await res.json() as DashboardApiResponseSuccess;
 }
 
 export default function DashboardPage() {

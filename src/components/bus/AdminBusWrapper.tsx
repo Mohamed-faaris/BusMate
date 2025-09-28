@@ -1,5 +1,5 @@
 "use client";
-import type { BusModelProperties } from "@/server/db/schema";
+import type { BusModelProperties, SeatGroups } from "@/server/db/schema";
 import { Card } from "@/components/ui/card";
 import Door from "@/components/bus/busComponents/Door";
 import Driver from "@/components/bus/busComponents/Driver";
@@ -36,7 +36,7 @@ function AdminSeatGroup({
   seatBookings,
   busSeatStatuses,
 }: {
-  seatGroups: any[];
+  seatGroups: SeatGroups[];
   maxSeatsInRow: number;
   height?: number;
   seatBookings: SeatBookingInfo[];
