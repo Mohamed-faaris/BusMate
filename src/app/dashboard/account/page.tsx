@@ -11,9 +11,6 @@ import {
   Phone,
   Calendar,
   MapPin,
-  Shield,
-  Bell,
-  Key,
   Edit3,
   Save,
   X,
@@ -21,7 +18,6 @@ import {
   AlertCircle,
   Loader2,
   Camera,
-  Settings,
 } from "lucide-react";
 import { motion } from "motion/react";
 import { useQuery } from "@tanstack/react-query";
@@ -59,7 +55,7 @@ export default function AccountPage() {
       setFormData({
         name: data.user.name,
         email: data.user.email,
-        phone: data.user.phone || "",
+        phone: data.user.phone ?? "",
       });
     },
   });
@@ -306,7 +302,7 @@ export default function AccountPage() {
                     ) : (
                       <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 dark:border-slate-600 dark:bg-slate-700/50">
                         <span className="text-slate-900 dark:text-slate-100">
-                          {user.phone || "Not provided"}
+                          {user.phone ?? "Not provided"}
                         </span>
                       </div>
                     )}
@@ -319,7 +315,7 @@ export default function AccountPage() {
                     </Label>
                     <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 dark:border-slate-600 dark:bg-slate-700/50">
                       <span className="text-slate-900 capitalize dark:text-slate-100">
-                        {boardingPoint?.name || "Not selected"}
+                        {boardingPoint?.name ?? "Not selected"}
                       </span>
                     </div>
                   </div>
