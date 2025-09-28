@@ -16,7 +16,6 @@ import {
   MapPin,
   Bus,
   Calendar,
-  Clock,
   Ticket as TicketIcon,
   CheckCircle2,
   AlertCircle,
@@ -25,7 +24,6 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import type { DashboardApiResponseSuccess } from "@/app/api/dashboard/route";
 import { motion } from "motion/react";
-import { motionConfig } from "@/lib/motion";
 import { Ticket } from "@/components/Ticket";
 import { useWindowSize } from "@/hooks/use-window-size";
 import { MobileTicket } from "@/components/MobileTicket";
@@ -311,7 +309,7 @@ export default function DashboardPage() {
                           Boarding Point
                         </p>
                         <p className="font-semibold text-slate-900 capitalize dark:text-slate-100">
-                          {boardingPoint?.name || "Not selected"}
+                          {boardingPoint?.name ?? "Not selected"}
                         </p>
                       </div>
                     </div>
