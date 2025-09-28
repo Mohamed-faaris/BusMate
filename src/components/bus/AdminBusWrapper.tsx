@@ -65,7 +65,7 @@ function AdminSeatGroup({
               <AdminSeat
                 key={seat.id}
                 id={seat.id}
-                seatStatus={actualSeatStatus as any}
+                seatStatus={actualSeatStatus}
                 bookingInfo={bookingInfo}
               />
             );
