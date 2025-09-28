@@ -12,7 +12,7 @@ import { Button } from "./ui/button";
 import Link from "next/link";
 
 export function Ticket({ className, ...props }: React.HTMLProps<HTMLDivElement>) {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const { width } = useWindowSize();
   const { data, isLoading } = useQuery<DashboardApiResponseSuccess>({
     queryKey: ["dashboard", session?.user?.id],

@@ -305,7 +305,7 @@ export default function AdminBusDetailPage() {
             <Users className="text-muted-foreground mx-auto mb-3 h-12 w-12" />
             <h3 className="mb-1 text-lg font-semibold">No Passengers Yet</h3>
             <p className="text-muted-foreground text-sm">
-              This bus hasn't been booked by any passengers yet.
+              This bus hasn&apos;t been booked by any passengers yet.
             </p>
           </div>
         </Card>

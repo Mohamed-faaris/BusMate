@@ -272,7 +272,7 @@ export default function DashboardPage() {
                   Welcome to BusMate, {user.name}!
                 </h1>
                 <p className="text-xl text-slate-600 dark:text-slate-400">
-                  You don't have any active bookings yet
+                  You don&apos;t have any active bookings yet
                 </p>
               </div>
 

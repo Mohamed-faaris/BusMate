@@ -86,7 +86,7 @@ const AdminBusPage = () => {
 
   const handleRowChange = (index: number, field: string, value: string) => {
     const rows = [...bpRows];
-    // @ts-ignore
+    // @ts-expect-error
     rows[index][field] = value;
     setBpRows(rows);
   };
