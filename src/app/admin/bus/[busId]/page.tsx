@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft, Users, MapPin, Phone, User } from "lucide-react";
+import { ArrowLeft, Users } from "lucide-react";
 import { BusPropsProvider } from "@/contexts/BusPropsContext";
 import AdminBusWrapper from "@/components/bus/AdminBusWrapper";
 import { Loader } from "@/components/Loader";
@@ -123,7 +123,7 @@ export default function AdminBusDetailPage() {
   const allPassengers = [
     ...seatBookings.filter((booking) => booking.userId),
     ...passengers.map((passenger) => ({
-      seatId: passenger.seatId || "Unknown",
+      seatId: passenger.seatId ?? "Unknown",
       status: "unknown",
       userId: passenger.userId,
       userName: passenger.userName,
