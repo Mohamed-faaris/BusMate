@@ -77,7 +77,7 @@ export default function Page() {
         body: JSON.stringify({ model: modelName, data: busSeats }),
       });
       if (!res.ok) {
-        const result = await res.json();
+        const result = await res.json() as { error?: string };
         throw new Error(result.error ?? "Server error");
       }
       return res.json() as Promise<{

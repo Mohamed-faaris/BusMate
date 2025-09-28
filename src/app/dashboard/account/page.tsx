@@ -50,13 +50,13 @@ export default function AccountPage() {
     queryKey: ["dashboard", session?.user?.id],
     queryFn: fetchDashboardData,
     enabled: !!session?.user?.id,
-    onSuccess: (data) => {
+    onSuccess: (data: DashboardApiResponseSuccess) => {
       // Initialize form data when data is loaded
       if (data?.user) {
         setFormData({
-          name: data.user.name ?? "",
-          email: data.user.email ?? "",
-          phone: data.user.phone ?? "",
+          name: (data.user as { name?: string }).name ?? "",
+          email: (data.user as { email?: string }).email ?? "",
+          phone: (data.user as { phone?: string }).phone ?? "",
         });
       }
     },
@@ -151,8 +151,13 @@ export default function AccountPage() {
     return <div>User data not found</div>;
   }
 
-  // Type assertion for user since the inferred type is complex
-  const typedUser = user;
+  // Type assertion for user properties
+  const userData = user as {
+    name?: string;
+    rollNo?: string;
+    email?: string;
+    phone?: string;
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
@@ -220,7 +225,7 @@ export default function AccountPage() {
                   </div>
                   <div>
                     <h3 className="text-2xl font-semibold text-slate-900 capitalize dark:text-slate-100">
-                      {user.name}
+                      {userData.name}
                     </h3>
                     <p className="text-slate-600 dark:text-slate-400">
                       Student
@@ -252,7 +257,7 @@ export default function AccountPage() {
                     ) : (
                       <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 dark:border-slate-600 dark:bg-slate-700/50">
                         <span className="text-slate-900 capitalize dark:text-slate-100">
-                          {user.name}
+                          {userData.name}
                         </span>
                       </div>
                     )}
@@ -265,7 +270,7 @@ export default function AccountPage() {
                     </Label>
                     <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 dark:border-slate-600 dark:bg-slate-700/50">
                       <span className="font-mono text-slate-900 uppercase dark:text-slate-100">
-                        {user.rollNo}
+                        {userData.rollNo}
                       </span>
                     </div>
                   </div>
@@ -287,7 +292,7 @@ export default function AccountPage() {
                     ) : (
                       <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 dark:border-slate-600 dark:bg-slate-700/50">
                         <span className="text-slate-900 dark:text-slate-100">
-                          {user.email}
+                          {userData.email}
                         </span>
                       </div>
                     )}
@@ -311,7 +316,7 @@ export default function AccountPage() {
                     ) : (
                       <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 dark:border-slate-600 dark:bg-slate-700/50">
                         <span className="text-slate-900 dark:text-slate-100">
-                          {user.phone ?? "Not provided"}
+                          {userData.phone ?? "Not provided"}
                         </span>
                       </div>
                     )}

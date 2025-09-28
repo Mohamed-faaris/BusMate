@@ -84,7 +84,7 @@ export async function POST(req: Request) {
       error.code === "23505" &&
       error.constraint_name === "BusMate_seat_userId_unique"
     ) {
-      console.warn("User has already booked a seat:", (error as any).detail);
+      console.warn("User has already booked a seat:", (error as { detail?: string }).detail);
       return NextResponse.json({ error: "already booked" }, { status: 406 });
     }
     console.error("Error updating seat status:", error);
