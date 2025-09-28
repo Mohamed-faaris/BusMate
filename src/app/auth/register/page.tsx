@@ -1,6 +1,9 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+"use client";
+
+import { useQuery } from "@tanstack/react-query";
 import { RegisterForm } from "@/components/RegisterForm";
 import { LogoTitle } from "@/components/LogoTitle";
 import { clientEnv } from "@/env";
@@ -11,7 +14,7 @@ export default function LoginPage() {
   const { data, isLoading, error } = useQuery({
     queryKey: ["boardingPoints"],
     queryFn: async () => {
-      const res = await fetch(`${clientEnv.NEXT_PUBLIC_BASE_URL}/api/busRoutes`);
+      const res = await fetch(`/api/busRoutes`);
       const { boardingPoints }: { boardingPoints: BoardingPoint[] } = await res.json();
       return boardingPoints;
     },
@@ -23,8 +26,9 @@ export default function LoginPage() {
         <div className="flex w-full max-w-sm flex-col gap-6">
           <div className="flex items-center gap-2 self-center font-medium">
             <LogoTitle animate={true} />
+            <LogoTitle animate={true} />
           </div>
-          <p><Loader /></p>
+          <Loader />
         </div>
       </div>
     );
