@@ -1,5 +1,5 @@
 "use client";
-import type { BusModelProperties, Seat, SeatRows } from "@/server/db/schema";
+import type { BusModelProperties } from "@/server/db/schema";
 import { Card } from "../ui/card";
 import Door from "./busComponents/Door";
 import Driver from "./busComponents/Driver";
@@ -15,7 +15,7 @@ type BusWrapperProps = {
 } & HTMLAttributes<HTMLDivElement>;
 
 export default function BusWrapper({
-  busId,
+  busId: _busId,
   busSeats,
   className,
   ...props

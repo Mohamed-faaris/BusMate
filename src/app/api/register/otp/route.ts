@@ -1,4 +1,3 @@
-import { isDev } from "@/lib/utils";
 import { type NextRequest, NextResponse } from "next/server";
 import { sendSchema } from "@/schemas/auth";
 import { db } from "@/server/db";

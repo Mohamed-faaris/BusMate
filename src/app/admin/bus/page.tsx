@@ -20,13 +20,6 @@ interface BoardingPointOption {
   name: string;
 }
 
-interface BusBP {
-  id: number;
-  busId: string;
-  boardingPointId: string;
-  arrivalTime: string;
-}
-
 interface CreateBusInput {
   modelId: string;
   busNumber: string;

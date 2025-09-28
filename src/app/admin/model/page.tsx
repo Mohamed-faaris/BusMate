@@ -6,7 +6,7 @@ import {
   seatsArrayToMap,
 } from "@/lib/utils";
 import BusWrapper from "@/components/bus/BusWrapper";
-import type { BusModelProperties, Seat } from "@/server/db/schema";
+import type { BusModelProperties } from "@/server/db/schema";
 import { BusPropsProvider } from "@/contexts/BusPropsContext";
 import { SeatsDataProvider } from "@/contexts/seatsDataContext";
 import { Input } from "@/components/ui/input";

@@ -17,7 +17,6 @@ import { useSession } from "next-auth/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSeat } from "@/contexts/BusPropsContext";
 import { Spinner } from "@/components/ui/shadcn-io/spinner";
-import { Card } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
 
 interface BusType {
@@ -51,9 +50,6 @@ export default function BookingPage() {
   } = useMutation({
     mutationFn: async () => {
       if (!selectedSeat || !userData?.user) return;
-
-      const newStatus =
-        userData.user.gender === "male" ? "bookedMale" : "bookedFemale";
 
       const res = await fetch("/api/bookSeat", {
         method: "POST",

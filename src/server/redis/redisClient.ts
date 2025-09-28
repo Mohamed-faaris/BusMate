@@ -7,22 +7,6 @@ declare global {
   var redisClient: RedisClientType | undefined;
 }
 
-let redisClient: RedisClientType;
-
-if (!global.redisClient) {
-  global.redisClient = createClient({
-    url: process.env.REDIS_URL,
-  });
-
-  global.redisClient.on("error", (err: Error) =>
-    console.error("Redis error:", err),
-  );
-
-  global.redisClient.connect().catch((err) => {
-    console.error("Failed to connect to Redis:", err);
-  });
-}
-
-redisClient = global.redisClient;
+const redisClient: RedisClientType = global.redisClient;
 
 export default redisClient;

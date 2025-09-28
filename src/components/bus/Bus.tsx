@@ -4,9 +4,7 @@ import BusWrapper from "./BusWrapper";
 
 import { generateSeatColumns } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
-import { is } from "drizzle-orm";
 import { Loader } from "lucide-react";
-import { BusPropsProvider } from "@/contexts/BusPropsContext";
 import { SeatsDataProvider } from "@/contexts/seatsDataContext";
 
 export const fallbackBusSeats = {

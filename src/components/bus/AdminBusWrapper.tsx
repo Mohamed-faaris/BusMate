@@ -32,7 +32,7 @@ type AdminBusWrapperProps = {
 function AdminSeatGroup({
   seatGroups,
   maxSeatsInRow,
-  height,
+  height: _height,
   seatBookings,
   busSeatStatuses,
 }: {
@@ -42,7 +42,7 @@ function AdminSeatGroup({
   seatBookings: SeatBookingInfo[];
   busSeatStatuses: Record<string, string>;
 }) {
-  const { scale } = useSeat();
+  const { scale: _scale } = useSeat();
 
   return (
     <div className="flex flex-col">
@@ -77,14 +77,14 @@ function AdminSeatGroup({
 }
 
 export default function AdminBusWrapper({
-  busId,
+  busId: _busId,
   busSeats,
   seatBookings,
   busSeatStatuses,
   className,
   ...props
 }: AdminBusWrapperProps) {
-  const { scale } = useSeat();
+  const { scale: _scale } = useSeat();
 
   return (
     <Card

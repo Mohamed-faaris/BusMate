@@ -1,10 +1,8 @@
 "use client";
 import { BusPropsProvider } from "@/contexts/BusPropsContext";
 import { SeatsDataProvider } from "@/contexts/seatsDataContext";
-import { seatsArrayToMap, flattenBusSeats, cn } from "@/lib/utils";
-import Bus, { fallbackBusSeats } from "./bus/Bus";
+import { cn } from "@/lib/utils";
 import BusWrapper from "./bus/BusWrapper";
-import { LogoTitle } from "./LogoTitle";
 import { useQuery } from "@tanstack/react-query";
 import type { DashboardApiResponseSuccess } from "@/app/api/dashboard/route";
 import { useSession } from "next-auth/react";
