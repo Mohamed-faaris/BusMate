@@ -69,7 +69,15 @@ const AdminBusPage = () => {
     queryFn: () => fetch("/api/admin/addBus").then((res) => res.json()),
   });
 
-  const createBus = useMutation<{ success: boolean; bus: typeof buses.$inferSelect; boardingPoints: (typeof busBoardingPoints.$inferSelect)[] }, Error, CreateBusInput>({
+  const createBus = useMutation<
+    {
+      success: boolean;
+      bus: typeof buses.$inferSelect;
+      boardingPoints: (typeof busBoardingPoints.$inferSelect)[];
+    },
+    Error,
+    CreateBusInput
+  >({
     mutationFn: (newBus) =>
       fetch("/api/admin/addBus", {
         method: "POST",

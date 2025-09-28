@@ -94,7 +94,10 @@ export function RegisterForm({
           rollNo: formData.rollNo,
         }),
       }).then(async (res) => {
-        const data = await res.json() as { error?: string; [key: string]: unknown };
+        const data = (await res.json()) as {
+          error?: string;
+          [key: string]: unknown;
+        };
         if (!res.ok) {
           // Throw the entire data object to preserve buttonMessage
           const error = new Error(data.error ?? "Failed to send OTP");
@@ -114,7 +117,10 @@ export function RegisterForm({
           (({ confirmPassword: _confirmPassword, ...rest }) => rest)(formData),
         ),
       }).then(async (res) => {
-        const data = await res.json() as { error?: string; [key: string]: unknown };
+        const data = (await res.json()) as {
+          error?: string;
+          [key: string]: unknown;
+        };
         if (!res.ok) {
           // Throw the entire data object to preserve buttonMessage
           const error = new Error(data.error ?? "Invalid OTP");
@@ -136,7 +142,9 @@ export function RegisterForm({
       const result = schema.safeParse(formData);
       if (!result.success) {
         const fieldErrors: Record<string, string | string[]> = {};
-        for (const [key, value] of Object.entries(result.error.formErrors.fieldErrors)) {
+        for (const [key, value] of Object.entries(
+          result.error.formErrors.fieldErrors,
+        )) {
           if (value && value.length > 0) {
             fieldErrors[key] = value.length === 1 ? value[0] : value;
           }
@@ -625,8 +633,11 @@ export function RegisterForm({
                           </>
                         )}
                         {resendOtpMutation.isError &&
-                          (((resendOtpMutation.error as Error & { data?: { buttonMessage?: string } })?.data
-                            ?.buttonMessage) ??
+                          ((
+                            resendOtpMutation.error as Error & {
+                              data?: { buttonMessage?: string };
+                            }
+                          )?.data?.buttonMessage ??
                             "Error")}
                         {resendOtpMutation.isSuccess && "OTP Sent"}
                         {!resendOtpMutation.isPending &&
@@ -735,8 +746,11 @@ export function RegisterForm({
                                 return "Success! Redirecting to dashboard...";
                               })()}
                             {verifyOtpMutation.isError &&
-                              (((verifyOtpMutation.error as Error & { data?: { buttonMessage?: string } })?.data
-                                ?.buttonMessage) ??
+                              ((
+                                verifyOtpMutation.error as Error & {
+                                  data?: { buttonMessage?: string };
+                                }
+                              )?.data?.buttonMessage ??
                                 "Error! Try Again")}
                           </motion.span>
                         </AnimatePresence>

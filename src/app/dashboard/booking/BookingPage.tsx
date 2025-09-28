@@ -62,13 +62,15 @@ export default function BookingPage() {
 
       if (!res.ok) {
         console.log("Failed");
-        const errorData = await res.json() as { error?: string };
+        const errorData = (await res.json()) as { error?: string };
         throw new Error(errorData?.error ?? "Failed to book seat");
       }
       return res.json();
     },
     onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: ["busSeats", selectedBus] });
+      void queryClient.invalidateQueries({
+        queryKey: ["busSeats", selectedBus],
+      });
       setSelectedSeat(null);
       router.push("/dashboard");
     },

@@ -69,7 +69,8 @@ export function TableProvider<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     onSortingChange: (updater) => {
-      const newSorting = typeof updater === 'function' ? updater(sorting) : updater;
+      const newSorting =
+        typeof updater === "function" ? updater(sorting) : updater;
       setSorting(newSorting);
     },
     state: {

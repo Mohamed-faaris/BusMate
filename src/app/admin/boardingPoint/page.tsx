@@ -49,7 +49,10 @@ export default function BoardingPointPage() {
         const data = await res.json();
         throw new Error(data.error ?? "Error adding boarding point");
       }
-      return res.json() as Promise<{ success: boolean; boardingPoint: typeof boardingPoints.$inferSelect }>;
+      return res.json() as Promise<{
+        success: boolean;
+        boardingPoint: typeof boardingPoints.$inferSelect;
+      }>;
     },
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["boardingPoints"] });

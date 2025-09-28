@@ -65,7 +65,11 @@ export default function Page() {
     },
   };
 
-  const mutation = useMutation<{ success: boolean; model: typeof models.$inferSelect }, Error, void>({
+  const mutation = useMutation<
+    { success: boolean; model: typeof models.$inferSelect },
+    Error,
+    void
+  >({
     mutationFn: async () => {
       const res = await fetch("/api/admin/model", {
         method: "POST",
@@ -76,7 +80,10 @@ export default function Page() {
         const result = await res.json();
         throw new Error(result.error ?? "Server error");
       }
-      return res.json() as Promise<{ success: boolean; model: typeof models.$inferSelect }>;
+      return res.json() as Promise<{
+        success: boolean;
+        model: typeof models.$inferSelect;
+      }>;
     },
     onSuccess: () => {
       setModelName("");
