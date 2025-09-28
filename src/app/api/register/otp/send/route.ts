@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
 
   try {
     schema.parse(normalizedEmail);
-  } catch (_e) {
+  } catch {
     return NextResponse.json({ error: "Invalid email" }, { status: 400 });
   }
 

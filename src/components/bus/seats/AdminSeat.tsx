@@ -25,7 +25,7 @@ export default function AdminSeat({
   bookingInfo,
 }: AdminSeatProps) {
   const [showTooltip, setShowTooltip] = useState(false);
-  const { scale: _scale } = useSeat();
+  useSeat();
 
   let colorClass = "bg-available";
 

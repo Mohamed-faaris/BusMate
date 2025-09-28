@@ -84,7 +84,7 @@ export function safeStringify(obj: any, space?: number): string {
       },
       space,
     );
-  } catch (_error) {
+  } catch {
     return String(obj);
   }
 }

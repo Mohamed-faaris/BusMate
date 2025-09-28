@@ -1,4 +1,4 @@
-import { createClient, type RedisClientType } from "redis";
+import { type RedisClientType } from "redis";
 
 declare global {
   // Extend NodeJS global type

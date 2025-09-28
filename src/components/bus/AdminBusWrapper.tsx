@@ -42,7 +42,7 @@ function AdminSeatGroup({
   seatBookings: SeatBookingInfo[];
   busSeatStatuses: Record<string, string>;
 }) {
-  const { scale: _scale } = useSeat();
+  useSeat();
 
   return (
     <div className="flex flex-col">
@@ -84,7 +84,7 @@ export default function AdminBusWrapper({
   className,
   ...props
 }: AdminBusWrapperProps) {
-  const { scale: _scale } = useSeat();
+  useSeat();
 
   return (
     <Card
