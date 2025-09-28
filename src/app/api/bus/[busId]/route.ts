@@ -3,8 +3,6 @@ import { db } from "@/server/db";
 import { buses } from "@/server/db/schema/buses";
 import { models } from "@/server/db/schema/models";
 import { eq } from "drizzle-orm";
-import { sql } from "drizzle-orm";
-import { boardingPoints, users } from "@/server/db/schema";
 
 export async function GET(
   request: NextRequest,

@@ -4,7 +4,7 @@ import { LogoTitle } from "@/components/LogoTitle";
 import { Button } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import React, { useState } from "react";
+import React from "react";
 import { Bus, MapPin, Users, Calendar, Shield, Smartphone } from "lucide-react";
 
 export default function HomePage() {
