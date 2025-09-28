@@ -37,7 +37,7 @@ export default function BookingPage() {
       if (!session?.user?.id) return null;
       const res = await fetch(`/api/user/${session.user.id}`);
       if (!res.ok) throw new Error("Failed to fetch user");
-      return res.json();
+      return res.json() as Promise<{ success: boolean; user: any }>;
     },
     enabled: !!session?.user?.id,
   });
@@ -62,7 +62,8 @@ export default function BookingPage() {
 
       if (!res.ok) {
         console.log("Failed");
-        throw new Error((await res.json())?.error ?? "Failed to book seat");
+        const errorData = await res.json() as { error?: string };
+        throw new Error(errorData?.error ?? "Failed to book seat");
       }
       return res.json();
     },

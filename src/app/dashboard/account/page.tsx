@@ -26,7 +26,7 @@ import type { DashboardApiResponseSuccess } from "@/app/api/dashboard/route";
 async function fetchDashboardData(): Promise<DashboardApiResponseSuccess> {
   const res = await fetch("/api/dashboard", { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to fetch dashboard data");
-  return res.json();
+  return res.json() as Promise<DashboardApiResponseSuccess>;
 }
 
 export default function AccountPage() {
@@ -52,11 +52,13 @@ export default function AccountPage() {
     enabled: !!session?.user?.id,
     onSuccess: (data) => {
       // Initialize form data when data is loaded
-      setFormData({
-        name: data.user.name,
-        email: data.user.email,
-        phone: data.user.phone ?? "",
-      });
+      if (data?.user) {
+        setFormData({
+          name: data.user.name ?? "",
+          email: data.user.email ?? "",
+          phone: data.user.phone ?? "",
+        });
+      }
     },
   });
 
@@ -144,6 +146,13 @@ export default function AccountPage() {
   }
 
   const { user, boardingPoint, seat, bus } = dashboardData;
+
+  if (!user) {
+    return <div>User data not found</div>;
+  }
+
+  // Type assertion for user since the inferred type is complex
+  const typedUser = user as NonNullable<typeof user>;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
