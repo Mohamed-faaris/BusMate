@@ -10,15 +10,7 @@ import { useWindowSize } from "@/hooks/use-window-size";
 import { Button } from "./ui/button";
 import Link from "next/link";
 
-interface TicketProps extends React.HTMLProps<HTMLDivElement> {}
-
-async function fetchDashboardData(): Promise<DashboardApiResponseSuccess> {
-  const res = await fetch("/api/dashboard", { cache: "no-store" });
-  if (!res.ok) throw new Error("Failed to fetch dashboard data");
-  return res.json();
-}
-
-export function MobileTicket({ className, ...props }: TicketProps) {
+export function MobileTicket({ className, ...props }: React.HTMLProps<HTMLDivElement>) {
   const { data: session, status } = useSession();
   const { width } = useWindowSize();
   const { data, isLoading } = useQuery<DashboardApiResponseSuccess>({
@@ -26,12 +18,7 @@ export function MobileTicket({ className, ...props }: TicketProps) {
     queryFn: fetchDashboardData,
     enabled: !!session?.user?.id,
   });
-  let scale = 0.9;
-  if (width) {
-    if (width < 320) {
-      scale = 0.7;
-    }
-  }
+  const scale = width && width < 320 ? 0.7 : 0.9;
   if (isLoading) return <div>Loading...</div>;
   if (!data) return <div>No data</div>;
   if (data.seat == null) {

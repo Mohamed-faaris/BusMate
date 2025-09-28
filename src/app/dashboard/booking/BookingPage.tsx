@@ -85,7 +85,7 @@ export default function BookingPage() {
     enabled: !!boardingPointId,
   });
 
-  const buses: BusType[] = busesData || [];
+  const buses: BusType[] = busesData ?? [];
 
   useEffect(() => {
     if (buses.length > 0 && !selectedBus && buses[0]) {

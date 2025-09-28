@@ -53,7 +53,7 @@ export default function LoginPage() {
         <div className="flex items-center gap-2 self-center font-medium">
           <LogoTitle animate={true} />
         </div>
-        <RegisterForm boardingPoints={data || []} />
+        <RegisterForm boardingPoints={data ?? []} />
       </div>
     </div>
   );
