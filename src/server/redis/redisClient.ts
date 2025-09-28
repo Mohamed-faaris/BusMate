@@ -7,6 +7,6 @@ declare global {
   var redisClient: RedisClientType | undefined;
 }
 
-const redisClient: RedisClientType = global.redisClient;
+const redisClient: RedisClientType | undefined = global.redisClient;
 
 export default redisClient;
