@@ -97,7 +97,7 @@ export default function BookingPage() {
         const errorData = (await res.json()) as { error?: string };
         throw new Error(errorData?.error ?? "Failed to book seat");
       }
-      return await res.json();
+      return await res.json() as { success: boolean };
     },
     onSuccess: () => {
       void queryClient.invalidateQueries({
@@ -123,8 +123,8 @@ export default function BookingPage() {
   const buses: BusType[] = busesData ?? [];
 
   useEffect(() => {
-    if (buses.length > 0 && !selectedBus && buses[0]) {
-      setSelectedBus(buses[0].id);
+    if (busesData && busesData.length > 0 && !selectedBus && busesData[0]) {
+      setSelectedBus(busesData[0].id);
     }
   }, [busesData, selectedBus]);
 
@@ -177,12 +177,12 @@ export default function BookingPage() {
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-4 items-center gap-4">
                 <p className="text-right font-semibold">Name</p>
-                <p className="col-span-3">{(userData?.user as UserData)?.name}</p>
+                <p className="col-span-3">{userData!.user!.name}</p>
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
                 <p className="text-right font-semibold">Boarding Point</p>
                 <p className="col-span-3">
-                  {(userData?.user as UserData)?.boardingPoint?.name}
+                  {userData!.user!.boardingPoint?.name}
                 </p>
               </div>
               <div className="grid grid-cols-4 items-center gap-4">

@@ -158,6 +158,8 @@ export default function AccountPage() {
     email?: string;
     phone?: string;
   };
+  const busData = bus as { busNumber?: string } | null;
+  const seatData = seat as { seatId: string };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
@@ -383,7 +385,7 @@ export default function AccountPage() {
                             Bus:
                           </span>
                           <span className="font-medium text-slate-900 dark:text-slate-100">
-                            {bus?.busNumber}
+                            {busData?.busNumber}
                           </span>
                         </div>
                         <div className="flex justify-between">
@@ -391,7 +393,7 @@ export default function AccountPage() {
                             Seat:
                           </span>
                           <span className="font-medium text-slate-900 dark:text-slate-100">
-                            {seat.seatId}
+                            {seatData.seatId}
                           </span>
                         </div>
                         <div className="flex justify-between">

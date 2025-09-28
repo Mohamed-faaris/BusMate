@@ -56,15 +56,15 @@ function AdminSeatGroup({
 
             // Get seat status from bus data and booking info
             const actualSeatStatus =
-              busSeatStatuses[seat.id] ?? seat.seatStatus;
+              busSeatStatuses[(seat as Seat).id] ?? (seat as Seat).seatStatus;
             const bookingInfo = seatBookings.find(
-              (booking) => booking.seatId === seat.id,
+              (booking) => booking.seatId === (seat as Seat).id,
             );
 
             return (
               <AdminSeat
-                key={seat.id}
-                id={seat.id}
+                key={(seat as Seat).id}
+                id={(seat as Seat).id}
                 seatStatus={actualSeatStatus}
                 bookingInfo={bookingInfo}
               />
