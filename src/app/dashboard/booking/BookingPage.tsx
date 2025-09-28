@@ -67,7 +67,7 @@ export default function BookingPage() {
       return res.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["busSeats", selectedBus] });
+      void queryClient.invalidateQueries({ queryKey: ["busSeats", selectedBus] });
       setSelectedSeat(null);
       router.push("/dashboard");
     },

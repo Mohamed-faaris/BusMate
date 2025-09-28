@@ -78,7 +78,7 @@ export async function PUT(
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
   try {
-    const body = await request.json();
+    const body: { name: string; email: string; phone: string } = await request.json();
     const { name, email, phone } = body;
 
     // Update user details

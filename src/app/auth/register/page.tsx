@@ -11,8 +11,8 @@ export default function LoginPage() {
     queryKey: ["boardingPoints"],
     queryFn: async () => {
       const res = await fetch(`/api/busRoutes`);
-      const { boardingPoints }: { boardingPoints: BoardingPoint[] } =
-        await res.json();
+      const data: { boardingPoints: BoardingPoint[] } = await res.json();
+      const { boardingPoints } = data;
       return boardingPoints;
     },
   });

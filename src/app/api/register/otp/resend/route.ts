@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
   // Generate OTP and send email logic here
   const otp = generateOTP();
 
-  setKey(`otp:${normalizedEmail}`, otp, 7 * 60);
+  await setKey(`otp:${normalizedEmail}`, otp, 7 * 60);
 
   await sendOTPMail(normalizedEmail, otp);
 

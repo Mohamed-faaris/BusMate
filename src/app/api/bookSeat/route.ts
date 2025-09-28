@@ -11,7 +11,8 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   try {
-    const { seatId, busId } = await req.json();
+    const body: { seatId: string; busId: string } = await req.json();
+    const { seatId, busId } = body;
     console.log("Received booking request", { seatId, busId });
 
     if (!seatId) {

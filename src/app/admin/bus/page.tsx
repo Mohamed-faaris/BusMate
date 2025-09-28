@@ -76,7 +76,7 @@ const AdminBusPage = () => {
         body: JSON.stringify(newBus),
       }).then((res) => res.json()),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["buses"] });
+      void queryClient.invalidateQueries({ queryKey: ["buses"] });
     },
   });
 
