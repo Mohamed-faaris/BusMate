@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
       rollNo,
       name,
       email,
-      boardingPoint,
+      boardingPoint: boardingPointId,
       gender,
       phone,
       address,
@@ -99,31 +99,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Find boarding point by name
-    const [boardingPointRecord] = await db
-      .select()
-      .from(boardingPoints)
-      .where(eq(boardingPoints.name, boardingPoint))
-      .limit(1);
-
-    if (!boardingPointRecord) {
-      return NextResponse.json(
-        {
-          error: "Invalid boarding point",
-          message: "The selected boarding point does not exist",
-          buttonMessage: "Invalid stop selected",
-        },
-        { status: 400 },
-      );
-    }
-
-    // For now, we'll assign the first available bus
-    // In a real application, this would be based on boarding point and other criteria
 
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 12);
 
     // Create the user and account in a transaction
+
     const result = await db.transaction(async (tx) => {
       // Create the user
       const newUsers = await tx
@@ -137,7 +118,7 @@ export async function POST(request: NextRequest) {
           phone,
           address,
           dateOfBirth: new Date(dateOfBirth),
-          boardingPointId: boardingPointRecord.id,
+          boardingPointId,
           busId: null,
           receiptId: null, // Generate a simple receipt ID
         })
