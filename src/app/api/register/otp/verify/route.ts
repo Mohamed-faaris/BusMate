@@ -3,11 +3,23 @@ import { registrationSchema } from "@/schemas/auth";
 import { db } from "@/server/db";
 import { users } from "@/server/db/schema/users";
 import { accounts } from "@/server/db/schema/accounts";
-import { boardingPoints } from "@/server/db/schema/boardingPoints";
-import { eq } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 import { isDev } from "@/lib/utils";
 import { getValue } from "@/server/redis/utils";
+
+type UniqueConstraintError = {
+  code?: string;
+  detail?: string;
+};
+
+const isUniqueConstraintError = (error: unknown): error is UniqueConstraintError => {
+  if (typeof error !== "object" || error === null) {
+    return false;
+  }
+
+  const { code } = error as UniqueConstraintError;
+  return code === "23505";
+};
 
 export async function POST(request: NextRequest) {
   try {
@@ -51,7 +63,7 @@ export async function POST(request: NextRequest) {
     const normalizedRollNo = rollNo.toLowerCase();
 
     // Check if OTP is correct
-    const storedOtp = await getValue(`otp:${normalizedEmail}`);
+    const storedOtp = (await getValue(`otp:${normalizedEmail}`));
     if (otp !== storedOtp) {
       return NextResponse.json(
         {
@@ -63,48 +75,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check if user already exists
-    const existingUser = await db
-      .select()
-      .from(users)
-      .where(eq(users.email, normalizedEmail))
-      .limit(1);
-
-    if (existingUser.length > 0) {
-      return NextResponse.json(
-        {
-          error: "User already exists",
-          message: "A user with this email already exists",
-          buttonMessage: "Email already taken",
-        },
-        { status: 409 },
-      );
-    }
-
-    // Check if roll number already exists
-    const existingRollNo = await db
-      .select()
-      .from(users)
-      .where(eq(users.rollNo, normalizedRollNo))
-      .limit(1);
-
-    if (existingRollNo.length > 0) {
-      return NextResponse.json(
-        {
-          error: "Roll number already exists",
-          message: "A user with this roll number already exists",
-          buttonMessage: "Roll number taken",
-        },
-        { status: 409 },
-      );
-    }
-
-
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 12);
 
     // Create the user and account in a transaction
-
     const result = await db.transaction(async (tx) => {
       // Create the user
       const newUsers = await tx
@@ -151,6 +125,24 @@ export async function POST(request: NextRequest) {
     );
   } catch (error) {
     console.error("Registration error:", error);
+    if (isUniqueConstraintError(error)) {
+      // Unique constraint violation
+      let field = "Field";
+      const detail = error.detail ?? "";
+      if (detail.includes("email")) {
+        field = "Email";
+      } else if (detail.includes("roll_no")) {
+        field = "Roll No";
+      }
+      return NextResponse.json(
+        {
+          error: "Conflict",
+          message: `${field} already in use`,
+          buttonMessage: `${field} already in use`,
+        },
+        { status: 409 },
+      );
+    }
     return NextResponse.json(
       {
         error: "Internal server error",
