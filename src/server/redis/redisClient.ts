@@ -1,4 +1,5 @@
-import { type RedisClientType } from "redis";
+import { createClient, type RedisClientType } from "redis";
+import { env } from "@/env";
 
 declare global {
   // Extend NodeJS global type
@@ -7,6 +8,18 @@ declare global {
   var redisClient: RedisClientType | undefined;
 }
 
-const redisClient: RedisClientType | undefined = global.redisClient;
+// Initialize Redis client if it doesn't exist
+if (!global.redisClient) {
+  global.redisClient = createClient({
+    url: env.REDIS_URL,
+  });
+
+  // Handle connection errors
+  global.redisClient.on("error", (err) => {
+    console.error("Redis Client Error", err);
+  });
+}
+
+const redisClient: RedisClientType = global.redisClient;
 
 export default redisClient;
