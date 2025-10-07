@@ -33,6 +33,9 @@ export const env = createEnv({
    */
   client: {
     NEXT_PUBLIC_BASE_URL: z.string().url(),
+    NEXT_PUBLIC_POSTHOG_KEY: z.string(),
+    NEXT_PUBLIC_POSTHOG_HOST: z.string().url(),
+
     // add other client-side env vars here
   },
 
@@ -70,9 +73,12 @@ export const env = createEnv({
 // Client-side environment validation schema
 const clientEnvSchema = z.object({
   NEXT_PUBLIC_BASE_URL: z.string().url(),
+  NEXT_PUBLIC_POSTHOG_KEY: z.string(),
+  NEXT_PUBLIC_POSTHOG_HOST: z.string().url(),
   // add other client-side env vars here
 });
 
 export const clientEnv = clientEnvSchema.parse({
   NEXT_PUBLIC_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
+  
 });
