@@ -80,5 +80,4 @@ const clientEnvSchema = z.object({
 
 export const clientEnv = clientEnvSchema.parse({
   NEXT_PUBLIC_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
-  
 });
