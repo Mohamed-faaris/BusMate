@@ -36,9 +36,7 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "QBix" }],
   robots: "index, follow",
-  viewport: "width=device-width, initial-scale=1.0",
-  themeColor: "#00CFFF",
-  icons: [
+   icons: [
     { rel: "icon", url: "/favicon-32x32.png", sizes: "32x32" },
     { rel: "icon", url: "/favicon-16x16.png", sizes: "16x16" },
     { rel: "apple-touch-icon", url: "/favicon.ico" },
@@ -46,7 +44,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: "https://busmate-alpha.vercel.app/",
-    title: "BusMate | Smart School & College Transport Management Platform",
+    title: "BusMate",
     description:
       "BusMate, a product by QBix, is a smart platform for educational institutions like KRCE, KRCT, and MKCE to manage buses and student transportation efficiently. Ensure safe, reliable, and transparent commutes for students, parents, and administrators.",
     siteName: "QBix",
