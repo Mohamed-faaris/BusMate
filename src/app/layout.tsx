@@ -8,7 +8,7 @@ import { ReactQueryProvider } from "@/providers/ReactQueryProvider";
 import { NextAuthProvider } from "@/providers/NextAuthProvider";
 
 export const metadata: Metadata = {
-  title: "BusMate | Smart School & College Transport Management Platform",
+  title: "BusMate",
   description:
     "BusMate, a product by QBix, is a smart platform for schools, colleges, and educational institutions like KRCE, KRCT, and MKCE to manage buses and student transportation efficiently. Ensure safe, reliable, and transparent commutes for students, parents, and administrators while simplifying communication and operations.",
   keywords: [
