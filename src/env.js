@@ -33,8 +33,8 @@ export const env = createEnv({
    */
   client: {
     NEXT_PUBLIC_BASE_URL: z.string().url(),
-    NEXT_PUBLIC_POSTHOG_KEY: z.string(),
-    NEXT_PUBLIC_POSTHOG_HOST: z.string().url(),
+    NEXT_PUBLIC_POSTHOG_KEY: z.string().optional(),
+    NEXT_PUBLIC_POSTHOG_HOST: z.string().url().optional(),
 
     // add other client-side env vars here
   },
@@ -75,8 +75,8 @@ export const env = createEnv({
 // Client-side environment validation schema
 const clientEnvSchema = z.object({
   NEXT_PUBLIC_BASE_URL: z.string().url(),
-  NEXT_PUBLIC_POSTHOG_KEY: z.string(),
-  NEXT_PUBLIC_POSTHOG_HOST: z.string().url(),
+  NEXT_PUBLIC_POSTHOG_KEY: z.string().optional(),
+  NEXT_PUBLIC_POSTHOG_HOST: z.string().url().optional(),
   // add other client-side env vars here
 });
 
@@ -85,3 +85,15 @@ export const clientEnv = clientEnvSchema.parse({
   NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
   NEXT_PUBLIC_POSTHOG_HOST: process.env.NEXT_PUBLIC_POSTHOG_HOST,
 });
+
+// Warn if PostHog vars are missing
+if (!clientEnv.NEXT_PUBLIC_POSTHOG_KEY) {
+  console.warn(
+    "NEXT_PUBLIC_POSTHOG_KEY is not set. PostHog analytics will be disabled.",
+  );
+}
+if (!clientEnv.NEXT_PUBLIC_POSTHOG_HOST) {
+  console.warn(
+    "NEXT_PUBLIC_POSTHOG_HOST is not set. PostHog analytics will be disabled.",
+  );
+}
