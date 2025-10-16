@@ -17,6 +17,7 @@ type SeatBookingInfo = {
   userPhone: string | null;
   userRollNo: string | null;
   userGender: string | null;
+  userCollege: string | null;
   createdAt: Date | null;
 };
 
@@ -50,6 +51,7 @@ type AdminBusDetailResponse = {
       userPhone: string;
       userRollNo: string;
       userGender: string;
+      userCollege: string;
       createdAt: Date;
     }>;
     seatBookings: SeatBookingInfo[];
@@ -131,6 +133,7 @@ export default function AdminBusDetailPage() {
       userPhone: passenger.userPhone,
       userRollNo: passenger.userRollNo,
       userGender: passenger.userGender,
+      userCollege: passenger.userCollege,
       createdAt: passenger.createdAt,
     })),
   ];

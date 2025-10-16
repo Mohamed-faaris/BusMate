@@ -32,6 +32,7 @@ export async function GET(
         userPhone: users.phone,
         userRollNo: users.rollNo,
         userGender: users.gender,
+        userCollege: users.college,
         createdAt: users.createdAt,
       })
       .from(users)
@@ -48,6 +49,7 @@ export async function GET(
         userPhone: users.phone,
         userRollNo: users.rollNo,
         userGender: users.gender,
+        userCollege: users.college,
         createdAt: seats.createdAt,
       })
       .from(seats)

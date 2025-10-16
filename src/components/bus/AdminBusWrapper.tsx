@@ -17,6 +17,7 @@ type SeatBookingInfo = {
   userPhone: string | null;
   userRollNo: string | null;
   userGender: string | null;
+  userCollege: string | null;
   createdAt: Date | null;
 };
 
