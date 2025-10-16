@@ -12,6 +12,7 @@ type SeatBookingInfo = {
   userPhone: string | null;
   userRollNo: string | null;
   userGender: string | null;
+  userCollege: string | null;
   createdAt: Date | null;
 };
 
@@ -61,6 +62,9 @@ export default function AdminSeat({
             </div>
             <div className="text-muted-foreground">
               Roll: {bookingInfo.userRollNo} | {bookingInfo.userGender}
+            </div>
+            <div className="text-muted-foreground">
+              College: {bookingInfo.userCollege}
             </div>
             <div className="text-muted-foreground truncate">
               {bookingInfo.userPhone}
