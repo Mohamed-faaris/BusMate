@@ -36,20 +36,26 @@ function AdminSeatGroup({
   height: _height,
   seatBookings,
   busSeatStatuses,
+  reversed = false,
 }: {
   seatGroups: SeatGroups[];
   maxSeatsInRow: number;
   height?: number;
   seatBookings: SeatBookingInfo[];
   busSeatStatuses: Record<string, string>;
+  reversed?: boolean;
 }) {
   useSeat();
 
   return (
-    <div className="flex flex-col">
+    <div
+      className="flex flex-grow flex-col justify-around"
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      style={{ minHeight: _height }}
+    >
       {/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access */}
       {seatGroups.map((seatRow, rowIndex) => (
-        <div key={rowIndex} className="flex">
+        <div key={rowIndex} className={cn("flex", reversed ? "flex-row-reverse" : "flex-row")}>
           {Array.from({ length: maxSeatsInRow }).map((_, seatIndex) => {
             const seat = (seatRow as Seat[])[seatIndex];
             if (!seat) {
@@ -87,7 +93,7 @@ export default function AdminBusWrapper({
   className,
   ...props
 }: AdminBusWrapperProps) {
-  useSeat();
+  const { scale } = useSeat();
 
   return (
     <Card
@@ -95,7 +101,7 @@ export default function AdminBusWrapper({
       className={cn("h-min gap-0 rounded-lg p-4", className)}
       {...props}
     >
-      <div className="flex justify-center">
+      <div className="flex">
         <div id="left" className="flex flex-col">
           <AdminSeatGroup
             seatGroups={busSeats.leftTopSeatColumns.seatsRows}
@@ -115,7 +121,9 @@ export default function AdminBusWrapper({
         </div>
         <div
           id="middle"
-          className="text-secondary flex w-10 flex-col items-center justify-center text-sm [letter-spacing:1em] [text-orientation:upright] [writing-mode:vertical-rl]"
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          style={{ fontSize: 14 * scale }}
+          className="text-secondary flex w-12 flex-col items-center justify-center [letter-spacing:1em] [text-orientation:upright] [writing-mode:vertical-rl]"
         >
           AISLE
         </div>
@@ -127,19 +135,17 @@ export default function AdminBusWrapper({
             height={busSeats?.rightSeatColumns?.height}
             seatBookings={seatBookings}
             busSeatStatuses={busSeatStatuses}
+            reversed={true}
           />
         </div>
       </div>
-      {/* Back Seats - Centered */}
-      <div className="mt-2 ml-10 flex justify-center">
-        <AdminSeatGroup
-          seatGroups={busSeats.backSeats.seatsRows}
-          maxSeatsInRow={busSeats.backSeats.seatsPerRow || 7}
-          height={busSeats?.backSeats?.height}
-          seatBookings={seatBookings}
-          busSeatStatuses={busSeatStatuses}
-        />
-      </div>
+      <AdminSeatGroup
+        seatGroups={busSeats.backSeats.seatsRows}
+        maxSeatsInRow={busSeats.backSeats.seatsPerRow || 7}
+        height={busSeats?.backSeats?.height}
+        seatBookings={seatBookings}
+        busSeatStatuses={busSeatStatuses}
+      />
     </Card>
   );
 }
