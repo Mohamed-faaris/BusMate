@@ -6,6 +6,7 @@ ARG PNPM_VERSION=10.9.0
 FROM node:${NODE_VERSION}-alpine
 
 ENV NODE_ENV production
+ENV SKIP_ENV_VALIDATION true
 
 # Install pnpm
 RUN --mount=type=cache,target=/root/.npm \
