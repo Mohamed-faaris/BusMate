@@ -6,6 +6,7 @@ import { Geist } from "next/font/google";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import { ReactQueryProvider } from "@/providers/ReactQueryProvider";
 import { NextAuthProvider } from "@/providers/NextAuthProvider";
+import { PostHogProviderWrapper } from "@/providers/PostHogProvider";
 
 export const metadata: Metadata = {
   title: "BusMate",
@@ -95,13 +96,15 @@ export default function RootLayout({
           {/* <div className="absolute top-5 right-5">
             <ThemeToggle animate={true} />
           </div> */}
-          <NextAuthProvider>
-            <ReactQueryProvider>
-              <div className="bg-background no-scrollbar h-full min-h-screen">
-                {children}
-              </div>
-            </ReactQueryProvider>
-          </NextAuthProvider>
+          <PostHogProviderWrapper>
+            <NextAuthProvider>
+              <ReactQueryProvider>
+                <div className="bg-background no-scrollbar h-full min-h-screen">
+                  {children}
+                </div>
+              </ReactQueryProvider>
+            </NextAuthProvider>
+          </PostHogProviderWrapper>
         </ThemeProvider>
       </body>
     </html>
