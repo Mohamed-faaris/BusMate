@@ -25,6 +25,7 @@ NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
 **Where to add**: After successful OTP verification and auto-login
 
 Find this section:
+
 ```tsx
 {verifyOtpMutation.isSuccess &&
   (() => {
@@ -41,11 +42,13 @@ Find this section:
 ```
 
 **Add this import at the top**:
+
 ```tsx
-import { trackUserSignUp } from '@/lib/posthog-events';
+import { trackUserSignUp } from "@/lib/posthog-events";
 ```
 
 **Modify the sign-in promise**:
+
 ```tsx
 .then(async (res) => {
   if (res?.ok) {
@@ -69,6 +72,7 @@ import { trackUserSignUp } from '@/lib/posthog-events';
 **Where to add**: After successful sign-in
 
 Find this section:
+
 ```tsx
 const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
@@ -88,11 +92,13 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 ```
 
 **Add this import at the top**:
+
 ```tsx
-import { trackUserLoggedIn } from '@/lib/posthog-events';
+import { trackUserLoggedIn } from "@/lib/posthog-events";
 ```
 
 **Modify the sign-in handler**:
+
 ```tsx
 const result = await signIn("credentials", {
   email: validatedData.email,
@@ -102,9 +108,9 @@ const result = await signIn("credentials", {
 
 if (result?.ok) {
   // Fetch session to get user ID
-  const sessionResponse = await fetch('/api/auth/session');
+  const sessionResponse = await fetch("/api/auth/session");
   const session = await sessionResponse.json();
-  
+
   // Track the login
   if (session?.user) {
     trackUserLoggedIn({
@@ -112,7 +118,7 @@ if (result?.ok) {
       email: session.user.email,
     });
   }
-  
+
   setButtonState("success");
   router.push("/dashboard");
 }
@@ -125,13 +131,14 @@ if (result?.ok) {
 **Location**: Check for a logout handler (may be in Navbar or a dedicated component)
 
 **Add this**:
+
 ```tsx
-import { resetUserIdentity } from '@/lib/posthog-events';
-import { signOut } from 'next-auth/react';
+import { resetUserIdentity } from "@/lib/posthog-events";
+import { signOut } from "next-auth/react";
 
 const handleLogout = async () => {
   resetUserIdentity(); // Reset PostHog tracking
-  await signOut({ redirect: true, redirectTo: '/auth/signin' });
+  await signOut({ redirect: true, redirectTo: "/auth/signin" });
 };
 ```
 
@@ -142,17 +149,19 @@ const handleLogout = async () => {
 **Location**: `src/app/dashboard/booking/BookingPage.tsx`
 
 **Add this import at the top**:
+
 ```tsx
 import {
   trackSeatSelectionStarted,
   trackSeatSelected,
   trackSeatBookingAttempt,
   trackSeatBookingCompleted,
-} from '@/lib/posthog-events';
+} from "@/lib/posthog-events";
 ```
 
 **Track when user selects a bus**:
 Add this when the Bus component is rendered or seat selection starts:
+
 ```tsx
 useEffect(() => {
   if (session?.user && selectedBusId && selectedBoardingPoint) {
@@ -167,6 +176,7 @@ useEffect(() => {
 
 **Track individual seat selection**:
 Find where seats are clicked/selected and add:
+
 ```tsx
 const handleSeatClick = (seatId: string) => {
   if (session?.user) {
@@ -184,14 +194,15 @@ const handleSeatClick = (seatId: string) => {
 
 **Track booking attempt**:
 Find the booking submission code and wrap it:
+
 ```tsx
 const handleBooking = async () => {
   if (!session?.user) return;
 
   try {
-    const response = await fetch('/api/bookSeat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    const response = await fetch("/api/bookSeat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ seatId, busId }),
     });
 
@@ -201,7 +212,7 @@ const handleBooking = async () => {
         userId: session.user.id,
         busId: selectedBusId,
         seatId: selectedSeat.id,
-        status: 'success',
+        status: "success",
       });
 
       // Track completion
@@ -213,29 +224,29 @@ const handleBooking = async () => {
       });
 
       // Show success message
-      showSuccessNotification('Booking confirmed!');
+      showSuccessNotification("Booking confirmed!");
     } else {
       const error = await response.json();
       trackSeatBookingAttempt({
         userId: session.user.id,
         busId: selectedBusId,
         seatId: selectedSeat.id,
-        status: 'failure',
-        failureReason: error.message || 'Unknown error',
+        status: "failure",
+        failureReason: error.message || "Unknown error",
       });
 
-      showErrorNotification('Booking failed. Please try again.');
+      showErrorNotification("Booking failed. Please try again.");
     }
   } catch (error) {
     trackSeatBookingAttempt({
       userId: session.user.id,
       busId: selectedBusId,
       seatId: selectedSeat.id,
-      status: 'failure',
-      failureReason: error instanceof Error ? error.message : 'Network error',
+      status: "failure",
+      failureReason: error instanceof Error ? error.message : "Network error",
     });
 
-    showErrorNotification('An error occurred. Please try again.');
+    showErrorNotification("An error occurred. Please try again.");
   }
 };
 ```
@@ -247,11 +258,13 @@ const handleBooking = async () => {
 **Location**: `src/app/dashboard/page.tsx`
 
 **Add this import**:
+
 ```tsx
-import { trackBusRouteViewed } from '@/lib/posthog-events';
+import { trackBusRouteViewed } from "@/lib/posthog-events";
 ```
 
 **Add tracking when data loads**:
+
 ```tsx
 const { data: dashboardData, isLoading } = useQuery({
   queryKey: ["dashboard", session?.user?.id],
@@ -275,17 +288,19 @@ const { data: dashboardData, isLoading } = useQuery({
 **Location**: `src/app/admin/model/page.tsx`
 
 **Add this import**:
+
 ```tsx
-import { trackAdminModelCreated } from '@/lib/posthog-events';
+import { trackAdminModelCreated } from "@/lib/posthog-events";
 ```
 
 **Track model creation**:
 Find the submit handler and add tracking:
+
 ```tsx
 const handleSubmit = async () => {
   try {
-    const response = await fetch('/api/admin/create-model', {
-      method: 'POST',
+    const response = await fetch("/api/admin/create-model", {
+      method: "POST",
       body: JSON.stringify(modelData),
     });
 
@@ -299,9 +314,9 @@ const handleSubmit = async () => {
       });
     }
 
-    showSuccessNotification('Model created!');
+    showSuccessNotification("Model created!");
   } catch (error) {
-    showErrorNotification('Failed to create model');
+    showErrorNotification("Failed to create model");
   }
 };
 ```
@@ -313,11 +328,13 @@ const handleSubmit = async () => {
 **Location**: `src/app/admin/bus/page.tsx`
 
 **Add this import**:
+
 ```tsx
-import { trackAdminModelCreated } from '@/lib/posthog-events';
+import { trackAdminModelCreated } from "@/lib/posthog-events";
 ```
 
 **Track bus creation** (same as model):
+
 ```tsx
 // After successful API call
 if (session?.user) {
@@ -355,17 +372,20 @@ After integrating all tracking:
 ## 🐛 Debugging
 
 **Events not showing up?**
+
 1. Check PostHog key is correct in `.env.local`
 2. Check browser console for errors
 3. Open Network tab and search for "posthog" - you should see requests
 4. Verify you're using the correct API host
 
 **User not identified?**
+
 1. Make sure `trackUserLoggedIn()` is called after sign-in succeeds
 2. Check that user ID and email are available in the session
 3. Verify network requests include the identify call
 
 **Getting TypeScript errors?**
+
 1. Run `pnpm install posthog-js`
 2. Check that import paths are correct
 3. Verify types are installed: `npm install --save-dev @types/posthog-js`
@@ -381,32 +401,29 @@ After integration, you should see:
 
 ## 📝 Files to Modify
 
-| File | Status | Added Code |
-|------|--------|-----------|
-| `src/components/RegisterForm.tsx` | ⏳ Pending | Import + trackUserSignUp() |
-| `src/components/SignInForm.tsx` | ⏳ Pending | Import + trackUserLoggedIn() |
-| `src/components/Navbar.tsx` | ⏳ Pending | Import + resetUserIdentity() |
-| `src/app/dashboard/booking/BookingPage.tsx` | ⏳ Pending | All seat tracking calls |
-| `src/app/dashboard/page.tsx` | ⏳ Pending | trackBusRouteViewed() |
-| `src/app/admin/model/page.tsx` | ⏳ Pending | trackAdminModelCreated() |
-| `src/app/admin/bus/page.tsx` | ⏳ Pending | trackAdminModelCreated() |
+| File                                        | Status     | Added Code                   |
+| ------------------------------------------- | ---------- | ---------------------------- |
+| `src/components/RegisterForm.tsx`           | ⏳ Pending | Import + trackUserSignUp()   |
+| `src/components/SignInForm.tsx`             | ⏳ Pending | Import + trackUserLoggedIn() |
+| `src/components/Navbar.tsx`                 | ⏳ Pending | Import + resetUserIdentity() |
+| `src/app/dashboard/booking/BookingPage.tsx` | ⏳ Pending | All seat tracking calls      |
+| `src/app/dashboard/page.tsx`                | ⏳ Pending | trackBusRouteViewed()        |
+| `src/app/admin/model/page.tsx`              | ⏳ Pending | trackAdminModelCreated()     |
+| `src/app/admin/bus/page.tsx`                | ⏳ Pending | trackAdminModelCreated()     |
 
 ---
 
 ## 🎯 Priority Order
 
 **High Priority (Do First)**:
+
 1. Sign-up tracking
 2. Sign-in tracking
 3. Logout tracking
 
-**Medium Priority (Do Second)**:
-4. Seat selection tracking
-5. Booking attempt tracking
+**Medium Priority (Do Second)**: 4. Seat selection tracking 5. Booking attempt tracking
 
-**Lower Priority (Do Third)**:
-6. Bus route view tracking
-7. Admin action tracking
+**Lower Priority (Do Third)**: 6. Bus route view tracking 7. Admin action tracking
 
 ---
 

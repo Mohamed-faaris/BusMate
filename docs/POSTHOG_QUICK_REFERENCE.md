@@ -3,7 +3,7 @@
 ## Import and Use
 
 ```tsx
-import { 
+import {
   trackUserSignUp,
   trackUserLoggedIn,
   trackSeatSelectionStarted,
@@ -13,12 +13,13 @@ import {
   trackBusRouteViewed,
   trackAdminModelCreated,
   resetUserIdentity,
-} from '@/lib/posthog-events';
+} from "@/lib/posthog-events";
 ```
 
 ## Essential Integrations
 
 ### 1. Sign-Up Form
+
 ```tsx
 trackUserSignUp({
   userId: newUser.id,
@@ -28,6 +29,7 @@ trackUserSignUp({
 ```
 
 ### 2. Sign-In Form (CRITICAL)
+
 ```tsx
 trackUserLoggedIn({
   userId: session.user.id,
@@ -36,12 +38,14 @@ trackUserLoggedIn({
 ```
 
 ### 3. Logout Handler
+
 ```tsx
 await signOut();
 resetUserIdentity();
 ```
 
 ### 4. Seat Selection
+
 ```tsx
 // Start
 trackSeatSelectionStarted({ userId, busId, boardingPointId });
@@ -57,11 +61,13 @@ trackSeatBookingCompleted({ userId, busId, seatId, boardingPointId });
 ```
 
 ### 5. Bus Route View
+
 ```tsx
 trackBusRouteViewed({ userId, boardingPointId, busId? });
 ```
 
 ### 6. Admin Action
+
 ```tsx
 trackAdminModelCreated({ adminUserId, modelId });
 ```
@@ -75,14 +81,14 @@ NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
 
 ## Files Created/Modified
 
-| File | Status | Purpose |
-|------|--------|---------|
-| `src/env.js` | ✅ Modified | PostHog env vars |
-| `src/providers/PostHogProvider.tsx` | ✅ Created | Initialization |
-| `src/lib/posthog-events.ts` | ✅ Created | Event tracking |
-| `src/hooks/use-posthog.ts` | ✅ Created | Hook for direct access |
-| `src/app/layout.tsx` | ✅ Modified | Provider integration |
-| `docs/POSTHOG_SETUP.md` | ✅ Created | Full documentation |
+| File                                | Status      | Purpose                |
+| ----------------------------------- | ----------- | ---------------------- |
+| `src/env.js`                        | ✅ Modified | PostHog env vars       |
+| `src/providers/PostHogProvider.tsx` | ✅ Created  | Initialization         |
+| `src/lib/posthog-events.ts`         | ✅ Created  | Event tracking         |
+| `src/hooks/use-posthog.ts`          | ✅ Created  | Hook for direct access |
+| `src/app/layout.tsx`                | ✅ Modified | Provider integration   |
+| `docs/POSTHOG_SETUP.md`             | ✅ Created  | Full documentation     |
 
 ## Key Features
 
@@ -104,9 +110,9 @@ NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
 
 ## Common Issues
 
-| Issue | Solution |
-|-------|----------|
-| Events not appearing | Check API key, verify network requests |
-| User not identified | Ensure `trackUserLoggedIn()` called after auth |
-| Duplicate events | Review component re-renders, use useEffect deps |
-| Compilation errors | Run `pnpm install posthog-js` |
+| Issue                | Solution                                        |
+| -------------------- | ----------------------------------------------- |
+| Events not appearing | Check API key, verify network requests          |
+| User not identified  | Ensure `trackUserLoggedIn()` called after auth  |
+| Duplicate events     | Review component re-renders, use useEffect deps |
+| Compilation errors   | Run `pnpm install posthog-js`                   |

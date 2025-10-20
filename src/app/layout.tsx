@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "QBix" }],
   robots: "index, follow",
-   icons: [
+  icons: [
     { rel: "icon", url: "/favicon-32x32.png", sizes: "32x32" },
     { rel: "icon", url: "/favicon-16x16.png", sizes: "16x16" },
     { rel: "apple-touch-icon", url: "/favicon.ico" },

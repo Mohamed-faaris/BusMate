@@ -9,11 +9,13 @@ PostHog analytics has been successfully integrated into your BusMate application
 ## ✅ What's Been Configured
 
 ### 1. **Environment Variables** (`src/env.js`)
+
 - ✅ Added `NEXT_PUBLIC_POSTHOG_KEY` - Your PostHog project API key
 - ✅ Added `NEXT_PUBLIC_POSTHOG_HOST` - PostHog API endpoint (defaults to US)
 - ✅ Both variables are properly typed with Zod validation
 
 ### 2. **PostHog Provider** (`src/providers/PostHogProvider.tsx`)
+
 - ✅ PostHog client initialization
 - ✅ Automatic SPA pageview tracking enabled
 - ✅ Session recording with input masking enabled
@@ -21,7 +23,9 @@ PostHog analytics has been successfully integrated into your BusMate application
 - ✅ Proper React component wrapper
 
 ### 3. **Event Tracking Functions** (`src/lib/posthog-events.ts`)
+
 Created 8 typed tracking functions:
+
 - ✅ `trackUserSignUp()` - New user registration
 - ✅ `trackUserLoggedIn()` - User login with identification
 - ✅ `trackSeatSelectionStarted()` - Booking flow initiated
@@ -32,19 +36,23 @@ Created 8 typed tracking functions:
 - ✅ `trackAdminModelCreated()` - Admin actions
 
 Plus utility functions:
+
 - ✅ `identifyUser()` - Manual user identification
 - ✅ `resetUserIdentity()` - Clear user on logout
 - ✅ `trackPageView()` - Manual pageview tracking
 
 ### 4. **Root Layout Integration** (`src/app/layout.tsx`)
+
 - ✅ `PostHogProviderWrapper` added to root layout
 - ✅ Properly nested inside theme provider
 - ✅ All child providers have access to PostHog
 
 ### 5. **Helper Hook** (`src/hooks/use-posthog.ts`)
+
 - ✅ `usePostHogClient()` hook for direct PostHog access in components
 
 ### 6. **Documentation** (3 files)
+
 - ✅ `docs/POSTHOG_SETUP.md` - Comprehensive setup guide with examples
 - ✅ `docs/POSTHOG_QUICK_REFERENCE.md` - Quick lookup guide
 - ✅ `docs/INTEGRATION_CHECKLIST.md` - Step-by-step integration instructions
@@ -70,6 +78,7 @@ NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
 ```
 
 Choose the appropriate host based on your PostHog region:
+
 - US: `https://us.i.posthog.com`
 - EU: `https://eu.i.posthog.com`
 
@@ -90,6 +99,7 @@ pnpm dev
 ### 5. **Integrate Tracking Calls** (Using INTEGRATION_CHECKLIST.md)
 
 Follow the detailed checklist in `docs/INTEGRATION_CHECKLIST.md` to add tracking to:
+
 - [x] `src/components/RegisterForm.tsx` - Sign-up tracking
 - [x] `src/components/SignInForm.tsx` - Login tracking
 - [x] Logout handler (Navbar/Auth component)
@@ -102,16 +112,19 @@ Follow the detailed checklist in `docs/INTEGRATION_CHECKLIST.md` to add tracking
 ## 📊 Key Features
 
 ### Automatic Tracking
+
 ✅ **Pageviews** - Every page navigation is automatically tracked  
 ✅ **Session Recording** - User sessions are recorded (with input protection)  
 ✅ **Debug Info** - Console logs in development for debugging
 
 ### Manual Tracking
+
 ✅ **User Identification** - Users are identified by email after login  
 ✅ **Custom Events** - 8 business-critical events tracked  
 ✅ **Rich Properties** - All events include relevant context
 
 ### Data Protection
+
 ✅ **Input Masking** - Form inputs are masked in recordings  
 ✅ **No PII in Events** - Properties are sanitized  
 ✅ **Secure by Default** - Session data handled securely
@@ -121,30 +134,34 @@ Follow the detailed checklist in `docs/INTEGRATION_CHECKLIST.md` to add tracking
 ## 🔍 What You'll Track
 
 ### User Lifecycle
-| Event | Properties | When |
-|-------|-----------|------|
+
+| Event            | Properties                     | When                  |
+| ---------------- | ------------------------------ | --------------------- |
 | `user_signed_up` | userId, email, boardingPointId | New user registration |
-| `user_logged_in` | userId, email | User login |
+| `user_logged_in` | userId, email                  | User login            |
 
 ### Seat Booking Flow
-| Event | Properties | When |
-|-------|-----------|------|
-| `seat_selection_started` | userId, busId, boardingPointId | Booking initiated |
-| `seat_selected` | userId, busId, seatId, gender, boardingPointId | Individual seat clicked |
-| `seat_booking_attempt` | userId, busId, seatId, status, failureReason | Booking submitted |
-| `seat_booking_completed` | userId, busId, seatId, boardingPointId | Booking confirmed |
+
+| Event                    | Properties                                     | When                    |
+| ------------------------ | ---------------------------------------------- | ----------------------- |
+| `seat_selection_started` | userId, busId, boardingPointId                 | Booking initiated       |
+| `seat_selected`          | userId, busId, seatId, gender, boardingPointId | Individual seat clicked |
+| `seat_booking_attempt`   | userId, busId, seatId, status, failureReason   | Booking submitted       |
+| `seat_booking_completed` | userId, busId, seatId, boardingPointId         | Booking confirmed       |
 
 ### Discovery
-| Event | Properties | When |
-|-------|-----------|------|
-| `bus_route_viewed` | userId, boardingPointId, busId | User views bus routes |
-| `admin_model_created` | adminUserId, modelId | Admin creates model |
+
+| Event                 | Properties                     | When                  |
+| --------------------- | ------------------------------ | --------------------- |
+| `bus_route_viewed`    | userId, boardingPointId, busId | User views bus routes |
+| `admin_model_created` | adminUserId, modelId           | Admin creates model   |
 
 ### Automatic
-| Event | Properties | When |
-|-------|-----------|------|
-| `pageview` | url, path | Every page navigation |
-| Session Recording | Full session video | Entire user session |
+
+| Event             | Properties         | When                  |
+| ----------------- | ------------------ | --------------------- |
+| `pageview`        | url, path          | Every page navigation |
+| Session Recording | Full session video | Entire user session   |
 
 ---
 
@@ -193,22 +210,26 @@ Three comprehensive guides have been created:
 ## 🐛 Common Issues & Solutions
 
 ### "Cannot find module 'posthog-js'"
+
 ```bash
 pnpm install posthog-js
 ```
 
 ### Events not appearing
+
 1. Verify `NEXT_PUBLIC_POSTHOG_KEY` is set in `.env.local`
 2. Restart dev server after changing env vars
 3. Check Network tab in DevTools for PostHog requests
 4. Verify API key is correct (should start with `phc_`)
 
 ### User identification not working
+
 1. Ensure `trackUserLoggedIn()` is called after authentication
 2. Check that `session.user.id` and `session.user.email` are available
 3. Verify the identify call appears in Network tab
 
 ### Events appear twice
+
 1. Check component re-renders (use React DevTools Profiler)
 2. Verify `useEffect` dependencies are correct
 3. Ensure tracking calls aren't in main component body
@@ -268,7 +289,7 @@ Modified:
 
 ## ✨ You're All Set!
 
-PostHog is fully configured and ready to track user behavior in BusMate. 
+PostHog is fully configured and ready to track user behavior in BusMate.
 
 **Next action**: Follow the `INTEGRATION_CHECKLIST.md` to add tracking calls to your components, starting with sign-up and login flows.
 

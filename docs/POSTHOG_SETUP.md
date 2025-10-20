@@ -35,7 +35,7 @@ When a user navigates to different pages in the app, PostHog automatically captu
 When a user logs in, call `trackUserLoggedIn()`:
 
 ```tsx
-import { trackUserLoggedIn } from '@/lib/posthog-events';
+import { trackUserLoggedIn } from "@/lib/posthog-events";
 
 // After successful login
 trackUserLoggedIn({
@@ -45,6 +45,7 @@ trackUserLoggedIn({
 ```
 
 This automatically:
+
 - Captures a `user_logged_in` event
 - Identifies the user with their email (deanonymizes)
 - Links all previous anonymous events to the user
@@ -54,7 +55,7 @@ This automatically:
 Reset the user identity on logout:
 
 ```tsx
-import { resetUserIdentity } from '@/lib/posthog-events';
+import { resetUserIdentity } from "@/lib/posthog-events";
 
 // In your logout handler
 await signOut();
@@ -72,7 +73,7 @@ All tracking functions are exported from `@/lib/posthog-events`:
 **`trackUserSignUp(props)`** - Track new user registrations
 
 ```tsx
-import { trackUserSignUp } from '@/lib/posthog-events';
+import { trackUserSignUp } from "@/lib/posthog-events";
 
 trackUserSignUp({
   userId: newUser.id,
@@ -84,7 +85,7 @@ trackUserSignUp({
 **`trackUserLoggedIn(props)`** - Track user login and identify
 
 ```tsx
-import { trackUserLoggedIn } from '@/lib/posthog-events';
+import { trackUserLoggedIn } from "@/lib/posthog-events";
 
 trackUserLoggedIn({
   userId: user.id,
@@ -97,7 +98,7 @@ trackUserLoggedIn({
 **`trackSeatSelectionStarted(props)`** - When user initiates seat selection
 
 ```tsx
-import { trackSeatSelectionStarted } from '@/lib/posthog-events';
+import { trackSeatSelectionStarted } from "@/lib/posthog-events";
 
 // When user opens seat selection for a bus
 trackSeatSelectionStarted({
@@ -110,7 +111,7 @@ trackSeatSelectionStarted({
 **`trackSeatSelected(props)`** - When individual seat is selected
 
 ```tsx
-import { trackSeatSelected } from '@/lib/posthog-events';
+import { trackSeatSelected } from "@/lib/posthog-events";
 
 // When user clicks on a seat to select it
 trackSeatSelected({
@@ -125,7 +126,7 @@ trackSeatSelected({
 **`trackSeatBookingAttempt(props)`** - When booking is submitted
 
 ```tsx
-import { trackSeatBookingAttempt } from '@/lib/posthog-events';
+import { trackSeatBookingAttempt } from "@/lib/posthog-events";
 
 try {
   await submitBooking();
@@ -133,14 +134,14 @@ try {
     userId: session.user.id,
     busId: bus.id,
     seatId: seat.id,
-    status: 'success',
+    status: "success",
   });
 } catch (error) {
   trackSeatBookingAttempt({
     userId: session.user.id,
     busId: bus.id,
     seatId: seat.id,
-    status: 'failure',
+    status: "failure",
     failureReason: error.message,
   });
 }
@@ -149,7 +150,7 @@ try {
 **`trackSeatBookingCompleted(props)`** - When booking is confirmed
 
 ```tsx
-import { trackSeatBookingCompleted } from '@/lib/posthog-events';
+import { trackSeatBookingCompleted } from "@/lib/posthog-events";
 
 // After successful booking confirmation
 trackSeatBookingCompleted({
@@ -165,7 +166,7 @@ trackSeatBookingCompleted({
 **`trackBusRouteViewed(props)`** - When user views bus routes
 
 ```tsx
-import { trackBusRouteViewed } from '@/lib/posthog-events';
+import { trackBusRouteViewed } from "@/lib/posthog-events";
 
 // When user browses available buses
 trackBusRouteViewed({
@@ -180,7 +181,7 @@ trackBusRouteViewed({
 **`trackAdminModelCreated(props)`** - When admin creates a model/bus/boarding point
 
 ```tsx
-import { trackAdminModelCreated } from '@/lib/posthog-events';
+import { trackAdminModelCreated } from "@/lib/posthog-events";
 
 // After admin successfully creates a new bus/model
 trackAdminModelCreated({
@@ -368,11 +369,11 @@ export function BusSeatSelector({ busId, boardingPointId }) {
 ### In Bus Listing Component
 
 ```tsx
-'use client';
+"use client";
 
-import { trackBusRouteViewed } from '@/lib/posthog-events';
-import { useSession } from 'next-auth/react';
-import { useEffect } from 'react';
+import { trackBusRouteViewed } from "@/lib/posthog-events";
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
 
 export function BusListing({ boardingPointId, buses }) {
   const { data: session } = useSession();
@@ -452,12 +453,12 @@ export function AdminModelForm() {
 While PostHog automatically tracks pageviews for SPA navigation, you can manually track specific pageviews if needed:
 
 ```tsx
-import { trackPageView } from '@/lib/posthog-events';
+import { trackPageView } from "@/lib/posthog-events";
 
 // Manually track a pageview
 trackPageView({
   url: window.location.href,
-  path: '/dashboard/booking',
+  path: "/dashboard/booking",
 });
 ```
 

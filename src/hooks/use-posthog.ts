@@ -7,5 +7,5 @@ import { usePostHog } from 'posthog-js/react';
  * Returns the PostHog instance for direct access if needed
  */
 export function usePostHogClient() {
-  return usePostHog();
+    return usePostHog();
 }

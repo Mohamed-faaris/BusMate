@@ -5,43 +5,48 @@
 Start here and follow the guides in order:
 
 ### 1. **POSTHOG_SUMMARY.md** ⭐ START HERE
-   - Overview of what's been configured
-   - Quick setup steps (3 minutes)
-   - Testing verification checklist
-   - Common issues and solutions
-   - **Read this first to understand the setup**
+
+- Overview of what's been configured
+- Quick setup steps (3 minutes)
+- Testing verification checklist
+- Common issues and solutions
+- **Read this first to understand the setup**
 
 ### 2. **INTEGRATION_CHECKLIST.md** 🔧 THEN FOLLOW THIS
-   - Step-by-step integration guide
-   - Exact code snippets for each component
-   - Where to add tracking calls in your code
-   - Testing procedures
-   - Debugging tips
-   - **Follow this to integrate tracking in your components**
+
+- Step-by-step integration guide
+- Exact code snippets for each component
+- Where to add tracking calls in your code
+- Testing procedures
+- Debugging tips
+- **Follow this to integrate tracking in your components**
 
 ### 3. **POSTHOG_CONFIG_REFERENCE.md** 📋 FOR REFERENCE
-   - Complete event schema documentation
-   - Configuration options
-   - Type safety information
-   - Security considerations
-   - Environment setup examples
-   - **Reference this when configuring or troubleshooting**
+
+- Complete event schema documentation
+- Configuration options
+- Type safety information
+- Security considerations
+- Environment setup examples
+- **Reference this when configuring or troubleshooting**
 
 ### 4. **POSTHOG_SETUP.md** 📚 DETAILED GUIDE
-   - Comprehensive setup documentation
-   - Full API reference for all functions
-   - Integration examples with complete code
-   - Best practices and patterns
-   - Advanced usage scenarios
-   - **Deep dive into setup and usage**
+
+- Comprehensive setup documentation
+- Full API reference for all functions
+- Integration examples with complete code
+- Best practices and patterns
+- Advanced usage scenarios
+- **Deep dive into setup and usage**
 
 ### 5. **POSTHOG_QUICK_REFERENCE.md** ⚡ QUICK LOOKUP
-   - Quick import and usage guide
-   - Essential integrations summary
-   - File checklist
-   - Key features overview
-   - Common issues table
-   - **Quick reference while coding**
+
+- Quick import and usage guide
+- Essential integrations summary
+- File checklist
+- Key features overview
+- Common issues table
+- **Quick reference while coding**
 
 ---
 
@@ -69,6 +74,7 @@ pnpm dev
 ## 📦 What's Included
 
 ### ✅ Already Configured
+
 - `src/env.js` - Environment variables with validation
 - `src/providers/PostHogProvider.tsx` - PostHog initialization
 - `src/lib/posthog-events.ts` - Event tracking functions (8 events)
@@ -78,6 +84,7 @@ pnpm dev
 - Session recording with input masking
 
 ### ⏳ Your Next Steps
+
 - Add `.env.local` with your PostHog API key
 - Follow `INTEGRATION_CHECKLIST.md` to add tracking to components
 - Test each flow (signup, login, booking)
@@ -89,18 +96,19 @@ pnpm dev
 
 All with full TypeScript support and automatic user identification:
 
-| Event | When | Properties |
-|-------|------|-----------|
-| `user_signed_up` | New registration | userId, email, boardingPointId |
-| `user_logged_in` | User login | userId, email |
-| `seat_selection_started` | Booking initiated | userId, busId, boardingPointId |
-| `seat_selected` | Seat clicked | userId, busId, seatId, gender, boardingPointId |
-| `seat_booking_attempt` | Booking submitted | userId, busId, seatId, status, failureReason |
-| `seat_booking_completed` | Booking confirmed | userId, busId, seatId, boardingPointId |
-| `bus_route_viewed` | Bus discovery | userId, boardingPointId, busId |
-| `admin_model_created` | Admin creates model | adminUserId, modelId |
+| Event                    | When                | Properties                                     |
+| ------------------------ | ------------------- | ---------------------------------------------- |
+| `user_signed_up`         | New registration    | userId, email, boardingPointId                 |
+| `user_logged_in`         | User login          | userId, email                                  |
+| `seat_selection_started` | Booking initiated   | userId, busId, boardingPointId                 |
+| `seat_selected`          | Seat clicked        | userId, busId, seatId, gender, boardingPointId |
+| `seat_booking_attempt`   | Booking submitted   | userId, busId, seatId, status, failureReason   |
+| `seat_booking_completed` | Booking confirmed   | userId, busId, seatId, boardingPointId         |
+| `bus_route_viewed`       | Bus discovery       | userId, boardingPointId, busId                 |
+| `admin_model_created`    | Admin creates model | adminUserId, modelId                           |
 
 Plus:
+
 - ✅ `$pageview` - Automatic on route changes
 - ✅ Session Recording - Automatic per session
 - ✅ User Identification - Automatic after login
@@ -110,6 +118,7 @@ Plus:
 ## 📍 File Locations
 
 ### Core Integration Files
+
 ```
 src/
 ├── providers/
@@ -124,6 +133,7 @@ src/
 ```
 
 ### Documentation Files
+
 ```
 docs/
 ├── POSTHOG_SUMMARY.md           ⭐ Start here
@@ -139,6 +149,7 @@ docs/
 ## 🚀 Integration Workflow
 
 ### Phase 1: Setup (Estimated: 5 min)
+
 - [x] PostHog code configured ✅
 - [ ] API key from PostHog.com
 - [ ] `.env.local` configured
@@ -146,6 +157,7 @@ docs/
 - [ ] Pageviews appearing in PostHog
 
 ### Phase 2: Authentication (Estimated: 10 min)
+
 - [ ] `trackUserSignUp()` in `RegisterForm.tsx`
 - [ ] `trackUserLoggedIn()` in `SignInForm.tsx`
 - [ ] `resetUserIdentity()` in logout handler
@@ -153,6 +165,7 @@ docs/
 - [ ] Test: Sign in → See user identified
 
 ### Phase 3: Booking Flow (Estimated: 20 min)
+
 - [ ] `trackSeatSelectionStarted()` when user opens bus
 - [ ] `trackSeatSelected()` when seat is clicked
 - [ ] `trackSeatBookingAttempt()` on form submit
@@ -160,11 +173,13 @@ docs/
 - [ ] Test: Complete booking flow → See all events
 
 ### Phase 4: Additional Tracking (Estimated: 10 min)
+
 - [ ] `trackBusRouteViewed()` in bus listing
 - [ ] `trackAdminModelCreated()` in admin forms
 - [ ] Test all admin actions
 
 ### Phase 5: Verification (Estimated: 5 min)
+
 - [ ] All events appear in PostHog
 - [ ] User identification working
 - [ ] Session recording capturing correctly
@@ -178,9 +193,10 @@ docs/
 ## 💡 Key Implementation Patterns
 
 ### Pattern 1: Basic Event Tracking
+
 ```tsx
-import { trackBusRouteViewed } from '@/lib/posthog-events';
-import { useSession } from 'next-auth/react';
+import { trackBusRouteViewed } from "@/lib/posthog-events";
+import { useSession } from "next-auth/react";
 
 export function BusListing() {
   const { data: session } = useSession();
@@ -189,7 +205,7 @@ export function BusListing() {
     if (session?.user) {
       trackBusRouteViewed({
         userId: session.user.id,
-        boardingPointId: 'bp123',
+        boardingPointId: "bp123",
       });
     }
   }, [session]);
@@ -197,8 +213,9 @@ export function BusListing() {
 ```
 
 ### Pattern 2: Event with Error Handling
+
 ```tsx
-import { trackSeatBookingAttempt } from '@/lib/posthog-events';
+import { trackSeatBookingAttempt } from "@/lib/posthog-events";
 
 const handleBooking = async () => {
   try {
@@ -207,14 +224,14 @@ const handleBooking = async () => {
       userId: session.user.id,
       busId: busId,
       seatId: seatId,
-      status: 'success',
+      status: "success",
     });
   } catch (error) {
     trackSeatBookingAttempt({
       userId: session.user.id,
       busId: busId,
       seatId: seatId,
-      status: 'failure',
+      status: "failure",
       failureReason: error.message,
     });
   }
@@ -222,8 +239,9 @@ const handleBooking = async () => {
 ```
 
 ### Pattern 3: User Identification
+
 ```tsx
-import { trackUserLoggedIn } from '@/lib/posthog-events';
+import { trackUserLoggedIn } from "@/lib/posthog-events";
 
 if (loginSuccess) {
   // This both tracks the event AND identifies the user
@@ -287,13 +305,13 @@ PostHog Dashboard:
 
 ## 🆘 Troubleshooting Quick Links
 
-| Problem | Solution |
-|---------|----------|
-| Events not appearing | See POSTHOG_CONFIG_REFERENCE.md → Troubleshooting |
-| User not identified | See INTEGRATION_CHECKLIST.md → Step 3 |
-| Module not found | Run: `pnpm install posthog-js` |
-| Compilation errors | Run: `pnpm install` and `pnpm dev` |
-| Duplicate events | Check POSTHOG_SETUP.md → Best Practices |
+| Problem                       | Solution                                            |
+| ----------------------------- | --------------------------------------------------- |
+| Events not appearing          | See POSTHOG_CONFIG_REFERENCE.md → Troubleshooting   |
+| User not identified           | See INTEGRATION_CHECKLIST.md → Step 3               |
+| Module not found              | Run: `pnpm install posthog-js`                      |
+| Compilation errors            | Run: `pnpm install` and `pnpm dev`                  |
+| Duplicate events              | Check POSTHOG_SETUP.md → Best Practices             |
 | Session recording not working | See POSTHOG_CONFIG_REFERENCE.md → Session Recording |
 
 ---
@@ -301,21 +319,25 @@ PostHog Dashboard:
 ## 📊 What You'll See in PostHog
 
 ### Events Page
+
 - All captured events listed chronologically
 - Filter by event name
 - View event properties
 
 ### Insights
+
 - Create funnels (signup → booking → completion)
 - Create trends (event counts over time)
 - Create cohorts (group users by behavior)
 
 ### Users
+
 - Each user identified by email
 - View user's complete event history
 - See user's session recordings
 
 ### Recordings
+
 - Watch actual user sessions
 - See clicks, scrolls, form inputs
 - Identify UX issues
@@ -349,6 +371,7 @@ Your PostHog integration is successful when:
 ## 🎉 Next Actions
 
 **Right now:**
+
 1. Read `POSTHOG_SUMMARY.md` (5 min)
 2. Get PostHog API key (2 min)
 3. Add to `.env.local` (1 min)
@@ -356,6 +379,7 @@ Your PostHog integration is successful when:
 5. Verify setup (2 min)
 
 **Then:**
+
 1. Follow `INTEGRATION_CHECKLIST.md` step by step
 2. Add tracking to each component
 3. Test each flow
