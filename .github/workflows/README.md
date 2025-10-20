@@ -15,18 +15,25 @@ This directory contains GitHub Actions workflows for automated code quality chec
 
 #### 1. `quality-checks` - Code Quality Checks
 
-- **Code Formatting**: Runs `pnpm format:check` to ensure consistent formatting
-- **Linting**: Runs `pnpm lint` to check for code quality issues
-- **Type Checking**: Runs `pnpm typecheck` to validate TypeScript types
+- **Bun Setup**: Installs Bun runtime (latest version)
+- **Dependencies**: Installs all project dependencies with `bun install --frozen-lockfile`
+- **Code Formatting**: Runs `bun run format:check` to ensure consistent formatting
+- **Linting**: Runs `bun run lint` to check for code quality issues
+- **Type Checking**: Runs `bun run typecheck` to validate TypeScript types
 
 #### 2. `build-validation` - Build & Environment Validation
 
-- **Dependencies**: Installs all project dependencies
-- **Environment Validation**: Runs `pnpm build` with mock environment variables
+- **Bun Setup**: Installs Bun runtime (latest version)
+- **Dependencies**: Installs all project dependencies with `bun install --frozen-lockfile`
+- **Environment Validation**: Runs `bun run build` with mock environment variables
 - **Build Process**: Validates that the application builds successfully
 - **Env Variables**: Uses `SKIP_ENV_VALIDATION=true` for CI builds
 
 #### 3. `database-check` - Database Schema Validation
+
+- **Bun Setup**: Installs Bun runtime (latest version)
+- **Dependencies**: Installs all project dependencies with `bun install --frozen-lockfile`
+- **Schema Generation**: Runs `bun run db:generate` to validate database schema
 
 - **Schema Generation**: Runs `pnpm db:generate` to validate database schema
 - **Migration Check**: Ensures database migrations are valid
@@ -70,22 +77,22 @@ Run the same checks locally:
 
 ```bash
 # Install dependencies
-pnpm install
+bun install
 
 # Format check
-pnpm format:check
+bun run format:check
 
 # Lint
-pnpm lint
+bun run lint
 
 # Type check
-pnpm typecheck
+bun run typecheck
 
 # Combined check
-pnpm check
+bun run check
 
 # Build validation
-pnpm build
+bun run build
 ```
 
 ## Workflow Status

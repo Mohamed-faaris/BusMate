@@ -15,26 +15,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
         with:
-          node-version: 20
-          cache: "pnpm"
-
-      - name: Install pnpm
-        run: npm install -g pnpm
+          bun-version: latest
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: bun install --frozen-lockfile
 
       - name: Check code formatting
-        run: pnpm format:check
+        run: bun run format:check
 
       - name: Lint code
-        run: pnpm lint
+        run: bun run lint
 
       - name: Type check
-        run: pnpm typecheck
+        run: bun run typecheck
 
   build-validation:
     name: Build & Environment Validation
@@ -45,36 +41,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
         with:
-          node-version: 20
-          cache: "pnpm"
-
-      - name: Install pnpm
-        run: npm install -g pnpm
+          bun-version: latest
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: bun install --frozen-lockfile
 
       - name: Environment validation & build
-        run: pnpm build
+        run: bun run build
         env:
           # Skip env validation for CI since we don't have real secrets
           SKIP_ENV_VALIDATION: true
-          # Provide minimal required env vars for build validation
-          NEXT_PUBLIC_BASE_URL: http://localhost:3000
-          AUTH_URL: http://localhost:3000
-          DATABASE_URL: postgresql://user:pass@localhost:5432/db
-          REDIS_URL: redis://localhost:6379
-          GMAIL_USER: test@example.com
-          GMAIL_PASS: 1234567890123456
-          SMTP_HOST: smtp.gmail.com
-          SMTP_PORT: 587
-          NODE_ENV: production
-          # Optional PostHog vars (can be empty for build validation)
-          NEXT_PUBLIC_POSTHOG_KEY: ""
-          NEXT_PUBLIC_POSTHOG_HOST: "https://us.i.posthog.com"
 
   database-check:
     name: Database Schema Validation
@@ -85,20 +64,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
         with:
-          node-version: 20
-          cache: "pnpm"
-
-      - name: Install pnpm
-        run: npm install -g pnpm
+          bun-version: latest
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: bun install --frozen-lockfile
 
       - name: Generate database schema
-        run: pnpm db:generate
+        run: bun run db:generate
         env:
           SKIP_ENV_VALIDATION: true
           DATABASE_URL: postgresql://user:pass@localhost:5432/db
