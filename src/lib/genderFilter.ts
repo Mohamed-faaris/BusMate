@@ -1,7 +1,7 @@
-import type { Seat, SeatGroups, BusComponents, BusModelProperties } from "../server/db/schema/models";
+import type { Seat,BusModelProperties } from "../server/db/schema/models";
 
 export const genderFilter = (maxRowIncluded = 2, gender: "male" | "female", seats: Record<string, Seat["seatStatus"]>, modelData: BusModelProperties): string[] => {
-    let availableSeats: string[] = [];
+    const availableSeats: string[] = [];
     if (gender === "male") {
         //include all available seats in back seats
         for (const seatRows of modelData.backSeats.seatsRows) {
@@ -13,7 +13,7 @@ export const genderFilter = (maxRowIncluded = 2, gender: "male" | "female", seat
         }
 
         let rowsIncluded = 0;
-        let boysSeatGroups = [modelData.leftSeatColumns, modelData.rightSeatColumns];
+        const boysSeatGroups = [modelData.leftSeatColumns, modelData.rightSeatColumns];
         for (const seatGroup of boysSeatGroups) {
             for (let i = seatGroup.seatsRows.length; i >= 0 && rowsIncluded < maxRowIncluded; i--) {
                 const seatRows = seatGroup.seatsRows[i]!;
@@ -49,7 +49,7 @@ export const genderFilter = (maxRowIncluded = 2, gender: "male" | "female", seat
         }
 
         let rowsIncluded = 0;
-        let boysSeatGroups = [modelData.leftSeatColumns, modelData.rightSeatColumns];
+        const boysSeatGroups = [modelData.leftSeatColumns, modelData.rightSeatColumns];
         for (const seatGroup of boysSeatGroups) {
             for (let i = 0; i < seatGroup.seatsRows.length && rowsIncluded < maxRowIncluded; i++) {
                 const seatRows = seatGroup.seatsRows[i]!;

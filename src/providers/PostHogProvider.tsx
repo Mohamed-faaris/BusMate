@@ -14,8 +14,12 @@ export function PostHogProviderWrapper({
 }: PostHogProviderWrapperProps) {
   useEffect(() => {
     // Initialize PostHog with your project key
+    if(!env.NEXT_PUBLIC_POSTHOG_KEY || !env.NEXT_PUBLIC_POSTHOG_HOST) {
+      console.warn("PostHog key or host is not defined. Skipping PostHog initialization.");
+      return;
+    }
     posthog.init(env.NEXT_PUBLIC_POSTHOG_KEY, {
-      api_host: env.NEXT_PUBLIC_POSTHOG_HOST || "https://us.i.posthog.com",
+      api_host: env.NEXT_PUBLIC_POSTHOG_HOST,
       // Enable automatic pageview tracking for SPA
       capture_pageview: true,
       capture_pageleave: true,

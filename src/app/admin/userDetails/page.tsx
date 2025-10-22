@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import {
   Search,
   Users,
@@ -16,7 +15,6 @@ import {
   Bus,
   Shield,
   ShieldCheck,
-  Loader2,
 } from "lucide-react";
 
 interface UserData {
@@ -71,8 +69,7 @@ export default function UserDetailsPage() {
       user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.rollNo.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.college.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (user.bus?.busNumber &&
-        user.bus.busNumber.toLowerCase().includes(searchTerm.toLowerCase())),
+      (user.bus?.busNumber?.toLowerCase().includes(searchTerm.toLowerCase())),
   );
 
   if (error) {
@@ -211,7 +208,7 @@ export default function UserDetailsPage() {
                       </div>
 
                       {/* Bus and Boarding Point */}
-                      {(user.bus || user.boardingPoint) && (
+                      {(user.bus ?? user.boardingPoint) && (
                         <div className="space-y-1">
                           {user.bus && (
                             <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">

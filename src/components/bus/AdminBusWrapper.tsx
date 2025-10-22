@@ -50,7 +50,7 @@ function AdminSeatGroup({
   return (
     <div
       className="flex flex-grow flex-col justify-around"
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+       
       style={{ minHeight: _height }}
     >
       {/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access */}
@@ -121,7 +121,7 @@ export default function AdminBusWrapper({
         </div>
         <div
           id="middle"
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+           
           style={{ fontSize: 14 * scale }}
           className="text-secondary flex w-12 flex-col items-center justify-center [letter-spacing:1em] [text-orientation:upright] [writing-mode:vertical-rl]"
         >

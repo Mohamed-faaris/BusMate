@@ -6,14 +6,8 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import React from "react";
 import {
-  Bus,
-  MapPin,
   Users,
-  Calendar,
-  Shield,
-  Smartphone,
   ArrowRight,
-  CheckCircle,
   Route,
   Eye,
 } from "lucide-react";

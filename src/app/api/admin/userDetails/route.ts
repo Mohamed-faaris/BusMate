@@ -1,11 +1,11 @@
-import { type NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { db } from "@/server/db";
 import { users } from "@/server/db/schema/users";
 import { buses } from "@/server/db/schema/buses";
 import { boardingPoints } from "@/server/db/schema/boardingPoints";
 import { desc, eq } from "drizzle-orm";
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const result = await db
       .select({
