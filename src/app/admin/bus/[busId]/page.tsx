@@ -157,7 +157,7 @@ export default function AdminBusDetailPage() {
       </div>
 
       {/* Compact Statistics Cards */}
-      <div className="mb-4 grid grid-cols-4 gap-3">
+      <div className="mb-4 grid grid-cols-2 gap-3 md:grid-cols-4">
         <Card className="p-3">
           <div className="text-center">
             <p className="text-primary text-2xl font-bold">{occupancyRate}%</p>
@@ -197,9 +197,9 @@ export default function AdminBusDetailPage() {
       </div>
 
       {/* Compact Layout: Legend and Bus Side by Side */}
-      <div className="mb-4 grid grid-cols-5 gap-4">
+      <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-5">
         {/* Compact Legend */}
-        <Card className="col-span-1 p-4">
+        <Card className="col-span-1 md:col-span-1 p-4">
           <h3 className="mb-3 text-lg font-semibold">Legend</h3>
           <div className="space-y-2">
             <div className="flex items-center gap-2">
@@ -225,7 +225,7 @@ export default function AdminBusDetailPage() {
         </Card>
 
         {/* Bus Diagram */}
-        <Card className="col-span-4 p-4">
+        <Card className="col-span-1 md:col-span-4 p-4">
           <h3 className="mb-3 text-lg font-semibold">Seat Layout</h3>
           <div className="flex justify-center">
             <BusPropsProvider scale={0.8}>

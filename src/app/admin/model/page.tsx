@@ -116,7 +116,7 @@ export default function Page() {
   return (
     <div className="flex w-full flex-col p-6">
       <h1 className="mb-4 text-2xl font-semibold">Configure Bus Model</h1>
-      <div className="flex w-full justify-center gap-12">
+      <div className="flex w-full flex-col justify-center gap-12 lg:flex-row">
         <Card className="mb-6 flex p-4">
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <Input
@@ -297,11 +297,13 @@ export default function Page() {
         </Card>
         <BusPropsProvider>
           <SeatsDataProvider data={seatsArrayToMap(flattenBusSeats(busSeats))}>
-            <BusWrapper
-              busId="test"
-              busSeats={busSeats}
-              className="origin-top-left scale-[120%]"
-            />
+            <div className="flex justify-center">
+              <BusWrapper
+                busId="test"
+                busSeats={busSeats}
+                className="origin-top-left scale-100 md:scale-[120%]"
+              />
+            </div>
           </SeatsDataProvider>
         </BusPropsProvider>
       </div>
