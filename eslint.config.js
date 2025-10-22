@@ -1,4 +1,3 @@
-import nextCoreWebVitals from "eslint-config-next/core-web-vitals.js";
 import { FlatCompat } from "@eslint/eslintrc";
 import tseslint from "typescript-eslint";
 // @ts-ignore -- no types for this plugin
@@ -9,7 +8,12 @@ const compat = new FlatCompat();
 export default tseslint.config(
   ...compat.extends("next/core-web-vitals"),
   {
-    ignores: [".next"],
+    ignores: [
+      ".next",
+      "next-env.d.ts",
+      "postcss.config.js",
+      "prettier.config.js",
+    ],
   },
   {
     files: ["**/*.ts", "**/*.tsx"],
