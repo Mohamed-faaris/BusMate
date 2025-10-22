@@ -5,12 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import React from "react";
-import {
-  Users,
-  ArrowRight,
-  Route,
-  Eye,
-} from "lucide-react";
+import { Users, ArrowRight, Route, Eye } from "lucide-react";
 
 export default function HomePage() {
   const session = useSession();

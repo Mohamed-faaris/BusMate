@@ -69,7 +69,7 @@ export default function UserDetailsPage() {
       user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.rollNo.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.college.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (user.bus?.busNumber?.toLowerCase().includes(searchTerm.toLowerCase())),
+      user.bus?.busNumber?.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   if (error) {

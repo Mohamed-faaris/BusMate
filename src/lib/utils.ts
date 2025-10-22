@@ -69,11 +69,11 @@ export function cn(...inputs: ClassValue[]) {
 
 export const isDev = process.env.NODE_ENV === "development";
 
- 
-export const extendArray = (arr: unknown[], len: number, val: unknown): unknown[] => [
-  ...arr,
-  ...Array(Math.max(len - arr.length, 0)).fill(val),
-];
+export const extendArray = (
+  arr: unknown[],
+  len: number,
+  val: unknown,
+): unknown[] => [...arr, ...Array(Math.max(len - arr.length, 0)).fill(val)];
 
 // Utility function to safely stringify objects for logging
 export function safeStringify(obj: unknown, space?: number): string {

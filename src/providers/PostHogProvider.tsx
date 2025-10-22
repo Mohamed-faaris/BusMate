@@ -14,8 +14,10 @@ export function PostHogProviderWrapper({
 }: PostHogProviderWrapperProps) {
   useEffect(() => {
     // Initialize PostHog with your project key
-    if(!env.NEXT_PUBLIC_POSTHOG_KEY || !env.NEXT_PUBLIC_POSTHOG_HOST) {
-      console.warn("PostHog key or host is not defined. Skipping PostHog initialization.");
+    if (!env.NEXT_PUBLIC_POSTHOG_KEY || !env.NEXT_PUBLIC_POSTHOG_HOST) {
+      console.warn(
+        "PostHog key or host is not defined. Skipping PostHog initialization.",
+      );
       return;
     }
     posthog.init(env.NEXT_PUBLIC_POSTHOG_KEY, {

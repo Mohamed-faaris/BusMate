@@ -38,10 +38,13 @@ export async function GET() {
       .leftJoin(boardingPoints, eq(users.boardingPointId, boardingPoints.id))
       .orderBy(desc(users.createdAt));
 
-    return NextResponse.json({
-      success: true,
-      data: result,
-    }, { status: 200 });
+    return NextResponse.json(
+      {
+        success: true,
+        data: result,
+      },
+      { status: 200 },
+    );
   } catch (error) {
     console.error("Error fetching users:", error);
     return NextResponse.json(

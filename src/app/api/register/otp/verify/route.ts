@@ -12,7 +12,9 @@ type UniqueConstraintError = {
   detail?: string;
 };
 
-const isUniqueConstraintError = (error: unknown): error is UniqueConstraintError => {
+const isUniqueConstraintError = (
+  error: unknown,
+): error is UniqueConstraintError => {
   if (typeof error !== "object" || error === null) {
     return false;
   }
@@ -63,7 +65,7 @@ export async function POST(request: NextRequest) {
     const normalizedRollNo = rollNo.toLowerCase();
 
     // Check if OTP is correct
-    const storedOtp = (await getValue(`otp:${normalizedEmail}`));
+    const storedOtp = await getValue(`otp:${normalizedEmail}`);
     if (otp !== storedOtp) {
       return NextResponse.json(
         {

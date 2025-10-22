@@ -50,12 +50,14 @@ function AdminSeatGroup({
   return (
     <div
       className="flex flex-grow flex-col justify-around"
-       
       style={{ minHeight: _height }}
     >
       {/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access */}
       {seatGroups.map((seatRow, rowIndex) => (
-        <div key={rowIndex} className={cn("flex", reversed ? "flex-row-reverse" : "flex-row")}>
+        <div
+          key={rowIndex}
+          className={cn("flex", reversed ? "flex-row-reverse" : "flex-row")}
+        >
           {Array.from({ length: maxSeatsInRow }).map((_, seatIndex) => {
             const seat = (seatRow as Seat[])[seatIndex];
             if (!seat) {
@@ -121,7 +123,6 @@ export default function AdminBusWrapper({
         </div>
         <div
           id="middle"
-           
           style={{ fontSize: 14 * scale }}
           className="text-secondary flex w-12 flex-col items-center justify-center [letter-spacing:1em] [text-orientation:upright] [writing-mode:vertical-rl]"
         >
