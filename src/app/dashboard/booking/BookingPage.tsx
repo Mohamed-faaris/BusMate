@@ -162,9 +162,7 @@ export default function BookingPage() {
         <Dialog>
           <DialogTrigger asChild>
             <Button
-              disabled={
-                !selectedSeat || selectedSeat.seatStatus !== "available"
-              }
+              disabled={selectedSeat?.seatStatus !== "available"}
               className="w-full"
             >
               Book Now
