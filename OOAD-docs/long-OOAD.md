@@ -242,6 +242,4 @@ Developer Onboarding Notes
 
 New contributors should run the project's check, lint, and format scripts locally and follow the contributing guidance in the repository. Seed data and small, reproducible examples of model definitions speed onboarding for QA and reviewers. Document model transformations and common error codes so new developers can reason about the booking flow quickly.
 
-Next Steps and Suggested Tasks
-
-If you want more targeted expansion I can: add concrete API response examples for each endpoint, produce a short Playwright test suite that validates the booking flow against a seeded database, or generate a sample Drizzle migration that demonstrates a safe seats map schema change. Tell me which of these you'd like next and I'll update the todo list and proceed.
+If you want more targeted expansion I can: add concrete API response examples for each endpoint, produce a short Playwright test suite that validates the booking flow against a seeded database, or generate a sample Drizzle migration that demonstrates a safe seats map schema change; tell me which of these you'd like next and I'll update the todo list and proceed.
