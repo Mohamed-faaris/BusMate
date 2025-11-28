@@ -110,6 +110,57 @@ Sample Test Cases
 
 Registration tests ensure valid inputs create `user` and `account` records while invalid inputs return validation errors. Login tests validate the NextAuth Credential provider behavior. Booking tests ensure that a seat booking inserts a row into `seats`, updates `buses.seats`, and that an attempt to book the same seat twice results in a unique constraint error handled gracefully by the server.
 
+Sample Test Cases (Detailed tables)
+
+Authentication & User Module
+
+| Test Case ID | Description | Steps | Expected Output | Status |
+|--------------|-------------|-------|-----------------|--------|
+| TC_AUTH_01 | User Login with valid credentials | 1. Open Login Page<br>2. Enter valid email/password<br>3. Click Login | User successfully logs in and dashboard appears | Pass |
+| TC_AUTH_02 | User Login with invalid credentials | 1. Open Login Page<br>2. Enter wrong email/password<br>3. Click Login | Error message: "Invalid Credentials" | Pass |
+| TC_AUTH_03 | User Registration with valid details | 1. Open Registration Page<br>2. Enter valid details and OTP<br>3. Submit Form | New user created and account row inserted (hashed password) | Pass |
+| TC_AUTH_04 | Registration with duplicate email/roll | 1. Open Registration Page<br>2. Enter existing email/rollNo<br>3. Submit Form | HTTP 409 conflict with message indicating duplicate email/roll | Pass |
+| TC_AUTH_05 | OTP verification failure | 1. Open Registration Page<br>2. Enter details and invalid OTP<br>3. Submit Form | HTTP 400 Invalid OTP | Pass |
+
+Bus Creation & Management Module
+
+| Test Case ID | Description | Steps | Expected Output | Status |
+|--------------|-------------|-------|-----------------|--------|
+| TC_BUS_01 | Create model with valid seat layout | 1. Open Admin Model Create page<br>2. Enter valid model name and seat layout JSON<br>3. Submit Form | Model row created in `models` table and returning an id | Pass |
+| TC_BUS_02 | Create bus with a model | 1. Open Admin Add Bus page<br>2. Select existing model and enter bus metadata<br>3. Submit Form | Bus created in `buses` table with `seats` JSON map generated | Pass |
+| TC_BUS_03 | Create bus with invalid/missing model | 1. Open Admin Add Bus page<br>2. Enter bus data without a valid model<br>3. Submit Form | HTTP 400 error indicating missing/invalid model | Pass |
+| TC_BUS_04 | Edit bus details | 1. Admin opens existing bus details<br>2. Update driver or route details<br>3. Save changes | Bus row updated and UI shows changes | Pass |
+
+Boarding Points Module
+
+| Test Case ID | Description | Steps | Expected Output | Status |
+|--------------|-------------|-------|-----------------|--------|
+| TC_BP_01 | Add boarding point as admin | 1. Open Admin Boarding Points page<br>2. Enter name and coordinates<br>3. Submit Form | New row created in `boardingPoints` table | Pass |
+| TC_BP_02 | List boarding points | 1. Call `/api/busRoutes` or `/api/boarding-points` <br>2. Inspect response | Response contains list including newly created point | Pass |
+| TC_BP_03 | Add duplicate boarding point | 1. Submit a boarding point with existing name<br>2. Submit form again | API returns HTTP 409 or error message indicating duplicate | Pass |
+
+Routes Module
+
+| Test Case ID | Description | Steps | Expected Output | Status |
+|--------------|-------------|-------|-----------------|--------|
+| TC_ROUTE_01 | List buses by boarding point | 1. Call `/api/bus/byBoardingPoint/<boardingPointId>`<br>2. Inspect response | Response lists all buses mapped to that boarding point | Pass |
+| TC_ROUTE_02 | Map bus to boarding point | 1. Admin submit `busBoardingPoints` with busId, boardingPointId and arrivalTime<br>2. Inspect DB | A `busBoardingPoints` row is created and is queryable by API | Pass |
+
+Ticket Booking Module
+
+| Test Case ID | Description | Steps | Expected Output | Status |
+|--------------|-------------|-------|-----------------|--------|
+| TC_BOOK_01 | Book seat successfully | 1. User logs in and opens booking page<br>2. Selects bus and available seat<br>3. Click Book Now | A row is inserted into `seats` and the `buses.seats` JSON is updated to `bookedMale` or `bookedFemale` as applicable | Pass |
+| TC_BOOK_02 | Book already taken seat (double-book) | 1. User A books a seat<br>2. User B attempts to book same seat<br>3. Submit request | API returns 406 (already booked) or a suitable unique-constraint error; no duplicate seat row is created | Pass |
+| TC_BOOK_03 | Book seat without authentication | 1. Call `/api/bookSeat` without session<br>2. Observe response | API returns 401 Unauthorized | Pass |
+
+Payments Module (Optional)
+
+| Test Case ID | Description | Steps | Expected Output | Status |
+|--------------|-------------|-------|-----------------|--------|
+| TC_PAY_01 | Payment success and booking | 1. User attempts booking and pays via payment provider (simulated)<br>2. Payment provider returns success webhook<br>3. Booking completes | Booking recorded and `receiptId` updated in DB | Pass |
+| TC_PAY_02 | Payment failure aborts booking | 1. User attempts booking<br>2. Payment provider returns failure<br>3. No booking writes occur | No `seats` row created, payment failure reported to user | Pass |
+
 Test Results
 
 Tests provide clear pass/fail results, with unit tests focusing on logic and integration tests ensuring API correctness. Manual end-to-end tests confirm that UX flows work from registration to booking. Further stress and concurrency tests should be executed under heavier loads to identify potential contention issues to be addressed in future enhancements.
