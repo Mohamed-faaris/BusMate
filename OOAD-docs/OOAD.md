@@ -18,6 +18,156 @@ Chapter 2: SYSTEM REQUIREMENT SPECIFICATIONS (SRS)
 
 Functional Requirements
 
+The system must provide a registration and login flow with email and password support and a demo OTP validation to confirm user intent. The booking flow should enable registered users to select their boarding point, list buses for a chosen boarding point, inspect a visual seat layout for a selected bus, and reserve an available seat. Admin users must be able to create and manage boarding points, add and edit seat models that define seat layouts, create and manage buses including mapping schedules to boarding points, and inspect user bookings.
+
+Non Functional Requirements
+
+The system should be responsive and support common mobile and desktop browser sizes to ensure passengers can book seats from phones and web clients. The backend should provide consistent API performance with typical response times under a few hundred milliseconds under normal load, while ensuring that database transactions for booking remain atomic. The implementation must be secure by storing hashed passwords for credentials, validating inputs via Zod schemas, and sanitizing parameters before database operations.
+
+Hardware Requirements
+
+The primary hardware requirement is a server or container environment that can host Node.js 22+ capable of handling moderate traffic of authenticated users with a database backend, and optional worker processes for background tasks. A Postgres server is required for data persistence and can be hosted as a managed service or locally in Docker, and optionally Redis can be used for caching and sessions.
+
+Software Requirements
+
+The application uses Next.js 15 with the App Router and React 19 which require Node.js 22 or above. The build relies on `pnpm` as the package manager and Drizzle ORM for schema migrations and interactions with a PostgreSQL database. The developer environment should also include TypeScript, Tailwind CSS, and ESLint/Prettier for code quality, and optionally Drizzle Studio for database seeding and inspection.
+
+User Characteristics
+
+Typical users of the system are students who register using their institutional information and credentials, with optional demographic fields like gender used to inform seat allocation rules. Admin users include staff who manage boarding points, seat models, and buses, while platform operators and developers are responsible for the server and database maintenance and CI/CD concerns.
+
+Constraints
+
+The application must be deployed in environments where the database and optional Redis services are reachable by the application server and where environment variables such as `DATABASE_URL` and `AUTH_SECRET` are provided. The project uses a demo OTP and requires mail service for production-grade OTP and e-mail based interactions, and the admin routes must be guarded for production deployments to prevent unauthorized data changes.
+
+Chapter 3: ANALYSIS AND DESIGN
+
+Use Case Model
+
+The primary actors of the system are Students, Admins, and System Operators. Students interact with the system to register, sign in, manage their profile, choose a boarding point, view buses for a route, and book seats using an interactive seat map. Admins configure models, buses, and boarding points and review user bookings, while System Operators are responsible for deploying and monitoring the system.
+
+Use Case Description
+
+Registration and sign-in use cases include client-side validation on the registration page followed by API calls to `/api/register` and NextAuth credential flows for signing in. Booking involves fetching a user’s boarding point, listing buses by boarding point, fetching the bus model and JSON seat map from `/api/bus/<id>`, selecting an available seat in the UI, and then calling `/api/bookSeat` which executes a transaction to insert a seat row and update the bus JSON seat map.
+
+Activity Diagram
+
+The booking workflow begins with user authentication, proceeds to fetching a list of buses for a boarding point, shows the seat map for a bus, allows seat selection, validates availability, and then submits a booking that writes data to both `seats` and `buses` tables in a single transaction. Each step is reflected in client-side state handled via TanStack Query and the server ensures data consistency at the persistence layer.
+
+Class Diagram
+
+Domain entities include User, Account, BoardingPoint, BusModel, Bus, Seat, and BusBoardingPoint. These entities map directly to Drizzle ORM tables, with relationships such as User referencing BoardingPoint and Bus, Seat referencing User and Bus, and Bus holding a JSON map of seat statuses to speed up availability lookups while the seats table serves as audit and a source of truth for booking records.
+
+Sequence Diagram
+
+During booking the client first retrieves user and boarding point details, requests buses by boarding point, fetches the selected bus’s model and seat JSON, then submits a seat booking which the server validates, records as a seat row, and updates the bus JSON map inside a database transaction before returning success.
+
+Collaboration Diagram
+
+Components collaborate across layers: UI components interact with API routes, the API layer delegates to domain services, the services call Drizzle ORM to manipulate DB entities, and external services such as SMTP or PostHog can be used for OTP, notifications, and analytics. Operations like booking are coordinated through service-level transactions that ensure either all updates succeed, or all updates rollback to keep the data consistent.
+
+Component Diagram
+
+The solution is split into presentation components, API routes, service modules, and a persistence layer. UI components are located under `src/components` and use Tailwind and Radix UI primitives, API handlers live under `src/app/api` as Next.js App Router endpoints, domain services and helpers under `src/server`, and Drizzle ORM provides the ORM mapping in `src/server/db/schema`.
+
+Deployment Diagram
+
+A minimal deployment involves the Next.js app running in a Node runtime and a PostgreSQL instance, with an optional Redis instance for caching. The `compose.yaml` in the repository demonstrates how to run the database and the app in containers for development, and production deployments would aim to secure environment variables and ensure that migrations and backups are managed properly using Drizzle’s CLI tools.
+
+Package Diagram
+
+Code modules are grouped according to responsibilities: pages and route handlers under `src/app`, shared UI in `src/components`, domain services and database under `src/server`, schema definitions in `src/server/db/schema`, utilities and hooks under `src/lib` and `src/hooks`, and provider functions and third party integrations under `src/providers`.
+
+Design Patterns Used
+
+The project uses several design patterns in practical contexts: a Data Mapper pattern through Drizzle ORM, Singleton for shared DB clients, a Strategy-like approach for pluggable authentication providers in NextAuth, and a facade pattern in service modules to abstract complex DB transactions behind simple APIs.
+
+GRASP Design Patterns
+
+Controllers (Next.js route handlers) delegate responsibilities to service modules to maintain clear separation of concerns. The Creator pattern is used in service modules like the ModelService which constructs bus seat maps from model definitions, and Controller and Expert responsibilities are assigned carefully to services that hold the necessary domain knowledge.
+
+GoF Design Patterns
+
+Instances of factory-like behavior appear in seat map generation for models, while the Singleton pattern is used for the database client. The facade pattern simplifies interactions with transactional booking operations exposing a single BookingService method while encapsulating complex internal operations.
+
+Chapter 4: IMPLEMENTATION
+
+Module Description
+
+Authentication & User Module: The authentication system is implemented using NextAuth’s Credentials provider and a custom `authConfig` under `src/server/auth/config.ts` to validate users and return JWTs for session management. Registration logic lives in `src/app/api/register/route.ts` and performs Zod validation, password hashing with bcrypt, and user + account creation in the database inside a transaction.
+
+Bus Creation and Management Module: A model creation API under `src/app/api/admin/addModel/route.ts` accepts a `model` and JSON layout and stores it in the models table, while `src/app/api/admin/addBus/route.ts` constructs `seats` JSON maps from models and stores them in bus rows. Administrative UIs exist under `src/app/admin` where these flows are executed and saved to the backend.
+
+Boarding Points Module: Boarding points are stored in the database and managed via `src/app/api/admin/addBoardingPoints/route.ts` and listed via `src/app/api/boarding-points/route.ts` for use in registration and bus filtering.
+
+Routes Module: The app keeps a `routeName` on bus rows to provide a search-friendly label while mapping buses to boarding points is maintained through `busBoardingPoints` rows which also contain `arrivalTime` values.
+
+Ticket Booking Module: The `/api/bookSeat` route validates session, ensures the user exists, and performs a Drizzle transaction to create a new seat row and to update the `buses` seats JSON map using `jsonb_set`, handling errors such as unique constraint violations to avoid double bookings.
+
+Payment Module: Payment integration is not implemented by default; the architecture allows a payments module to be added that would create payment requests in a separate table and update bookings with `receiptId` and payment status on completion.
+
+Technology Description
+
+BusMate uses Next.js for routing and server-side code, TanStack Query for client-state synchronization, Drizzle ORM for typed DB operations and migrations, and Postgres as the data store. Redis is included for caching and potential session management, and PostHog is used for event instrumentation when configured. The development toolchain leverages pnpm scripts, ESLint/Prettier, Drizzle CLI for migrations and studio, and TypeScript for type-safety across the codebase.
+
+Code Snippets
+
+Booking logic in `src/app/api/bookSeat/route.ts` demonstrates Zod validation, session checks via `auth`, and a Drizzle transaction that both inserts into `seats` and updates the `buses.seats` JSON column using SQL `jsonb_set`. The registration endpoint shows how hashing solutions such as `bcryptjs` are used to store passwords and how Drizzle’s `returning` API can surface created row details.
+
+Screenshots
+
+To document the UI, take screenshots of the dashboard booking page showing a seat map and the admin model creation page showing the generated seat layout and the form used to set bus metadata. These visual references are helpful for stakeholders and testers to validate UX decisions and expected behaviors in the booking flow.
+
+Chapter 5: TESTING
+
+Testing Strategy
+
+The testing strategy includes unit tests for utility modules, integration tests for API endpoints and DB interactions using a seeded database, and manual acceptance tests for end-to-end flows including registration and booking. Tests are run in CI with environment variables set for test databases and use fixtures to restore a known state for repeatable results.
+
+Sample Test Cases
+
+Unit tests validate small modules such as JSON seat map generation and helper functions. Integration tests cover successful and failing registration, sign-in, bus listing, model creation, and seat booking including attempts to double-book. Acceptance tests run through the welcome, registration, login, bus selection, and booking flows to ensure the UI and the backend agree on state and transitions.
+
+Test Results
+
+Results reported from CI should indicate pass/fail statuses across unit and integration suites as well as lint and type checks. Local manual acceptance testing validates real-world interactions such as booking a seat and confirms that seat status updates and DB rows are updated. For production readiness, additional stress and concurrency tests are suggested to validate multi-user seat contention scenarios enabling either locking or optimistic concurrency measures.
+
+Chapter 6: CONCLUSION AND FUTURE ENHANCEMENT
+
+Conclusion
+
+This OOAD document describes BusMate’s core objectives, constraints, and the primary design and implementation decisions that support a maintainable and scalable campus bus booking system. The architecture keeps concerns well-separated and uses proven technologies such as Next.js, Drizzle ORM, and Postgres for reliable and typed system behavior. The design supports role-based administrative operations, consistent transactional booking flows, and extensible modules for future features including payments and real-time updates.
+
+Future Enhancement
+
+Potential improvements include integrating a robust SMTP or external OTP provider to replace the demo flow for email verification, implementing a payments module for revenue-backed seat reservations, adding fine-grained role-based access control to protect admin APIs, and incorporating real-time updates using WebSocket or server-sent events to improve the UX for concurrent seat selection. Additional work would include performance improvements by caching heavy-read endpoints, introducing database partitioning for large-scale deployments, and improving operational observability with alerting and backup strategies to support production service level objectives.
+
+Acknowledgements
+
+This OOAD material was compiled by inspecting the repository source code, including the Drizzle schema definitions in `src/server/db/schema`, the App Router API endpoints in `src/app/api`, admin and dashboard UIs under `src/app`, and supporting modules and scripts as defined in the project’s `README.md` and package manifest. Use the `reference.md` file in this directory for a finer-grained summary of files, endpoints, and schema details to help maintainers and extension authors.
+
+
+
+Chapter 1: INTRODUCTION
+
+BusMate provides a modern solution to campus bus seat booking that combines a rich web interface with a scalable server and database backend. The application allows students to register, choose a boarding point, view routes and individual bus seat layouts, and book seats. Administrators can add boarding points, define bus models with flexible seat layouts, create buses, and map routes and arrival times to boarding points. The application is built with Next.js and follows a modular, server-driven architecture where server endpoints are implemented as Next.js App Router handlers combined with Drizzle ORM for database operations, and a Tailwind CSS UI stack for the client.
+
+Problem Description
+
+Traditional campus transportation booking systems often rely on manual operations and fragmented tools that are error-prone and do not scale well as the number of users and routes grows. These systems typically lack an intuitive seat map, do not provide role-based management interfaces for admins, and fail to enforce booking constraints like gender-aware seat allocation rules. In addition, the data management for such systems is often spread across multiple spreadsheets and manual records which makes auditing and recovery difficult.
+
+Objective of the Project
+
+The primary goal of BusMate is to provide a fully functional, automatable, and auditable seat booking platform for campus transportation that supports user self-service booking and admin operations. This includes providing a clear user registration and validation flow, a visual seat map with live seat availability, an API-driven backend to enforce booking rules and maintain transactional consistency, and an administration layer for defining bus layouts, adding boarding points, and managing fleet schedules. Combined, these goals deliver a robust experience and inject operational efficiency into how campus transport is managed.
+
+Scope of the Project
+
+This document focuses on the design and implementation of the web application backend and frontend with attention on core functional areas such as user management, seat booking, bus and route configuration, and admin features for managing models and boarding points. The system intentionally remains limited to essential operational features for the bus booking flow and admin management, defers advanced features like payment integration or real-time fleet telemetry, and opts for a privacy-preserving, simplified OTP flow in its demo mode. The data model ensures that important referential constraints are enforced at the database layer and that seat status can be queried efficiently via a JSON map on the bus entity.
+
+Chapter 2: SYSTEM REQUIREMENT SPECIFICATIONS (SRS)
+
+Functional Requirements
+
 The system must provide a registration and login flow with email and password support and a demo OTP validation to confirm user intent. The booking flow should enable registered users to select their boarding point, list buses for a chosen boarding point, inspect a visual seat layout for a selected bus, and reserve an available seat. Admin users must be able to create and manage boarding points, add and edit seat models that define seat layouts, create and manage buses including mapping schedules to boarding points, and inspect user bookings. The system must provide REST API endpoints for listing boarding points, listing buses by boarding point, getting detailed bus information including the seat layout, booking seats with transactional consistency, and admin endpoints for managing models, buses, and boarding points. The system must store seat bookings in both a `seats` table and a `buses.seats` JSON map to ensure both transactional integrity and efficient lookup by seat id.
 
 Non Functional Requirements
