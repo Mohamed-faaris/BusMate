@@ -21,6 +21,8 @@ export const env = createEnv({
     SMTP_HOST: z.string(),
     SMTP_PORT: z.string(),
 
+    OTP_BYPASS_ENABLED: z.string().optional(),
+
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
@@ -55,6 +57,8 @@ export const env = createEnv({
     GMAIL_PASS: process.env.GMAIL_PASS,
     SMTP_HOST: process.env.SMTP_HOST,
     SMTP_PORT: process.env.SMTP_PORT,
+
+    OTP_BYPASS_ENABLED: process.env.OTP_BYPASS_ENABLED,
 
     NEXT_PUBLIC_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
     NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,

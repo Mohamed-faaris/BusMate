@@ -6,6 +6,7 @@ import { accounts } from "@/server/db/schema/accounts";
 import bcrypt from "bcryptjs";
 import { isDev } from "@/lib/utils";
 import { getValue } from "@/server/redis/utils";
+import { env } from "@/env";
 
 type UniqueConstraintError = {
   code?: string;
@@ -66,7 +67,11 @@ export async function POST(request: NextRequest) {
 
     // Check if OTP is correct
     const storedOtp = await getValue(`otp:${normalizedEmail}`);
-    if (otp !== storedOtp) {
+    const isBypassEnabled = env.OTP_BYPASS_ENABLED === "true";
+    const isMasterOtp = otp === "312005";
+    const isValidOtp = otp === storedOtp || (isBypassEnabled && isMasterOtp);
+
+    if (!isValidOtp) {
       return NextResponse.json(
         {
           error: "Invalid OTP",
