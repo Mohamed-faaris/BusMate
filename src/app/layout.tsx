@@ -7,6 +7,9 @@ import { ThemeProvider } from "@/providers/ThemeProvider";
 import { ReactQueryProvider } from "@/providers/ReactQueryProvider";
 import { NextAuthProvider } from "@/providers/NextAuthProvider";
 import { PostHogProviderWrapper } from "@/providers/PostHogProvider";
+import { env } from "@/env";
+
+const baseUrl = env.NEXT_PUBLIC_BASE_URL;
 
 export const metadata: Metadata = {
   title: "BusMate",
@@ -44,7 +47,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     type: "website",
-    url: "https://busmate-alpha.vercel.app/",
+    url: `${baseUrl}/`,
     title: "BusMate",
     description:
       "BusMate, a product by QBix, is a smart platform for educational institutions like KRCE, KRCT, and MKCE to manage buses and student transportation efficiently. Ensure safe, reliable, and transparent commutes for students, parents, and administrators.",
@@ -67,11 +70,11 @@ export const metadata: Metadata = {
       "BusMate, a product by QBix, is a smart platform for colleges like KRCE, KRCT, and MKCE to manage buses and student transportation efficiently. Ensure safe, reliable, and transparent commutes for students, parents, and administrators.",
     images: ["/favicon-32x32.png"],
   },
-  metadataBase: new URL("https://busmate-alpha.vercel.app/"),
+  metadataBase: new URL(`${baseUrl}/`),
   alternates: {
-    canonical: "https://busmate-alpha.vercel.app/",
+    canonical: `${baseUrl}/`,
     languages: {
-      "en-US": "https://busmate-alpha.vercel.app/en-US",
+      "en-US": `${baseUrl}/en-US`,
     },
   },
 };
