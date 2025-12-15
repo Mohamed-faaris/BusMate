@@ -74,7 +74,6 @@ flowchart TB
 	classDef package fill:#f6f8fa,stroke:#dfe4ea;
 	class app,components,providers,context,server,db,lib,hooks,schemas package;
 
-``` 
+```
 
 Notes: This is a high-level package diagram. Adjust boxes or add more sub-packages if you want deeper detail (e.g., split `src/server/db/schema` into specific table files).
-

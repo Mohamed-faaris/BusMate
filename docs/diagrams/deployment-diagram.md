@@ -45,6 +45,7 @@ flowchart TB
 ```
 
 Notes
+
 - The project's `Dockerfile` and `compose.yaml` show a simple Docker Compose deployment with services: `server`, `postgres-container`, and `redis`.
 - For production you might: use managed DB (Neon/RDS), managed Redis, hosted PostHog, and deploy the Next.js app to a container orchestrator (K8s) or serverless platform (Vercel).
-- If you'd like, I can also generate a Kubernetes variant or a GitHub Actions workflow that builds, pushes, and deploys the container. 
+- If you'd like, I can also generate a Kubernetes variant or a GitHub Actions workflow that builds, pushes, and deploys the container.
