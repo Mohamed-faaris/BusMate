@@ -1,4 +1,5 @@
 # BusMate
+demo: https://busmate.faaris.dev/
 
 Modern bus seat booking for campuses and routes, built with Next.js App Router, NextAuth, Drizzle ORM, and PostgreSQL. Users can register, sign in, view their dashboard, select a bus by boarding point, see a live seat map, and book seats. Admins can define boarding points, bus models (seat layouts), and buses with route stops.
 
