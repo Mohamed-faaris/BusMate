@@ -21,10 +21,6 @@ export default function HomePage() {
             </div>
           </div>
 
-          <h1 className="mb-6 text-4xl font-bold text-slate-900 sm:text-5xl md:text-6xl lg:text-7xl dark:text-slate-100">
-            BusMate
-          </h1>
-
           <p className="mx-auto mb-8 max-w-3xl text-xl leading-relaxed text-slate-600 sm:text-2xl dark:text-slate-300">
             Streamlined bus transportation management for educational
             institutions and commuter routes
