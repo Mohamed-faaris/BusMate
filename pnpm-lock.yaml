@@ -88,7 +88,7 @@ importers:
         version: 3.4.9
       posthog-js:
         specifier: ^1.279.3
-        version: 1.365.1
+        version: 1.365.3
       posthog-node:
         specifier: ^5.10.3
         version: 5.29.1
@@ -888,8 +888,8 @@ packages:
   '@posthog/core@1.25.1':
     resolution: {integrity: sha512-76enEGwLVtcCTbfAr1wJ6zi4tYzVkGsqJx+H9JiX0K8/VxuKdbOtVShsOJhTD9uvFfTeW3DX+PSCelcqWrRRkw==}
 
-  '@posthog/types@1.365.1':
-    resolution: {integrity: sha512-H9E01/xme+l7sVRYaM+3OA7IGjvrdyRlu1wwT9VPpEtReFLt5zzB+pwqgpSsxG1k1dg5BG3ukY10IwL83EQhCg==}
+  '@posthog/types@1.365.3':
+    resolution: {integrity: sha512-dI5EpyEcL58LAsZ6tzpJbRjRaS12ZlWDFwoDLc+BoUP0ROjQTAJGsdB9GPuaD79Pns0hybl6Z5cIdPZQ9xpRmg==}
 
   '@protobufjs/aspromise@1.1.2':
     resolution: {integrity: sha512-j+gKExEuLmKwvz3OgROXtrJ2UG2x8Ch2YZUxahh+s1F2HZ+wAceUNLkvy6zKCPVRkU++ZWQrdxsUeQXmcg4uoQ==}
@@ -2972,8 +2972,8 @@ packages:
     resolution: {integrity: sha512-GD3qdB0x1z9xgFI6cdRD6xu2Sp2WCOEoe3mtnyB5Ee0XrrL5Pe+e4CCnJrRMnL1zYtRDZmQQVbvOttLnKDLnaw==}
     engines: {node: '>=12'}
 
-  posthog-js@1.365.1:
-    resolution: {integrity: sha512-SET1sa4rgpjvchrExqSY/lvSO25cYs0i5bYIv42zWUMDRmSsugri6s3z/oqwHOAU5f2XKeLA3FUhabR86F2SLQ==}
+  posthog-js@1.365.3:
+    resolution: {integrity: sha512-cBYaGX40RcWAKWt+IkHalTuk83QIT/oHaARyF34bUGdL37odJPAr/RZ3DVvC83h1V7lHiPPTkc9kOnlI8gjkNA==}
 
   posthog-node@5.29.1:
     resolution: {integrity: sha512-XA1OGrE8SAmO3JkfWjeVg7XxEN/6M6ZXzYmBJKl3uXv/xxk7ru0oeoqi/rcWJ6z5+nFP9wUFVoS37//qaPxwFg==}
@@ -4037,7 +4037,7 @@ snapshots:
 
   '@posthog/core@1.25.1': {}
 
-  '@posthog/types@1.365.1': {}
+  '@posthog/types@1.365.3': {}
 
   '@protobufjs/aspromise@1.1.2': {}
 
@@ -6150,7 +6150,7 @@ snapshots:
 
   postgres@3.4.9: {}
 
-  posthog-js@1.365.1:
+  posthog-js@1.365.3:
     dependencies:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/api-logs': 0.208.0
@@ -6158,7 +6158,7 @@ snapshots:
       '@opentelemetry/resources': 2.5.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/sdk-logs': 0.208.0(@opentelemetry/api@1.9.0)
       '@posthog/core': 1.25.1
-      '@posthog/types': 1.365.1
+      '@posthog/types': 1.365.3
       core-js: 3.46.0
       dompurify: 3.3.3
       fflate: 0.4.8
