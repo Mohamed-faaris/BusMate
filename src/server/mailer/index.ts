@@ -50,3 +50,49 @@ export async function sendOTPMail(email: string, otp: string) {
     console.error("Error sending email:", error);
   }
 }
+
+export async function sendBookingConfirmation(
+  email: string,
+  opts: {
+    name?: string;
+    seatId: string;
+    busId: string;
+    bus?: {
+      id: string;
+      busNumber?: string | null;
+      routeName?: string | null;
+      driverName?: string | null;
+      driverPhone?: string | null;
+    } | null;
+    boardingPointName?: string | null;
+  },
+) {
+  if (process.env.NODE_ENV === "development") {
+    console.log(`Sending booking confirmation to ${email}`, opts);
+  }
+  const { name, seatId, busId, bus, boardingPointName } = opts;
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+    await transporter.sendMail({
+      from: `\"BusMate\" <${process.env.GMAIL_USER}>`,
+      to: email,
+      subject: `Booking Confirmed — Seat ${seatId}`,
+      html: `<div style="font-family: Helvetica,Arial,sans-serif;line-height:1.6;max-width:600px">
+        <h2 style="color:#00466a">Hi ${name ?? "there"},</h2>
+        <p>Thanks for booking with <strong>BusMate</strong>. Your booking details are below:</p>
+        <table style="width:100%;border-collapse:collapse">
+          <tr><td style="padding:6px;font-weight:600">Seat</td><td style="padding:6px">${seatId}</td></tr>
+          <tr><td style="padding:6px;font-weight:600">Bus</td><td style="padding:6px">${bus?.busNumber ?? busId}</td></tr>
+          <tr><td style="padding:6px;font-weight:600">Route</td><td style="padding:6px">${bus?.routeName ?? "-"}</td></tr>
+          <tr><td style="padding:6px;font-weight:600">Driver</td><td style="padding:6px">${bus?.driverName ?? "-"} (${bus?.driverPhone ?? "-"})</td></tr>
+          <tr><td style="padding:6px;font-weight:600">Boarding Point</td><td style="padding:6px">${boardingPointName ?? "-"}</td></tr>
+        </table>
+        <p style="margin-top:12px">You can view or manage your booking on your dashboard.</p>
+        <p style="color:#666;font-size:0.9em">If you didn't make this booking contact support immediately.</p>
+        <p style="margin-top:12px">Regards,<br/>BusMate</p>
+      </div>`,
+    });
+  } catch (error) {
+    console.error("Error sending booking confirmation email:", error);
+  }
+}

@@ -1,9 +1,16 @@
 import { auth } from "@/server/auth";
 import { db } from "@/server/db";
-import { buses, seats, users, type SeatStatus } from "@/server/db/schema";
+import {
+  buses,
+  seats,
+  users,
+  boardingPoints,
+  type SeatStatus,
+} from "@/server/db/schema";
 import { eq, sql } from "drizzle-orm";
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { sendBookingConfirmation } from "@/server/mailer";
 
 const bookSeatSchema = z.object({
   seatId: z.string().min(1, "Seat ID is required"),
@@ -40,6 +47,20 @@ export async function POST(req: Request) {
       console.warn("Unauthorized access attempt");
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
+    let bookedDetails: {
+      id: string;
+      email: string;
+      name: string;
+      boardingPointName?: string | null;
+      bus?: {
+        id: string;
+        busNumber?: string | null;
+        routeName?: string | null;
+        driverName?: string | null;
+        driverPhone?: string | null;
+      };
+    } | null = null;
+
     await db.transaction(async (tx) => {
       const [user] = await tx
         .select()
@@ -49,6 +70,30 @@ export async function POST(req: Request) {
       if (!user) {
         console.warn("User not found for id:", session.user?.id);
         return NextResponse.json({ error: "User not found" }, { status: 404 });
+      }
+      // capture minimal user info to send email after transaction commits
+      bookedDetails = { id: user.id, email: user.email, name: user.name };
+      // fetch bus details to include in the confirmation
+      const [busRecord] = await tx
+        .select()
+        .from(buses)
+        .where(eq(buses.id, busId));
+      if (busRecord) {
+        bookedDetails.bus = {
+          id: String(busRecord.id),
+          busNumber: busRecord.busNumber ?? null,
+          routeName: busRecord.routeName ?? null,
+          driverName: busRecord.driverName ?? null,
+          driverPhone: busRecord.driverPhone ?? null,
+        };
+      }
+      // fetch boarding point name if user has one
+      if (user.boardingPointId) {
+        const [bp] = await tx
+          .select()
+          .from(boardingPoints)
+          .where(eq(boardingPoints.id, user.boardingPointId));
+        bookedDetails.boardingPointName = bp?.name ?? null;
       }
       const seatStatus: SeatStatus =
         user.gender === "male" ? "bookedMale" : "bookedFemale";
@@ -68,6 +113,20 @@ export async function POST(req: Request) {
         .where(eq(buses.id, busId));
     });
     console.log("Seat booking successful");
+    // Send booking confirmation email if we have user info
+    try {
+      if (bookedDetails?.email) {
+        await sendBookingConfirmation(bookedDetails.email, {
+          name: bookedDetails.name,
+          seatId,
+          busId,
+          bus: bookedDetails.bus,
+          boardingPointName: bookedDetails.boardingPointName,
+        });
+      }
+    } catch (err) {
+      console.error("Error sending booking confirmation email:", err);
+    }
     return NextResponse.json({ message: "success" }, { status: 200 });
   } catch (error: unknown) {
     // Handle unique constraint violation (already booked)
