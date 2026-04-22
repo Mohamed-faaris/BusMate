@@ -2,7 +2,7 @@
   "name": "BusMate",
   "short_name": "BusMate",
   "description": "A smart platform for schools and colleges to manage buses and student transportation efficiently",
-  "start_url": "/",tar
+  "start_url": "/",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
