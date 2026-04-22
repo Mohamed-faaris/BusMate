@@ -6,10 +6,6 @@ import "./src/env.js";
 
 /** @type {import("next").NextConfig} */
 const config = {
-  eslint: {
-    // ✅ disable ESLint checks during `next build`
-    ignoreDuringBuilds: true,
-  },
   typescript: {
     // ✅ allow production builds even if TypeScript errors exist
     ignoreBuildErrors: true,
